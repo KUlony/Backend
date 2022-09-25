@@ -1,0 +1,53 @@
+const mongoose = require("mongoose");
+const PostSchema = new mongoose.Schema({
+    post_id : {
+        type:  Number,
+        default: 0,
+    },
+    user_id : {
+        type:  Number,
+        default: 0,
+    },
+    catagory_id : [{
+        type : Number,
+    }],
+    topic_id : [{
+        type : Number,
+    }],
+    post_title : {
+        type: String,
+        required: true,
+    },
+    post_content : {
+        type: String,
+        required: true,
+    },
+    cover_photo_url : {
+        type: String,
+        default : null,
+       
+    },
+    post_photo_url : [{
+        type: String,
+    }],
+    post_like_count : {
+        type : Number,
+        default: 0,
+    },
+    post_time : {
+        type : Date,
+        timestamps : true ,
+        default : Date.now()
+    },
+    post_status : {
+        type: Boolean,
+        default: true,
+    },
+    post_delete_time : {
+        type : Date,
+        timestamps : true ,
+        default : null,
+    }
+});
+const Post = mongoose.model("Post", PostSchema);
+module.exports = Post;
