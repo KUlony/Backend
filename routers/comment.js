@@ -3,7 +3,7 @@ const router = express.Router()
 
 const commentModel = require("../schemas/modelcomment");
 
-router.post("/comment/create", async (request, response) => {
+router.post("/create", async (request, response) => {
   const comment = new commentModel(request.body);
 
   try {
@@ -14,7 +14,7 @@ router.post("/comment/create", async (request, response) => {
   }
 });
 
-router.get("/comments", async (request, response) => {
+router.get("/", async (request, response) => {
   const comments = await commentModel.find({});
 
   try {

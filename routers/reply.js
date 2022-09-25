@@ -3,7 +3,7 @@ const router = express.Router()
 
 const replyModel = require("../schemas/modelreply");
 
-router.post("/reply/create", async (request, response) => {
+router.post("/create", async (request, response) => {
   const reply = new replyModel(request.body);
 
   try {
@@ -13,7 +13,7 @@ router.post("/reply/create", async (request, response) => {
     response.status(500).send(error);
   }
 });
-router.get("/replys", async (request, response) => {
+router.get("/", async (request, response) => {
   const replys = await replyModel.find({});
 
   try {

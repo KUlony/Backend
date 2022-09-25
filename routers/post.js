@@ -3,7 +3,7 @@ const router = express.Router()
 
 const postModel = require("../schemas/modelpost");
 
-router.post("/post/create", async (request, response) => {
+router.post("/create", async (request, response) => {
     const post = new postModel(request.body);
   
     try {
@@ -14,7 +14,7 @@ router.post("/post/create", async (request, response) => {
     }
 });
 
-router.get("/posts", async (request, response) => {
+router.get("/", async (request, response) => {
   const posts = await postModel.find({});
 
   try {
