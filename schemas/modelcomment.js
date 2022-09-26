@@ -1,14 +1,8 @@
 const mongoose = require("mongoose");
 const CommentSchema = new mongoose.Schema({
-  comment_id : {
-    type : Number,
-    default : 0,
-  },
-  
-
   post_id: {
-    type: Number,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+		ref: 'Post'
   },
   comment_content: {
     type: String,

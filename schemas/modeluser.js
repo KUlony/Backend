@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
-  user_id : {
-    type : Number,
-    default : 0,
-  },
   visit_post : [{
     type : Number,
   }],

@@ -1,12 +1,8 @@
 const mongoose = require("mongoose");
 const PostSchema = new mongoose.Schema({
-    post_id : {
-        type:  Number,
-        default: 0,
-    },
     user_id : {
-        type:  Number,
-        default: 0,
+        type: mongoose.Schema.Types.ObjectId,
+		ref: 'user'
     },
     catagory_id : [{
         type : Number,

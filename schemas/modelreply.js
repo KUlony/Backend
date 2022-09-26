@@ -8,8 +8,6 @@ const ReplySchema = new mongoose.Schema({
     type : Number,
     required : true,
   },
-  
-
   reply_content: {
     type: String,
     required: true,
