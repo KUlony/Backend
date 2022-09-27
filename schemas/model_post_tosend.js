@@ -1,4 +1,15 @@
 const mongoose = require("mongoose");
+
+const catagory = new mongoose.Schema({
+    catagory_id : mongoose.Schema.Types.ObjectId,
+    catagory_name : String,
+})
+
+const topic = new mongoose.Schema({
+    topic_id : mongoose.Schema.Types.ObjectId,
+    topic_name : String,
+})
+
 const PostToSendSchema = new mongoose.Schema({
     author : {
         user_id : {
@@ -8,12 +19,8 @@ const PostToSendSchema = new mongoose.Schema({
         username : String,
         profile_pic_url : String,
     },
-    catagory_id : [{
-        type : Number,
-    }],
-    topic_id : [{
-        type : Number,
-    }],
+    post_catagory : [catagory],
+    post_topic : [topic],
     post_title : {
         type: String,
         required: true,

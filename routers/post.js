@@ -5,6 +5,8 @@ const postModel = require("../schemas/modelpost");
 const post_to_sendModel = require("../schemas/model_post_tosend");
 const userModel = require("../schemas/modeluser");
 const commentModel = require("../schemas/modelcomment");
+const catagoryModel = require("../schemas/modelcatagory");
+const topicModel = require("../schemas/modeltopic");
 
 router.post("/create", async (request, response) => {
     const post = new postModel(request.body);
@@ -32,8 +34,8 @@ router.get("/all_post", async (request, response) => {
         username : user.user_name,
         profile_pic_url : user.profile_pic_url,
       },
-      catagory_id : posts[i].catagory_id,
-      topic_id : posts[i].catagory_id,
+      post_catagory : posts[i].catagory_id,
+      post_topic : posts[i].catagory_id,
       post_title : posts[i].post_title,
       post_content :posts[i].post_content,
       cover_photo_url : posts[i].cover_photo_url,
