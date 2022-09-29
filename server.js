@@ -17,9 +17,10 @@ app.use(express.json());
 mongoose.connect(database, {
 useNewUrlParser: true, 
 useUnifiedTopology: true 
-}, err => {
-if(err) throw err;
-console.log('Connected to MongoDB!!!')
+}).then(()=>{
+  console.log("MongoDB Connected")    
+}).catch(err=>{
+  console.log("MongoDB not Connected" + err)
 });
 
 const db = mongoose.connection;
@@ -28,13 +29,13 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-app.use("/user", userroute)
-app.use("/post", postroute)
-app.use("/commment", commentroute)
-app.use("/reply", replyroute)
-app.use("/topic", topic_cataroute)
+app.use("api/user", userroute)
+app.use("api/post", postroute)
+app.use("api/commment", commentroute)
+app.use("api/reply", replyroute)
+app.use("api/topic", topic_cataroute)
 
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log("Server is running at port 3000");
 });
 
