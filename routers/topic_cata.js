@@ -28,7 +28,7 @@ router.get("/get_all_catagory", async (request, response) => {
     }
 });
 
-routegit commit -am "commit message"r.post("/create_topic", async (request, response) => {
+router.post("/create_topic", async (request, response) => {
     const topic = new topicModel(request.body);
   
     try {
