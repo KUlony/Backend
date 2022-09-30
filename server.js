@@ -5,6 +5,7 @@ const postroute = require("./routers/post")
 const commentroute = require("./routers/comment")
 const replyroute = require("./routers/reply")
 const topic_cataroute = require("./routers/topic_cata")
+const searchroute = require("./routers/search")
 
 var dotenv = require("dotenv");
 dotenv.config();
@@ -24,19 +25,19 @@ useUnifiedTopology: true
 });
 
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
+db.on("error", err => {
+  console.log("Connection Error: " + err)
 });
 
-app.use("api/user", userroute)
-app.use("api/post", postroute)
-app.use("api/commment", commentroute)
-app.use("api/reply", replyroute)
-app.use("api/topic", topic_cataroute)
+app.use("/api/user", userroute)
+app.use("/api/post", postroute)
+app.use("/api/commment", commentroute)
+app.use("/api/reply", replyroute)
+app.use("/api/topic", topic_cataroute)
+app.use("/api/search", searchroute)
 
 app.listen(4000, () => {
-  console.log("Server is running at port 3000");
+  console.log("Server is running at port 4000");
 });
 
 //npx nodemon server.js
