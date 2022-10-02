@@ -3,9 +3,9 @@ const express = require("express");
 const router = express.Router()
 
 const postModel = require("../schemas/modelpost");
-const userModel = require("../schemas/modelpost");
+const userModel = require("../schemas/modeluser");
 
-const _id = '6329fedcc3479021a8d8d1e4';
+const _id = "6329fedcc3479021a8d8d1e4";
 
 router.get("/post", async (req, res) => {
    try {
@@ -24,7 +24,7 @@ router.get("/post", async (req, res) => {
                               query: req.query.text,
                               path: "post_title",
                               fuzzy: {
-                                 maxEdits: 1,
+                                 maxEdits: 2,
                               },
                               score: { "boost": { "value": 3} }
                            }
@@ -34,7 +34,7 @@ router.get("/post", async (req, res) => {
                               query: req.query.text,
                               path: "post_content",
                               fuzzy: {
-                                 maxEdits: 1,
+                                 maxEdits: 2,
                               },
                               score: { "boost": { "value": 2}}
                            }
