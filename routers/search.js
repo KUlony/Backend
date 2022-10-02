@@ -1,10 +1,17 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router()
 
 const postModel = require("../schemas/modelpost");
+const userModel = require("../schemas/modelpost");
+
+const _id = '6329fedcc3479021a8d8d1e4';
 
 router.get("/post", async (req, res) => {
    try {
+      const user = await userModel.findById(_id);
+      // const view_post_id = user.visit_post;
+      console.log(user);
       if (req.query.text) {
          let result = await postModel.aggregate([
             {
@@ -31,21 +38,25 @@ router.get("/post", async (req, res) => {
                               },
                               score: { "boost": { "value": 2}}
                            }
-                        }
+                        },
                      ],
-
+                  },
+                  highlight: {
+                     path: ["post_title", "post_content"]
                   }
                }
             },
             {
                $project: {
+                  post_content: 1,
                   post_title: 1,
                   _id: 1,
-                  score: { $meta: "searchScore"}
+                  highlight: { "$meta": "searchHighlights"},
                }
             },
          ])
          if (result) return res.send(result);
+         typeof result[0]._id
       }
       res.send([]);
    } catch (e) {
