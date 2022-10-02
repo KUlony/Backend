@@ -8,8 +8,18 @@ const commentModel = require("../schemas/modelcomment");
 const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 
+const user_id_mock = "6329fedcc3479021a8d8d1e4";
+
 router.post("/create", async (request, response) => {
-    const post = new postModel(request.body);
+    const post = new postModel({
+      user_id : user_id_mock,
+      catagory_id : request.body.catagory_id,
+      topic_id : request.body.topic_id,
+      post_title : request.body.post_title,
+      post_content : request.body.post_content,
+      cover_photo_url : request.body.cover_photo_url,
+      post_photo_url : request.body.post_photo_url
+    });
   
     try {
       await post.save();

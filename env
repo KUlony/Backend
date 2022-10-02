@@ -1,0 +1,1 @@
+MONGOLAB_URI = "mongodb+srv://Kittipong:0936341700@cluster0.wevwknz.mongodb.net/?retryWrites=true&w=majority"
