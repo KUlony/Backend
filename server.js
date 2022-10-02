@@ -29,11 +29,11 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-app.use("api/user", userroute)
-app.use("api/post", postroute)
-app.use("api/commment", commentroute)
-app.use("api/reply", replyroute)
-app.use("api/topic", topic_cataroute)
+app.use("/api/user", userroute)
+app.use("/api/post", postroute)
+app.use("/api/commment", commentroute)
+app.use("/api/reply", replyroute)
+app.use("/api/topic", topic_cataroute)
 
 app.listen(4000, () => {
   console.log("Server is running at port 3000");
