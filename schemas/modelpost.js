@@ -6,10 +6,10 @@ const PostSchema = new mongoose.Schema({
 		ref: 'user'
     },
     catagory_id : [{
-        type : Number,
+        type : mongoose.Schema.Types.ObjectId,
     }],
     topic_id : [{
-        type : Number,
+        type : mongoose.Schema.Types.ObjectId,
     }],
     post_title : {
         type: String,
@@ -22,10 +22,10 @@ const PostSchema = new mongoose.Schema({
     cover_photo_url : {
         type: String,
         default : null,
-       
     },
     post_photo_url : [{
         type: String,
+        default : null,
     }],
     post_like_count : {
         type : Number,
