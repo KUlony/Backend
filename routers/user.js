@@ -10,7 +10,7 @@ const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 
-const user_id_mock = "6329fedcc3479021a8d8d1e4";
+const user_id_mock = "6339dc63d112d2d4af136689";
 
 router.post("/create", async (request, response) => {
     const user = new userModel();

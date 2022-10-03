@@ -10,7 +10,7 @@ const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 
-const user_id_mock = "6329fedcc3479021a8d8d1e4";
+const user_id_mock = "6339dc63d112d2d4af136689";
 
 router.post("/create", async (request, response) => {
     const post = new postModel({
@@ -33,13 +33,19 @@ router.post("/create", async (request, response) => {
 
 router.get("/all_post", async (request, response) => {
   const posts = await postModel.find({});
-  //console.log(posts.length);
+  //console.log(posts);
   const res = [];
+  var to_res = true
   for (let i=0; i < posts.length;i++){
     //console.log("hi")
     const user = await userModel.findById(posts[i].user_id);
     const comment = await commentModel.find({post_id : posts[i]._id})
-    console.log(user)
+    //console.log(posts[i])
+    //console.log(user)
+    const user_like_sta = await likepostModel.find({user_id : user_id_mock, post_id : posts[i]._id})
+    if (user_like_sta.length === 0){
+      to_res = false
+    };
     const a_post = new post_to_sendModel({
       author : {
         user_id : posts[i].user_id,
@@ -55,6 +61,7 @@ router.get("/all_post", async (request, response) => {
       post_like_count : posts[i].post_like_count,
       post_comment_count : comment.length,
       post_time : posts[i].post_time,
+      user_like_status : to_res
     });
     res.push(a_post);
   }
