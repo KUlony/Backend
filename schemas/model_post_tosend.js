@@ -44,6 +44,7 @@ const PostToSendSchema = new mongoose.Schema({
     post_time : {
         type : Date,
     },
+    user_like_status : Boolean
 });
 const Post = mongoose.model("Post_to_send", PostToSendSchema);
 module.exports = Post;

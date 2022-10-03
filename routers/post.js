@@ -7,6 +7,8 @@ const userModel = require("../schemas/modeluser");
 const commentModel = require("../schemas/modelcomment");
 const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
+const followtopicModel = require("../schemas/model_following_topic");
+const likepostModel = require("../schemas/model_like_post");
 
 const user_id_mock = "6329fedcc3479021a8d8d1e4";
 
