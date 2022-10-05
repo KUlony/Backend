@@ -9,6 +9,7 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
+const reportpostModel = require("../schemas/model_report_post");
 
 const user_id_mock = "6339dc63d112d2d4af136689";
 
@@ -22,7 +23,7 @@ router.post("/create", async (request, response) => {
     }
 });
 
-router.get("/get", async (request, response) => {
+router.get("/:user_id/profile", async (request, response) => {
     const user = await userModel.findById("6329fedcc3479021a8d8d1e4");
     console.log(user)
     try {
@@ -82,6 +83,80 @@ router.delete("/:user_id/unfollow_topic/:topic_id", async (request, response) =>
   }
 });
 
+router.get("/:user_id/user_like_post", async (request, response) => {
+  const like_post = await likepostModel.find({user_id : request.params.user_id});
+  //console.log(like_post);
+  
+  const res = []
+  for(i=0 ;i<like_post.length;i++){
+    const post = await postModel.findById(like_post[i].post_id);
+    const comment = await commentModel.find({post_id : like_post[i].post_id});
+    const user = await userModel.findById(post.user_id)
+    const to_res = {
+      author : {
+        user_id : post.user_id,
+        username : user.user_name,
+        profile_pic_url : user.profile_pic_url,
+      },
+      post_title : post.post_title,
+      post_content : post.post_content,
+      cover_photo_url : post.cover_photo_url,
+      post_photo_url : post.post_photo_url,
+      post_catagory : post.catagory_id,
+      post_topic : post.catagory_id,
+      post_like_count : post.post_like_count,
+      post_comment_count : comment.length,
+      post_time : post.post_time,
+      user_like_status : true
+    }
+    res.push(to_res)
+  }
+  try {
+    response.send(res);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+router.get("/:user_id/user_post", async (request, response) => {
+  const post = await postModel.find({user_id : request.params.user_id});
+  const user = await userModel.findById(request.params.user_id);
+  const res = {
+    author : {
+      user_id : request.params.user_id,
+      username : user.user_name,
+      profile_pic_url : user.profile_pic_url,
+    },
+    post : []
+  }
+  for(i=0 ;i<post.length;i++){
+    const comment = await commentModel.find({post_id : post[i]._id});
+    var to = true;
+    const user_like_sta = await likepostModel.find({user_id : request.params.user_id, post_id : post[i]._id})
+    if (user_like_sta.length === 0){
+      to = false
+    };
+    const to_res = {
+      post_title : post[i].post_title,
+      post_content : post[i].post_content,
+      cover_photo_url : post[i].cover_photo_url,
+      post_photo_url : post[i].post_photo_url,
+      post_catagory : post[i].catagory_id,
+      post_topic : post[i].catagory_id,
+      post_like_count : post[i].post_like_count,
+      post_comment_count : comment.length,
+      post_time : post[i].post_time,
+      user_like_status : to
+    }
+    res.post.push(to_res)
+  }
+  try {
+    response.send(res);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 router.post("/:user_id/like_post/:post_id", async (request, response) => {
   const like_post = new likepostModel({
     user_id : request.params.user_id,
@@ -90,7 +165,7 @@ router.post("/:user_id/like_post/:post_id", async (request, response) => {
   });
   try {
     await like_post.save();
-    response.send(like_post);
+    response.send("liked");
   } catch (error) {
     response.status(500).send(error);
   }

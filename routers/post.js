@@ -9,6 +9,7 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
+const reportpostModel = require("../schemas/model_report_post");
 
 const user_id_mock = "6339dc63d112d2d4af136689";
 
@@ -35,9 +36,10 @@ router.get("/all_post", async (request, response) => {
   const posts = await postModel.find({});
   //console.log(posts);
   const res = [];
-  var to_res = true
+  
   for (let i=0; i < posts.length;i++){
     //console.log("hi")
+    var to_res = true
     const user = await userModel.findById(posts[i].user_id);
     const comment = await commentModel.find({post_id : posts[i]._id})
     //console.log(posts[i])
@@ -67,6 +69,22 @@ router.get("/all_post", async (request, response) => {
   }
   try {
     response.send(res);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+router.post("/:entity_id/report", async (request, response) => {
+  const post = new reportpostModel({
+    user_id : user_id_mock,
+    entity_id : request.params.entity_id,
+    entity_type : "comment",
+    report_type : request.body.report_type,
+    report_time : Date.now()
+  });
+  try {
+    await post.save();
+    response.send(post);
   } catch (error) {
     response.status(500).send(error);
   }
