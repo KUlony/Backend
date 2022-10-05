@@ -8,7 +8,9 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
-const user_id_mock = "6329fedcc3479021a8d8d1e4";
+
+
+
 const sendEmail = require("../config/email");
 const Token = require("../schemas/token");
 const Otp = require("../schemas/modelotp");
@@ -19,6 +21,10 @@ const Math = require('math');
 const bcrypt = require('bcrypt')
 const { forwardAuthenticated,ensureAuthenticated } = require('../config/auth');
 const passport = require('passport');
+
+
+const user_id_mock = "6339dc63d112d2d4af136689";
+
 
 router.post("/create", async (request, response) => {
     const user = new userModel();
