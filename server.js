@@ -6,6 +6,7 @@ const commentroute = require("./routers/comment")
 const replyroute = require("./routers/reply")
 const topic_cataroute = require("./routers/topic_cata")
 const searchroute = require("./routers/search")
+const adminroute = require("./routers/admin")
 const expressLayouts = require('express-ejs-layouts');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -69,11 +70,18 @@ app.use(function(req, res, next) {
 });
 
 app.use("/api/user", userroute)
-app.use("/api/post",ensureAuthenticated,postroute)
-app.use("/api/commment", ensureAuthenticated,commentroute)
-app.use("/api/reply", ensureAuthenticated,replyroute)
-app.use("/api/topic",ensureAuthenticated, topic_cataroute)
-app.use("/api/search", ensureAuthenticated,searchroute)
+app.use("/api/post",postroute)
+app.use("/api/commment",commentroute)
+app.use("/api/reply",replyroute)
+app.use("/api/topic", topic_cataroute)
+app.use("/api/search",searchroute)
+app.use("/api/admin",adminroute)
+// รอให้เสดทุกอย่างก่อน
+// app.use("/api/post",ensureAuthenticated,postroute)
+// app.use("/api/commment", ensureAuthenticated,commentroute)
+// app.use("/api/reply", ensureAuthenticated,replyroute)
+// app.use("/api/topic",ensureAuthenticated, topic_cataroute)
+// app.use("/api/search", ensureAuthenticated,searchroute)
 
 
 app.listen(4000, () => {

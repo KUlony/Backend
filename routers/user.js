@@ -9,8 +9,7 @@ const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
-
-
+const requesttopicModel = require("../schemas/model_request_topic");
 
 const sendEmail = require("../config/email");
 const Token = require("../schemas/token");
