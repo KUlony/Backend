@@ -6,6 +6,7 @@ const commentroute = require("./routers/comment")
 const replyroute = require("./routers/reply")
 const topic_cataroute = require("./routers/topic_cata")
 const searchroute = require("./routers/search")
+const searchtopicroute = require("./routers/searchtopic")
 
 var dotenv = require("dotenv");
 dotenv.config();
@@ -35,6 +36,7 @@ app.use("/api/commment", commentroute)
 app.use("/api/reply", replyroute)
 app.use("/api/topic", topic_cataroute)
 app.use("/api/search", searchroute)
+app.use("/api/searchtopic", searchtopicroute)
 
 
 app.listen(4000, () => {
