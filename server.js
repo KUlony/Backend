@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
 const userroute = require("./routers/user")
 const postroute = require("./routers/post")
 const commentroute = require("./routers/comment")
@@ -23,6 +24,7 @@ const database = process.env.MONGOLAB_URI;
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 mongoose.connect(database, {
 useNewUrlParser: true, 

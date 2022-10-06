@@ -16,8 +16,17 @@ const user_id_mock = "6339dc63d112d2d4af136689";
 
 router.get("/get_all_topic", async (request, response) => {
     const topic = await topicModel.find({});
+    const res = [];
+    for (i=0;i<topic.length;i++){
+      const to_res = {
+        topic_id : topic[i]._id,
+        catagory_id : topic[i].catagory_id,
+        topic_name : topic[i].topic_name
+      }
+      res.push(to_res);
+    }
     try {
-      response.send(topic);
+      response.send(res);
     } catch (error) {
       response.status(500).send(error);
     }
@@ -31,6 +40,32 @@ router.get("/get_all_catagory", async (request, response) => {
     } catch (error) {
       response.status(500).send(error);
     }
+});
+
+router.get("/get_all_catagory_topic", async (request, response) => {
+  const catagory = await catagoryModel.find({});
+  const res = [];
+  for (i=0;i<catagory.length;i++){
+    const to_res = {
+      catagory_id : catagory[i]._id,
+      catagory_name : catagory[i].catagory_name,
+      all_topic : []
+    }
+    const topic = await topicModel.find({catagory_id : catagory[i]._id});
+    for(j=0;j<topic.length;j++){
+      const to_res2 = {
+        topic_id : topic[j]._id,
+        topic_name : topic[j].topic_name
+      }
+      to_res.all_topic.push(to_res2);
+    }
+    res.push(to_res);
+  }
+  try {
+    response.send(res);
+  } catch (error) {
+    response.status(500).send(error);
+  }
 });
 
 router.post("/create_topic", async (request, response) => {
