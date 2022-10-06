@@ -56,7 +56,6 @@ router.get("/post", async (req, res) => {
             },
          ])
          if (result) return res.send(result);
-         typeof result[0]._id
       }
       res.send([]);
    } catch (e) {
