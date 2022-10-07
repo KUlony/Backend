@@ -33,7 +33,6 @@ const PostSchema = new mongoose.Schema({
     },
     post_time : {
         type : Date,
-        timestamps : true ,
         default : Date.now()
     },
     post_status : {
