@@ -10,17 +10,16 @@ const likepostModel = require("../schemas/model_like_post");
 const user_id_mock = "6339dc63d112d2d4af136689";
 router.get("/post", async (req, res) => {
    try {
-      let posts
       let payload = [];
       if (req.query.text) {
-         posts = await postModel.aggregate([
+         let posts = await postModel.aggregate([
             {
                $search: {
                   index: "searchPost",
                   compound: {
                      should: [
                         {
-                           text: {
+                           autocomplete: {
                               query: req.query.text,
                               path: "post_title",
                               fuzzy: {
@@ -30,7 +29,7 @@ router.get("/post", async (req, res) => {
                            }
                         },
                         {
-                           text: {
+                           autocomplete: {
                               query: req.query.text,
                               path: "post_content",
                               fuzzy: {
