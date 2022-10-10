@@ -1,39 +1,23 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const Joi = require("joi");
-
-const userSchema = new Schema({
+const sing_upSchema = new mongoose.Schema({
   
   email: {
     type: String,
-    required: true,
+	
   },
-  password: {
-    type: String,
-    min: 3,
-    max: 255,
-    required: true,
+  password :{
+    type : String,
+   
+    
   },
-  
-  
-  verified: {
-    type: Boolean,
-    default: false,
+  verified : {
+    type : Boolean,
+    default : false
   },
+  status_login : {
+    type : Boolean,
+    default : false
+  }
 });
-
-const User = mongoose.model("sing-up", userSchema);
-
-const validate = (user) => {
-  const schema = Joi.object({
-    // name: Joi.string().min(3).max(255).required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(3).max(255).required(),
-  });
-  return schema.validate(user);
-};
-
-module.exports = {
-  User,
-  validate,
-};
+const sing_up = mongoose.model("sing-up", sing_upSchema );
+module.exports = sing_up;

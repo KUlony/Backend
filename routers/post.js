@@ -9,10 +9,12 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
-
 const user_id_mock = "6339dc63d112d2d4af136689";
 
-router.post("/create", async (request, response) => {
+
+
+router.post("/create",async (request, response) => {
+    
     const post = new postModel({
       user_id : user_id_mock,
       catagory_id : request.body.catagory_id,

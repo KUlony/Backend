@@ -8,25 +8,13 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
-
-
-
-const sendEmail = require("../config/email");
-const Token = require("../schemas/token");
-const Otp = require("../schemas/modelotp");
-const { User, validate } = require("../schemas/modelsing-up");
-const crypto = require("crypto");
-const otpGenerator = require('otp-generator');
-const Math = require('math');
-const bcrypt = require('bcrypt')
-const { forwardAuthenticated,ensureAuthenticated } = require('../config/auth');
-const passport = require('passport');
-
-
 const user_id_mock = "6339dc63d112d2d4af136689";
 
 
-router.post("/create", async (request, response) => {
+
+
+
+router.post("/create",async (request, response) => {
     const user = new userModel();
     try {
       await user.save();
@@ -119,104 +107,6 @@ router.delete("/:user_id/unlike_post/:post_id", async (request, response) => {
   }
 });
 
-router.post("/register/email", async (req, res) => {
-  
-  try {
-    // console.log(crypto.randomBytes(32).toString("hex"));
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    let user = await User.findOne({ email: req.body.email });
-    // if (user)
-    //   return res.status(400).send("User with given email already exist!");
-
-    const hashedPassword = await bcrypt.hash(req.body.password,10);
-    user = await new User({
-      // name: req.body.name,
-      email: req.body.email,
-      password : hashedPassword
-    }).save();
-    
-    let token = await new Token({
-      userId: user._id,
-      token: crypto.randomBytes(32).toString("hex")
-    }).save();
-
-    
-
-    
-    const OTP = Math.floor(100000 + Math.random()*900000);
-    console.log(OTP);
-    
-   
-    let otp = await new Otp({
-      userId: user._id,
-      otp:OTP.toString()
-    }).save();
-    
-    const message = OTP.toString()
-    await sendEmail(user.email, "Verify Email", message);
-
-    res.send("An Email sent to your account please verify");
-    
-  } catch (error) {
-    res.status(400).send("An error occured");
-  }
-
-});
-
-router.get("/register/email/checkOTP", async (req, res) => {
-  try {
-    
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send("Not find email");
-
-    const otp = await Otp.findOne({
-      userId: user._id,
-     
-    });
-    console.log(user._id)
-    if (!otp) return res.status(400).send("Not find OTP");
-
-    if (otp.otp == req.body.otp ) {
-      await User.updateOne({ _id: user._id, verified: true });
-    };
-
-    
-    await Otp.findByIdAndRemove(otp._id);
-
-    res.send("email verified sucessfully");
-  } catch (error) {
-    res.status(400).send("An error occured");
-  }
-});
-
-router.get('/login', (req, res) => res.send('login'));
-
-
-// Login
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/api/user/dashboard',
-    failureRedirect: '/api/user/login',
-    failureFlash: true
-  })(req, res, next);
-});
-
-// Logout
-
-
-router.get('/logout', function(req, res, next){
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/api/user/login');
-  });
-});
-
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  
-  res.send('wellcome')
-});
 
 
 module.exports = router;
