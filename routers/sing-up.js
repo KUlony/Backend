@@ -36,7 +36,7 @@ router.post("/register/email", async (req, res) => {
     console.log(OTP);
       
     let otp = await new Otp({
-      userId: user._id,
+      email: req.body.email,
       otp:OTP.toString()
     }).save();
       
@@ -55,18 +55,23 @@ router.get("/register/email/checkOTP", async (req, res) => {
     try {
       
       const user = await UserModel.findOne({ email: req.body.email });
+      
       if (!user) return res.status(400).send("Not find email");
   
       const otp = await Otp.findOne({
-        userId: user._id,
+        email: req.body.email,
        
       });
       
+      
+      
       if (!otp) return res.status(400).send("Not find OTP");
-  
+      
       if (otp.otp == req.body.otp ) {
-        await UserModel.updateOne({ _id: user._id, verified: true });
+        await user.updateOne({  verified: true });
       };
+      
+      
   
       
       await Otp.findByIdAndRemove(otp._id);
