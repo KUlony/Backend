@@ -9,18 +9,11 @@ const topic_cataroute = require("./routers/topic_cata")
 const searchroute = require("./routers/search")
 const searchtopicroute = require("./routers/searchtopic")
 const sing_uproute = require("./routers/sing-up")
-
-
-// const expressLayouts = require('express-ejs-layouts');
-// const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const auth = passport.authenticate('jwt', { session: false })
-
-// Passport Config
-// require('./config/authenticate')
-
 require('./config/passport')
+
 var dotenv = require("dotenv");
 dotenv.config();
 const database = process.env.MONGOLAB_URI;
@@ -42,38 +35,8 @@ db.on("error", err => {
   console.log("Connection Error: " + err)
 });
 
-// EJS
-// app.use(expressLayouts);
-// app.set('view engine', 'ejs');
-
-// Express body parser
-// app.use(express.urlencoded({ extended: true }));
-
-// Express session
-// app.use(
-//   session({
-//     secret: '12345-67890-09876-54321',
-//     resave: true,
-//     saveUninitialized: true
-//   })
-// );
-// Passport middleware
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// Connect flash
-// app.use(flash());
-
-// Global variables
-// app.use(function(req, res, next) {
-//   res.locals.success_msg = req.flash('success_msg');
-//   res.locals.error_msg = req.flash('error_msg');
-//   res.locals.error = req.flash('error');
-//   next();
-// });
-
-app.use("/api/user",auth, userroute)
 app.use("/api/sing-up", sing_uproute)
+app.use("/api/user",auth, userroute)
 app.use("/api/searchtopic",auth, searchtopicroute)
 app.use("/api/post",auth,postroute)
 app.use("/api/commment",auth,commentroute)

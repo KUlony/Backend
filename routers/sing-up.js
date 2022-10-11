@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router()
 const sendEmail = require("../config/email");
 const Otp = require("../schemas/modelotp");
-const UserModel = require("../schemas/modelsing-up");
+const UserModel = require("../schemas/modeluser");
 const Math = require('math');
 const {compareSync} = require('bcrypt');
 const bcrypt  = require('bcrypt');
@@ -11,9 +11,18 @@ const passport = require('passport');
 
 router.post("/register/email", async (req, res) => {
   try {
-    let user = await UserModel.findOne({ email: req.body.email });
+    const { email,password, confirmpassword } = req.body;
+    if ( !email || !password || !confirmpassword) {
+      res.status(400).send('Please enter all fields');
+    }
+    
+    let user = await UserModel.findOne({ email: email });
     if (user) {
       return res.status(400).send("User with given email already exist!")
+    }
+    if (password != confirmpassword) {
+      res.status(400).send('Passwords do not match' );
+      
     }
    
     const hashedPassword = await bcrypt.hash(req.body.password,10);
@@ -106,11 +115,11 @@ router.post('/login',async (req, res) => {
       
       
     }
-    if (true ) {
+    
       
-      await UserModel.updateOne({ _id: user._id, status_login: true });
+    await UserModel.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
       
-    };
+    
 
     const token = jwt.sign(payload, "Random", { expiresIn: "1d" });
     res.status(200).send({

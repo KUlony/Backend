@@ -8,17 +8,18 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
+const { findOne } = require("../schemas/modeluser");
 const user_id_mock = "6339dc63d112d2d4af136689";
 
 
 
-
-
-router.post("/create",async (request, response) => {
-    const user = new userModel();
+router.put("/create",async (request, response) => {
+    
     try {
-      await user.save();
-      response.send(user);
+      const user = userModel.findOne({_id:request.user._id})
+      
+      await user.updateOne(request.body);
+      response.status(200).send("ok");
     } catch (error) {
       response.status(500).send(error);
     }
