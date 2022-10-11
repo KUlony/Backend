@@ -116,13 +116,11 @@ router.post('/login',async (req, res) => {
     const payload = {
       email: user.email,
       id: user._id,
-      verified : true,
-      
-      
+      verified : true,      
     }
-    
+    //console.log(payload.id);
       
-    await UserModel.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
+    await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
       
     
 
