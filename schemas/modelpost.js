@@ -36,8 +36,8 @@ const PostSchema = new mongoose.Schema({
         default : Date.now()
     },
     post_status : {
-        type: Boolean,
-        default: true,
+        type: String,
+        default: "visible",
     },
     post_delete_time : {
         type : Date,

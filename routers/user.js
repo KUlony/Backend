@@ -27,7 +27,7 @@ router.get("/:user_id/profile", async (request, response) => {
     const user = await userModel.findById(request.params.user_id);
     console.log(user);
     const res = {
-        username : user.username,
+        user_name : user.username,
         user_firtname : user.user_firtname,
         user_lastname : user.user_lastname,
         user_bio : user.bio,
