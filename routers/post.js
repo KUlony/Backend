@@ -9,7 +9,6 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
-//const user_id_mock = "6345767f2b95ee9f9c0a663d";
 const reportpostModel = require("../schemas/model_report_post");
 
 
@@ -46,7 +45,7 @@ router.get("/all_post", async (request, response) => {
     const comment = await commentModel.find({post_id : posts[i]._id})
     //console.log(posts[i])
     //console.log(user)
-    const user_like_sta = await likepostModel.find({user_id : user_id_mock, post_id : posts[i]._id})
+    const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : posts[i]._id})
     if (user_like_sta.length === 0){
       to_res = false
     };
