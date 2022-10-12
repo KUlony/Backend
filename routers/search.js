@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router()
 
 const postModel = require("../schemas/modelpost");
+const postSend = require("../schemas/model_post_tosend");
 const userModel = require("../schemas/modeluser");
+const commentModel = require("../schemas/modelcomment");
+const likepostModel = require("../schemas/model_like_post");
 
-const _id = "6329fedcc3479021a8d8d1e4";
-
+const user_id_mock = "6339dc63d112d2d4af136689";
 router.get("/post", async (req, res) => {
    try {
-      const user = await userModel.findById(_id);
-      // const view_post_id = user.visit_post;
-      console.log(user);
+      let posts
+      let payload = [];
       if (req.query.text) {
-         let result = await postModel.aggregate([
+         posts = await postModel.aggregate([
             {
                $search: {
                   index: "searchPost",
@@ -39,26 +39,49 @@ router.get("/post", async (req, res) => {
                               score: { "boost": { "value": 2}}
                            }
                         },
+                        {
+                           near: {
+                              path: "post_time",
+                              origin: new Date(Date.now()),
+                              pivot: (2592000000*12),
+                           },
+                        },
                      ],
                   },
-                  highlight: {
-                     path: ["post_title", "post_content"]
-                  }
-               }
-            },
-            {
-               $project: {
-                  post_content: 1,
-                  post_title: 1,
-                  _id: 1,
-                  highlight: { "$meta": "searchHighlights"},
-               }
+               },
             },
          ])
-         if (result) return res.send(result);
-         typeof result[0]._id
-      }
-      res.send([]);
+         if (posts) {
+            let to_res = false;
+            for (let i=0; i < posts.length;i++){
+               const user = await userModel.findById(user_id_mock);
+               const comment = await commentModel.find({post_id : posts[i]._id})
+               const user_like_sta = await likepostModel.find({user_id : user_id_mock, post_id : posts[i]._id})
+               if (user_like_sta){
+                  to_res = true
+               };
+                  a_post = new postSend({
+                  author : {
+                     user_id : posts[i].user_id,
+                     username : user.user_name,
+                     profile_pic_url : user.profile_pic_url,
+                  },
+                  post_catagory : posts[i].catagory_id,
+                  post_topic : posts[i].catagory_id,
+                  post_title : posts[i].post_title,
+                  post_content :posts[i].post_content,
+                  cover_photo_url : posts[i].cover_photo_url,
+                  post_photo_url : posts[i].post_photo_url,
+                  post_like_count : posts[i].post_like_count,
+                  post_comment_count : comment.length,
+                  post_time : posts[i].post_time,
+                  user_like_status : to_res
+               });
+               payload.push(a_post);
+            }
+         } 
+      } 
+      res.send(payload);
    } catch (e) {
       res.status(500).send({ message: e.message });
    }

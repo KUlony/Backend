@@ -9,13 +9,15 @@ const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
+//const user_id_mock = "6345767f2b95ee9f9c0a663d";
 const reportpostModel = require("../schemas/model_report_post");
 
-const user_id_mock = "6339dc63d112d2d4af136689";
 
-router.post("/create", async (request, response) => {
+
+router.post("/create",async (request, response) => {
+    console.log(request.user.id);
     const post = new postModel({
-      user_id : user_id_mock,
+      user_id : request.user.id,
       catagory_id : request.body.catagory_id,
       topic_id : request.body.topic_id,
       post_title : request.body.post_title,

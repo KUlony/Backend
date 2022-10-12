@@ -3,64 +3,68 @@ const UserSchema = new mongoose.Schema({
   visit_post : [mongoose.Schema.Types.ObjectId],
   user_name : {
     type : String,
-    required : true,
+    default : null,
   },
   user_firtname : {
     type : String,
-    required : true,
+    default : null,
   },
   user_lastname : {
     type : String,
-    required : true,
+    default : null,
   },
   user_bio : {
     type : String,
-    required : true,
+    default : null,
   },
   ku_gen : {
     type : Number,
-    required : true,
+    default : null,
   },
   profile_pic_url : {
     type : String,
-    required : true,
+    default : null,
   },
   faculty : {
     type : String,
-    required : true,
+    default : null,
   },
   department : {
     type : String,
-    required : true,
+    default : null,
   },
   campus : {
     type : String,
-    required : true,
+    default : null,
   },
   gender : {
     type : String,
-    required : true,
+    default : null,
   },
   admin : {
     type : Boolean,
-    default : false,
+    default : null,
   },
   email : {
     type : String,
-    required : true,
+    
   },
   password : {
     type : String,
-    required : true,
+    
   },
-  email_verify : {
+  verified : {
     type : Boolean,
-    default : true,
+    default : false
   },
   last_login : {
     type : Date,
-    default : Date.now(),
+    default : null,
   },
+  status_login : {
+    type : Boolean,
+    default : false
+  }
 });
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
