@@ -105,7 +105,19 @@ router.post("/:entity_id/report", async (request, response) => {
 
 router.put("/:post_id/edit", async (request, response) => {
   const oldpost = await postModel.findById(request.params.post_id);
-  const newpost = new postModel(oldpost);
+  const newpost = new postModel({
+    user_id : oldpost.user_id,
+    catagory_id : oldpost.catagory_id,
+    topic_id : oldpost.topic_id,
+    post_title : oldpost.post_title,
+    post_content : oldpost.post_content,
+    cover_photo_url : oldpost.cover_photo_url,
+    post_photo_url : oldpost.post_photo_url,
+    post_like_count : oldpost.post_like_count,
+    post_time : oldpost.post_time,
+    post_status : "edited",
+    post_delete_time : Date.now()
+  });
   try {
     await newpost.save();
     await postModel.findByIdAndUpdate(request.params.post_id,request.body)
