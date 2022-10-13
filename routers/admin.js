@@ -11,9 +11,6 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const requesttopicModel = require("../schemas/model_request_topic");
 
-const user_id_mock = "6339dc63d112d2d4af136689";
-const admin_id_mock = "633d8b6375345b76ae87824b";
-
 router.get("/get_all_request_topic", async (request, response) => {
     const user = await userModel.findById(request.user.id);
     if(!user.admin){response.status(500).send("not a admin");} 
@@ -26,7 +23,6 @@ router.get("/get_all_request_topic", async (request, response) => {
             user_id : request_topic[i].user_id,
             user_name : author.user_name,
             profile_pic_url : author.profile_pic_url,
-            catagory_id : request_topic[i].catagory_id,
             request_topic : request_topic[i].request_topic,
             requset_time : request_topic[i].request_time
         }
@@ -55,8 +51,8 @@ router.post("/accept_request_topic/:request_id", async (request, response) => {
     if(user.admin === "false"){response.status(500).send("not a admin");} 
     const request_topic = await requesttopicModel.findById(request.params.request_id);
     const topic = new topicModel({
-        catagory_id : request_topic.catagory_id,
-        topic_name : request_topic.request_topic
+        catagory_id : request.body.catagory_id,
+        topic_name : request.body.topic_name
     })
     try {
         await topic.save();

@@ -4,10 +4,6 @@ const request_topicSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
 	ref: 'user'
   },
-  catagory_id : {
-    type: mongoose.Schema.Types.ObjectId,
-	ref: 'catagory'
-  },
   request_topic : String,
   request_time :{
     type : Date,

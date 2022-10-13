@@ -11,8 +11,6 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const requesttopicModel = require("../schemas/model_request_topic");
 
-const user_id_mock = "6339dc63d112d2d4af136689";
-
 router.get("/get_all_topic", async (request, response) => {
     const topic = await topicModel.find({});
     const res = [];
@@ -33,7 +31,6 @@ router.get("/get_all_topic", async (request, response) => {
 
 router.get("/get_all_catagory", async (request, response) => {
     const catagory = await catagoryModel.find({});
-  
     try {
       response.send(catagory);
     } catch (error) {
@@ -68,37 +65,28 @@ router.get("/get_all_catagory_topic", async (request, response) => {
 });
 
 router.post("/create_topic", async (request, response) => {
-    const topic = new topicModel(request.body);
-  
-    try {
-      await topic.save();
-      response.send(topic);
-    } catch (error) {
-      response.status(500).send(error);
-    }
-});
-
-router.post("/create_catagory", async (request, response) => {
-    const catagory = new catagoryModel(request.body);
-  
-    try {
-      await catagory.save();
-      response.send(catagory);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+  const user = await userModel.findById(request.user.id);
+  if(user.admin === "false"){response.status(500).send("not a admin");} 
+  const topic = new topicModel(request.body);
+  try {
+    await topic.save();
+    response.send(topic);
+  } catch (error) {
+    response.status(500).send(error);
+  }
 });
 
 router.post("/request_topic", async (request, response) => {
+  const user = await userModel.findById(request.user.id);
+  if(user.admin === "false"){response.status(500).send("not a admin");} 
   const request_topic = new requesttopicModel({
-    user_id : user_id_mock,
-    catagory_id : request.body.catagory_id,
-    request_topic : request.body.request_topic,
+    user_id : request.user.id,
+    request_topic : request.query.topic,
     request_time : Date.now()
   });
   try {
     await request_topic.save();
-    response.send("success");
+    response.send("Request sended");
   } catch (error) {
     response.status(500).send(error);
   }
