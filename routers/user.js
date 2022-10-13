@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router()
 const postModel = require("../schemas/modelpost");
-const post_to_sendModel = require("../schemas/model_post_tosend");
 const userModel = require("../schemas/modeluser");
 const commentModel = require("../schemas/modelcomment");
 const catagoryModel = require("../schemas/modelcatagory");
