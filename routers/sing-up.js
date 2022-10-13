@@ -11,39 +11,32 @@ const passport = require('passport');
 
 router.post("/register/email", async (req, res) => {
   try {
-    const { email,password, confirmpassword } = req.body;
-    if ( !email || !password || !confirmpassword) {
+    const { email,password, confirm_password } = req.body;
+    if ( !email || !password || !confirm_password) {
       res.status(400).send('Please enter all fields');
     }
-    
     let user = await UserModel.findOne({ email: email });
     if (user) {
       return res.status(400).send("User with given email already exist!")
     }
-    if (password != confirmpassword) {
+    if (password != confirm_password) {
       res.status(400).send('Passwords do not match' );
-      
     }
-   
     const hashedPassword = await bcrypt.hash(req.body.password,10);
-    
     user = await new UserModel({
       email: req.body.email,
       password :  hashedPassword
     }).save();
-    
     const OTP = Math.floor(100000 + Math.random()*900000);
     console.log(OTP);
-      
-    let otp = await new Otp({
+    await new Otp({
       email: req.body.email,
       otp:OTP.toString()
     }).save();
-      
     const message = OTP.toString()
     await sendEmail(user.email, "Verify Email", message);
-  
     res.send("An Email sent to your account please verify");
+    // res.redirect('/api/sing-up/register/email/checkOTP')
       
   } catch (error) {
     res.status(400).send("An error occured");
@@ -53,29 +46,14 @@ router.post("/register/email", async (req, res) => {
   
 router.get("/register/email/checkOTP", async (req, res) => {
     try {
-      
       const user = await UserModel.findOne({ email: req.body.email });
-      
       if (!user) return res.status(400).send("Not find email");
-  
-      const otp = await Otp.findOne({
-        email: req.body.email,
-       
-      });
-      
-      
-      
-      if (!otp) return res.status(400).send("Not find OTP");
-      
+      const otp = await Otp.findOne({email: req.body.email});
+      if (!otp) return res.status(400).send("Enter wrong email");
       if (otp.otp == req.body.otp ) {
         await user.updateOne({  verified: true });
       };
-      
-      
-  
-      
       await Otp.findByIdAndRemove(otp._id);
-  
       res.send("email verified sucessfully");
     } catch (error) {
       res.status(400).send("An error occured");
@@ -83,27 +61,21 @@ router.get("/register/email/checkOTP", async (req, res) => {
 });
 
   
-router.post('/login',async (req, res) => {
+router.post('/login',async(req, res) => {
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
-
-
-    
     if (!user) {
       res.status(401).send({
           success: false,
           message: "Could not find the email."
       })
     }
-
     if (!user.verified) {
       res.status(401).send({
         success: false,
         message: "Verify email againt"
     })
     }
-    
-
     // Incorrect password
     if (!compareSync(req.body.password, user.password)) {
       res.status(401).send({
@@ -111,30 +83,22 @@ router.post('/login',async (req, res) => {
         message: "Incorrect password"
       })
     }
-    
-
     const payload = {
       email: user.email,
       id: user._id,
       verified : true,      
     }
     //console.log(payload.id);
-      
     await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
-      
-    
-
-    const token = jwt.sign(payload, "Random", { expiresIn: "1d" });
+    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
     res.status(200).send({
       success: true,
       message: "Logged in successfully!",
       token: "Bearer " + token })
+    
   }catch (error) {
     res.status(400).send("An error login");
   }
-  
-
-
 });
   
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -142,7 +106,6 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), (req,
         success: true,
         user: {
             id: req.user._id,
-            
         }
     })
 });
@@ -151,14 +114,85 @@ router.get('/logout', passport.authenticate('jwt', { session: false }), async (r
   try {
     await UserModel.updateOne({ _id: req.user._id, status_login: false });
     res.send("ok")
-
-
   }catch (error) {
     res.status(400).send("An error logout");
   }
-  
-  
 });
+
+router.post('/forgotpassword',async (req,res) => {
+  try {
+    const user =  await UserModel.findOne({ email: req.body.email })
+    if (!user) {
+      res.status(401).send({
+          success: false,
+          message: "Could not find the email."
+      })
+    }
+    const OTP = Math.floor(100000 + Math.random()*900000)
+    console.log(OTP)
+    await new Otp({
+      email: req.body.email,
+      otp:OTP.toString()
+    }).save();
+    const message = OTP.toString()
+    await sendEmail(req.body.email, "Verify your identity ", message);
+    res.send("An Email sent to your account please verify your identity");
+
+  }
+  catch (error) {
+    res.status(400).send("An error forgetpassword");
+  }
+});
+
+router.get("/forgotpassword/checkOTP", async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send("Not find email");
+    const otp = await Otp.findOne({email: req.body.email});
+    if (!otp) return res.status(400).send("Enter wrong email");
+    if (otp.otp == req.body.otp ) {
+      await Otp.findByIdAndRemove(otp._id);
+      res.send("Verify your identity sucessfully");
+    };
+    
+  } catch (error) {
+    res.status(400).send("An error occured");
+  }
+});
+
+router.post("/forgotpassword/resetpassword",async(req,res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send("Not find email");
+    if (req.body.password != req.body.confirm_password) return res.status(400).send("Passwords do not match");
+    const hashedPassword = await bcrypt.hash(req.body.password,10);
+    await user.updateOne({ password: hashedPassword });
+    res.send("Reset password sucessfully");
+
+    
+  } catch (error) {
+    
+  }
+});
+
+router.post("/changepassword" ,passport.authenticate('jwt', { session: false }), async(req, res) => {
+  try {
+    const user = await UserModel.findOne({ _id: req.user._id });
+    if (!compareSync(req.body.currentpassword, user.password) ) {
+      res.status(401).send({
+        success: false,
+        message: "Incorrect password"
+      })
+    }
+    if (req.body.newpassword != req.body.confirm_newpassword) return res.status(400).send("Newpasswords do not match");
+    const hashedPassword = await bcrypt.hash(req.body.newpassword,10);
+    await user.updateOne({ password: hashedPassword });
+    res.send("Change password sucessfully");
+  } catch (error) {
+    
+  }
+});
+
 
 
 
