@@ -51,17 +51,17 @@ router.delete("/remove_request_topic/:request_id", async (request, response) => 
     }
 });
 
-router.post("/accept_request_topic", async (request, response) => {
+router.post("/accept_request_topic/:request_id", async (request, response) => {
     const user = await userModel.findById(request.user.id);
     if(user.admin === "false"){response.status(500).send("not a admin");} 
-    const request_topic = await requesttopicModel.findById(request.body.request_id);
+    const request_topic = await requesttopicModel.findById(request.params.request_id);
     const topic = new topicModel({
         catagory_id : request_topic.catagory_id,
         topic_name : request_topic.request_topic
     })
     try {
         await topic.save();
-        await requesttopicModel.findByIdAndRemove(request.body.request_id);
+        await requesttopicModel.findByIdAndRemove(request.params.request_id);
         response.send("success");
     } catch (error) {
         response.status(500).send(error);
