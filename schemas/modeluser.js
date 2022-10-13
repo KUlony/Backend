@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema({
   },
   admin : {
     type : Boolean,
-    default : null,
+    default : false,
   },
   email : {
     type : String,
