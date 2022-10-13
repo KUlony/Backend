@@ -7,10 +7,10 @@ const userModel = require("../schemas/modeluser");
 const commentModel = require("../schemas/modelcomment");
 const likepostModel = require("../schemas/model_like_post");
 
+let posts_per_page = 5
+
 router.get("/post", async (req, res) => {
    try {
-      let payload = [];
-      let posts_per_page = 5
       if (!req.query.text){
          res.send("Please insert text parameter!!!")
       }
@@ -63,6 +63,7 @@ router.get("/post", async (req, res) => {
          .skip((req.query.page-1)*posts_per_page)
          .limit(posts_per_page)
          let to_res = false;
+         let payload = [];
          for (let i=0; i < posts.length;i++){
             const user = await userModel.findById(posts[i].user_id);
             const comment = await commentModel.find({post_id : posts[i]._id})
@@ -77,7 +78,7 @@ router.get("/post", async (req, res) => {
                   profile_pic_url : user.profile_pic_url,
                },
                post_catagory : posts[i].catagory_id,
-               post_topic : posts[i].catagory_id,
+               post_topic : posts[i].topic_id,
                post_title : posts[i].post_title,
                post_content :posts[i].post_content,
                cover_photo_url : posts[i].cover_photo_url,
@@ -95,5 +96,85 @@ router.get("/post", async (req, res) => {
       res.status(500).send({ message: e.message });
    }
 });
+
+router.get("/mypost", async (req, res) => {
+   try{
+      let posts = postModel.find({user_id: req.user.id})
+      .skip((req.query.page-1)*posts_per_page)
+      .limit(posts_per_page)
+      let to_res = false
+      let payload = []
+      const user = await userModel.findById(req.user.id);
+      for (let i=0; i < posts.length;i++){
+         const comment = await commentModel.find({post_id : posts[i]._id})
+         const user_like_sta = await likepostModel.find({user_id : user._id, post_id : posts[i]._id})
+         if (user_like_sta.length !== 0){
+            to_res = true
+         };
+            a_post = new postSend({
+            author : {
+               user_id : user._id,
+               username : user.user_name,
+               profile_pic_url : user.profile_pic_url,
+            },
+            post_catagory : posts[i].catagory_id,
+            post_topic : posts[i].topic_id,
+            post_title : posts[i].post_title,
+            post_content :posts[i].post_content,
+            cover_photo_url : posts[i].cover_photo_url,
+            post_photo_url : posts[i].post_photo_url,
+            post_like_count : posts[i].post_like_count,
+            post_comment_count : comment.length,
+            post_time : posts[i].post_time,
+            user_like_status : to_res
+         });
+         payload.push(a_post);
+      }
+      res.send(payload)
+   } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
+})
+
+router.get("/post/topic", async (req, res) => {
+   try{
+      let posts = await postModel.find({
+         topic_id: req.query.text
+      })
+      .skip((req.query.page-1)*posts_per_page)
+      .limit(posts_per_page)
+      let to_res = false
+      let payload = []
+      for (let i=0; i < posts.length;i++){
+         const user = await userModel.findById(posts[i].user_id);
+         const comment = await commentModel.find({post_id : posts[i]._id})
+         const user_like_sta = await likepostModel.find({user_id : user._id, post_id : posts[i]._id})
+         if (user_like_sta.length !== 0){
+            to_res = true
+         };
+            a_post = new postSend({
+            author : {
+               user_id : user._id,
+               username : user.user_name,
+               profile_pic_url : user.profile_pic_url,
+            },
+            post_catagory : posts[i].catagory_id,
+            post_topic : posts[i].topic_id,
+            post_title : posts[i].post_title,
+            post_content :posts[i].post_content,
+            cover_photo_url : posts[i].cover_photo_url,
+            post_photo_url : posts[i].post_photo_url,
+            post_like_count : posts[i].post_like_count,
+            post_comment_count : comment.length,
+            post_time : posts[i].post_time,
+            user_like_status : to_res
+         });
+         payload.push(a_post);
+      }
+      res.send(payload)
+   } catch (e) {
+      res.status(500).send({ message: e.message})
+   }
+})      
 
 module.exports = router;
