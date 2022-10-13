@@ -11,31 +11,23 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const requesttopicModel = require("../schemas/model_request_topic");
 
-router.get("/get_all_topic", async (request, response) => {
-    const topic = await topicModel.find({});
-    const res = [];
-    for (i=0;i<topic.length;i++){
-      const to_res = {
-        topic_id : topic[i]._id,
-        catagory_id : topic[i].catagory_id,
-        topic_name : topic[i].topic_name
-      }
-      res.push(to_res);
+router.get("/:catagory/topic", async (request, response) => {
+  const catagory = await catagoryModel.find({catagory_name: request.params.catagory});
+  const res = [];
+  const topic = await topicModel.find({catagory_id : catagory._id});
+  for(j=0;j<topic.length;j++){
+    const to_res2 = {
+      topic_id : topic[j]._id,
+      topic_name : topic[j].topic_name
     }
-    try {
-      response.send(res);
-    } catch (error) {
-      response.status(500).send(error);
-    }
-});
-
-router.get("/get_all_catagory", async (request, response) => {
-    const catagory = await catagoryModel.find({});
-    try {
-      response.send(catagory);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    to_res.all_topic.push(to_res2);
+  }
+  res.push(to_res);
+  try {
+    response.send(res);
+  } catch (error) {
+    response.status(500).send(error);
+  }
 });
 
 router.get("/get_all_catagory_topic", async (request, response) => {
