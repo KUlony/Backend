@@ -44,7 +44,7 @@ app.use("/api/commment",auth,commentroute)
 app.use("/api/reply",auth,replyroute)
 app.use("/api/topic",auth, topic_cataroute)
 app.use("/api/search",auth,searchroute)
-app.use("/api/admin",adminroute)
+app.use("/api/admin",auth,adminroute)
 
 app.listen(4000, () => {
   console.log("Server is running at port 4000");
