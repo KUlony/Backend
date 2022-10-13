@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon server.js",
+    "gendoc": "node swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,9 @@
     "mongodb": "^4.10.0",
     "mongoose": "^6.6.3",
     "nodemailer": "^6.8.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "swagger-autogen": "^2.22.0",
+    "swagger-ui-express": "^4.5.0"
   },
   "devDependencies": {
     "ejs": "^3.1.8",

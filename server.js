@@ -14,6 +14,8 @@ const session = require('express-session');
 const passport = require('passport');
 const auth = passport.authenticate('jwt', { session: false })
 require('./config/passport')
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
 
 var dotenv = require("dotenv");
 dotenv.config();
@@ -46,8 +48,10 @@ app.use("/api/topic",auth, topic_cataroute)
 app.use("/api/search",auth,searchroute)
 app.use("/api/admin",auth,adminroute)
 
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.listen(4000, () => {
   console.log("Server is running at port 4000");
 });
+
 
 //npx nodemon server.js
