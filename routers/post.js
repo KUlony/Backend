@@ -87,6 +87,41 @@ router.get("/all_post", async (request, response) => {
   }
 });
 
+router.get("/:post_id", async (request, response) => {
+  const posts = await postModel.findById(request.params.post_id);
+  var to_res = true
+  const user = await userModel.findById(posts.user_id);
+  const comment = await commentModel.find({post_id : posts._id})
+  //console.log(posts[i])
+  //console.log(user)
+  const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : posts._id})
+  if (user_like_sta.length === 0){
+    to_res = false
+  };
+  const res = {
+    author : {
+      user_id : posts.user_id,
+      username : user.user_name,
+      profile_pic_url : user.profile_pic_url,
+    },
+    post_catagory : posts.catagory_id,
+    post_topic : posts.topic_id,
+    post_title : posts.post_title,
+    post_content :posts.post_content,
+    cover_photo_url : posts.cover_photo_url,
+    post_photo_url : posts.post_photo_url,
+    post_like_count : posts.post_like_count,
+    post_comment_count : comment.length,
+    post_time : posts.post_time,
+    user_like_status : to_res
+  };
+  try {
+    response.send(res);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 router.post("/:entity_id/report", async (request, response) => {
   const post = new reportpostModel({
     user_id : user_id_mock,
