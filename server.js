@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors")
+const cors = require('cors');
 const userroute = require("./routers/user")
 const postroute = require("./routers/post")
 const commentroute = require("./routers/comment")
 const replyroute = require("./routers/reply")
 const topic_cataroute = require("./routers/topic_cata")
 const searchroute = require("./routers/search")
+const adminroute = require("./routers/admin")
 const searchtopicroute = require("./routers/searchtopic")
 const sing_uproute = require("./routers/sing-up")
 const session = require('express-session');
@@ -43,7 +44,7 @@ app.use("/api/commment",auth,commentroute)
 app.use("/api/reply",auth,replyroute)
 app.use("/api/topic",auth, topic_cataroute)
 app.use("/api/search",auth,searchroute)
-
+app.use("/api/admin",auth,adminroute)
 
 app.listen(4000, () => {
   console.log("Server is running at port 4000");
