@@ -38,6 +38,9 @@ db.on("error", err => {
   console.log("Connection Error: " + err)
 });
 
+app.get('/', function(req, res){
+  res.redirect('/doc');
+});
 app.use("/api/sing-up", sing_uproute)
 app.use("/api/user",auth, userroute)
 app.use("/api/searchtopic",auth, searchtopicroute)
