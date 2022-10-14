@@ -49,7 +49,7 @@ app.use("/api/search",auth,searchroute)
 app.use("/api/admin",auth,adminroute)
 
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
-app.listen(4000, () => {
+app.listen(process.end.PORT || 4000, () => {
   console.log("Server is running at port 4000");
 });
 
