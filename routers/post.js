@@ -11,6 +11,8 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 
 router.post("/create",async (request, response) => {
+    // #swagger.tags = ['Post']
+    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     const res = []
     const check = []
     for(i=0;i<request.body.topic_id.length;i++){
@@ -45,6 +47,8 @@ router.post("/create",async (request, response) => {
 });
 
 router.get("/all_post", async (request, response) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const posts = await postModel.find({post_status : "visible"});
   //console.log(posts);
   const res = [];
@@ -66,6 +70,7 @@ router.get("/all_post", async (request, response) => {
         username : user.user_name,
         profile_pic_url : user.profile_pic_url,
       },
+      post_id : posts[i]._id,
       post_catagory : posts[i].catagory_id,
       post_topic : posts[i].topic_id,
       post_title : posts[i].post_title,
@@ -87,6 +92,8 @@ router.get("/all_post", async (request, response) => {
 });
 
 router.get("/:post_id", async (request, response) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const posts = await postModel.findById(request.params.post_id);
   var to_res = true
   const user = await userModel.findById(posts.user_id);
@@ -122,6 +129,8 @@ router.get("/:post_id", async (request, response) => {
 });
 
 router.post("/:entity_id/report", async (request, response) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const post = new reportpostModel({
     user_id : user_id_mock,
     entity_id : request.params.entity_id,
@@ -138,6 +147,8 @@ router.post("/:entity_id/report", async (request, response) => {
 });
 
 router.put("/:post_id/edit", async (request, response) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const oldpost = await postModel.findById(request.params.post_id);
   const newpost = new postModel({
     user_id : oldpost.user_id,

@@ -5,6 +5,8 @@ const router = express.Router();
 const topicModel = require("../schemas/modeltopic");
 
 router.get("/topic", async (req, res) => {
+    // #swagger.tags = ['Search']
+    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     try {
         let results;
         if (req.query.text) {

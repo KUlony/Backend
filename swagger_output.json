@@ -1,52 +1,65 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "API Library",
+    "description": "Contain all api from kulony backend"
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "http"
+  "servers": [
+    {
+      "url": "http://localhost:4000/"
+    }
   ],
   "paths": {
     "/api/sing-up/register/email": {
       "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "password": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "confirmpassword": {
-                  "example": "any"
-                }
-              }
-            }
-          }
+        "tags": [
+          "Sign up"
         ],
+        "description": "ใช้สมัคร User ใหม่โดยจะส่ง OTP ยืนยันไปทาง Email",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {}
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "confirmpassword": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/sing-up/register/email/checkOTP": {
       "get": {
-        "description": "",
+        "tags": [
+          "Sign up"
+        ],
+        "description": "สำหรับใช้เช็ค OTP",
         "parameters": [],
         "responses": {
           "200": {
@@ -55,29 +68,19 @@
           "400": {
             "description": "Bad Request"
           }
-        }
+        },
+        "security": [
+          {}
+        ]
       }
     },
     "/api/sing-up/login": {
       "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
-            }
-          }
+        "tags": [
+          "Login/Logout"
         ],
+        "description": "ใช้เพื่อ Login",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -88,23 +91,35 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
-      }
-    },
-    "/api/sing-up/protected": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
+        },
+        "security": [
+          {}
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/sing-up/logout": {
       "get": {
-        "description": "",
+        "tags": [
+          "Login/Logout"
+        ],
+        "description": "ใช้ Logout",
         "parameters": [],
         "responses": {
           "200": {
@@ -118,7 +133,10 @@
     },
     "/api/user/edit_profile": {
       "put": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -132,13 +150,18 @@
     },
     "/api/user/{user_id}/profile": {
       "get": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "user_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -153,7 +176,10 @@
     },
     "/api/user/following_topic": {
       "get": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -167,13 +193,18 @@
     },
     "/api/user/follow_topic/{topic_id}": {
       "post": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "topic_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -188,13 +219,18 @@
     },
     "/api/user/unfollow_topic/{topic_id}": {
       "delete": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "topic_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -209,7 +245,10 @@
     },
     "/api/user/user_like_post": {
       "get": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -223,7 +262,10 @@
     },
     "/api/user/user_post": {
       "get": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -237,13 +279,18 @@
     },
     "/api/user/like_post/{post_id}": {
       "post": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "post_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -258,13 +305,18 @@
     },
     "/api/user/unlike_post/{post_id}": {
       "delete": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "post_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -279,12 +331,17 @@
     },
     "/api/searchtopic/topic": {
       "get": {
-        "description": "",
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "text",
             "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -299,33 +356,11 @@
     },
     "/api/post/create": {
       "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "topic_id": {
-                  "example": "any"
-                },
-                "post_title": {
-                  "example": "any"
-                },
-                "post_content": {
-                  "example": "any"
-                },
-                "cover_photo_url": {
-                  "example": "any"
-                },
-                "post_photo_url": {
-                  "example": "any"
-                }
-              }
-            }
-          }
+        "tags": [
+          "Post"
         ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -333,12 +368,41 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "topic_id": {
+                    "example": "any"
+                  },
+                  "post_title": {
+                    "example": "any"
+                  },
+                  "post_content": {
+                    "example": "any"
+                  },
+                  "cover_photo_url": {
+                    "example": "any"
+                  },
+                  "post_photo_url": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/post/all_post": {
       "get": {
-        "description": "",
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -352,13 +416,18 @@
     },
     "/api/post/{post_id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "post_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -373,24 +442,17 @@
     },
     "/api/post/{entity_id}/report": {
       "post": {
-        "description": "",
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "entity_id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "report_type": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -401,18 +463,37 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "report_type": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/post/{post_id}/edit": {
       "put": {
-        "description": "",
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "post_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -427,7 +508,10 @@
     },
     "/api/commment/create": {
       "post": {
-        "description": "",
+        "tags": [
+          "Comment"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -441,7 +525,10 @@
     },
     "/api/commment/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Comment"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -455,7 +542,10 @@
     },
     "/api/reply/create": {
       "post": {
-        "description": "",
+        "tags": [
+          "Reply"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -469,7 +559,10 @@
     },
     "/api/reply/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Reply"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -483,13 +576,18 @@
     },
     "/api/topic/{catagory}/topic": {
       "get": {
-        "description": "",
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "catagory",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -504,7 +602,10 @@
     },
     "/api/topic/get_all_catagory_topic": {
       "get": {
-        "description": "",
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -518,7 +619,10 @@
     },
     "/api/topic/create_topic": {
       "post": {
-        "description": "",
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -532,12 +636,17 @@
     },
     "/api/topic/request_topic": {
       "post": {
-        "description": "",
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "topic",
             "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -552,22 +661,24 @@
     },
     "/api/search/post": {
       "get": {
-        "description": "",
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "text",
             "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "page",
             "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "page-1",
-            "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -582,17 +693,24 @@
     },
     "/api/search/post/topic": {
       "get": {
-        "description": "",
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหาโพสต์ด้วย topic",
         "parameters": [
           {
             "name": "text",
             "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "name": "page-1",
+            "name": "page",
             "in": "query",
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -607,7 +725,10 @@
     },
     "/api/admin/get_all_request_topic": {
       "get": {
-        "description": "",
+        "tags": [
+          "Admin"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
         "responses": {
           "200": {
@@ -621,13 +742,18 @@
     },
     "/api/admin/remove_request_topic/{request_id}": {
       "delete": {
-        "description": "",
+        "tags": [
+          "Admin"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "request_id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -642,27 +768,17 @@
     },
     "/api/admin/accept_request_topic/{request_id}": {
       "post": {
-        "description": "",
+        "tags": [
+          "Admin"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
           {
             "name": "request_id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "catagory_id": {
-                  "example": "any"
-                },
-                "topic_name": {
-                  "example": "any"
-                }
-              }
+              "type": "string"
             }
           }
         ],
@@ -673,8 +789,39 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "catagory_id": {
+                    "example": "any"
+                  },
+                  "topic_name": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
-  }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

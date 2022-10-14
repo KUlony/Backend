@@ -9,6 +9,8 @@ const likepostModel = require("../schemas/model_like_post");
 let posts_per_page = 5
 
 router.get("/post", async (req, res) => {
+   // #swagger.tags = ['Search']
+   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
    try {
       if (!req.query.text){
          res.send("Please insert text parameter!!!")
@@ -59,7 +61,7 @@ router.get("/post", async (req, res) => {
                },
             },
          ])
-         .skip((req.query.page-1)*posts_per_page)
+         .skip((req.query.page - 1)*posts_per_page)
          .limit(posts_per_page)
          let to_res = false;
          let payload = [];
@@ -76,6 +78,7 @@ router.get("/post", async (req, res) => {
                   username : user.user_name,
                   profile_pic_url : user.profile_pic_url,
                },
+               post_id : posts[i]._id,
                post_catagory : posts[i].catagory_id,
                post_topic : posts[i].topic_id,
                post_title : posts[i].post_title,
@@ -97,12 +100,14 @@ router.get("/post", async (req, res) => {
 });
 
 router.get("/post/topic", async (req, res) => {
+   // #swagger.tags = ['Search']
+   // #swagger.description = 'ค้นหาโพสต์ด้วย topic'
    try{
       let posts = await postModel.find({
          topic_id: req.query.text
       })
       .sort({"post_time": -1})
-      .skip((req.query.page-1)*posts_per_page)
+      .skip((req.query.page - 1)*posts_per_page)
       .limit(posts_per_page)
       let to_res = false
       let payload = []
@@ -119,6 +124,7 @@ router.get("/post/topic", async (req, res) => {
                username : user.user_name,
                profile_pic_url : user.profile_pic_url,
             },
+            post_id : posts[i]._id,
             post_catagory : posts[i].catagory_id,
             post_topic : posts[i].topic_id,
             post_title : posts[i].post_title,

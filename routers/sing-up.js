@@ -8,8 +8,13 @@ const {compareSync} = require('bcrypt');
 const bcrypt  = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const { updateOne } = require("../schemas/modelotp");
 
 router.post("/register/email", async (req, res) => {
+  // #swagger.tags = ['Sign up']
+  // #swagger.description = 'ใช้สมัคร User ใหม่โดยจะส่ง OTP ยืนยันไปทาง Email'
+  /* #swagger.security = [{
+  }] */
   try {
     const { email,password, confirmpassword } = req.body;
     if ( !email || !password || !confirmpassword) {
@@ -46,12 +51,16 @@ router.post("/register/email", async (req, res) => {
     res.send("An Email sent to your account please verify");
       
   } catch (error) {
-    res.status(400).send("An error occured");
+    res.status(500).send("An error occured");
   }
   
 });
   
 router.get("/register/email/checkOTP", async (req, res) => {
+  // #swagger.tags = ['Sign up']
+  // #swagger.description = 'สำหรับใช้เช็ค OTP'
+  /* #swagger.security = [{
+  }] */
     try {
       
       const user = await UserModel.findOne({ email: req.body.email });
@@ -84,6 +93,10 @@ router.get("/register/email/checkOTP", async (req, res) => {
 
   
 router.post('/login',async (req, res) => {
+  // #swagger.tags = ['Login/Logout']
+  // #swagger.description = 'ใช้เพื่อ Login'
+  /* #swagger.security = [{
+  }] */
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
 
@@ -138,21 +151,24 @@ router.post('/login',async (req, res) => {
 });
   
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
-    return res.status(200).send({
-        success: true,
-        user: {
-            id: req.user._id,
-            
-        }
-    })
+  // #swagger.ignore = true
+  return res.status(200).send({
+      success: true,
+      user: {
+          id: req.user._id,
+          
+      }
+  })
 });
 
 router.get('/logout', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  // #swagger.tags = ['Login/Logout']
+  // #swagger.description = 'ใช้ Logout'
   try {
-    await UserModel.updateOne({ _id: req.user._id, status_login: false });
+    const user = await UserModel.findOne({ _id: req.user.id});
+    await user.updateOne({status_login: false})
     res.send("ok")
-
-
+    
   }catch (error) {
     res.status(400).send("An error logout");
   }

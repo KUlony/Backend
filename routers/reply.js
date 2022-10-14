@@ -4,6 +4,8 @@ const router = express.Router()
 const replyModel = require("../schemas/modelreply");
 
 router.post("/create", async (request, response) => {
+  // #swagger.tags = ['Reply']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const reply = new replyModel(request.body);
 
   try {
@@ -14,6 +16,8 @@ router.post("/create", async (request, response) => {
   }
 });
 router.get("/", async (request, response) => {
+  // #swagger.tags = ['Reply']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const replys = await replyModel.find({});
 
   try {

@@ -4,6 +4,8 @@ const router = express.Router()
 const commentModel = require("../schemas/modelcomment");
 
 router.post("/create", async (request, response) => {
+  // #swagger.tags = ['Comment']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const comment = new commentModel(request.body);
 
   try {
@@ -15,6 +17,8 @@ router.post("/create", async (request, response) => {
 });
 
 router.get("/", async (request, response) => {
+  // #swagger.tags = ['Comment']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const comments = await commentModel.find({});
 
   try {

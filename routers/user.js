@@ -11,7 +11,8 @@ const reportpostModel = require("../schemas/model_report_post");
 const requesttopicModel = require("../schemas/model_request_topic");
 
 router.put("/edit_profile",async (request, response) => {
-    
+    // #swagger.tags = ['User']
+    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     try {
       const user = await userModel.findOne({_id:request.user.id})
       
@@ -23,6 +24,8 @@ router.put("/edit_profile",async (request, response) => {
 });
 
 router.get("/:user_id/profile", async (request, response) => {
+    // #swagger.tags = ['User']
+    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     const user = await userModel.findById(request.params.user_id);
     console.log(user);
     const res = {
@@ -45,6 +48,8 @@ router.get("/:user_id/profile", async (request, response) => {
 });
 
 router.get("/following_topic", async (request, response) => {
+    // #swagger.tags = ['User']
+    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     const all_topic = await topicModel.find();
     console.log(all_topic);
     //const user_follow_topic = await followtopicModel.findById(request.params.user_id);
@@ -73,6 +78,8 @@ router.get("/following_topic", async (request, response) => {
 });
 
 router.post("/follow_topic/:topic_id", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const followtopic = new followtopicModel({
     user_id : request.user.id,
     topic_id : request.params.topic_id,
@@ -87,6 +94,8 @@ router.post("/follow_topic/:topic_id", async (request, response) => {
 });
 
 router.delete("/unfollow_topic/:topic_id", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     await followtopicModel.findOneAndRemove({user_id : request.user.id, topic_id : request.params.topic_id });
     response.send("unfollowed");
@@ -96,6 +105,8 @@ router.delete("/unfollow_topic/:topic_id", async (request, response) => {
 });
 
 router.get("/user_like_post", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const like_post = await likepostModel.find({user_id : request.user.id});
   //console.log(like_post);
   
@@ -131,6 +142,8 @@ router.get("/user_like_post", async (request, response) => {
 });
 
 router.get("/user_post", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const post = await postModel.find({user_id : request.user.id});
   const user = await userModel.findById(request.user.id);
   const res = {
@@ -170,6 +183,8 @@ router.get("/user_post", async (request, response) => {
 });
 
 router.post("/like_post/:post_id", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const like_post = new likepostModel({
     user_id : request.user.id,
     post_id : request.params.post_id,
@@ -188,6 +203,8 @@ router.post("/like_post/:post_id", async (request, response) => {
 });
 
 router.delete("/unlike_post/:post_id", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
     const post = await postModel.findById(request.params.post_id);
