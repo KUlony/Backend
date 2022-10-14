@@ -39,6 +39,7 @@ db.on("error", err => {
 });
 
 app.get('/', function(req, res){
+  // #swagger.ignore = true
   res.redirect('/doc');
 });
 app.use("/api/sing-up", sing_uproute)
