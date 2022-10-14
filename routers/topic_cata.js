@@ -15,18 +15,18 @@ router.get("/:catagory/topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const catagory = await catagoryModel.find({catagory_name: request.params.catagory});
-  const res = [];
-  const topic = await topicModel.find({catagory_id : catagory._id});
-  for(j=0;j<topic.length;j++){
-    const to_res2 = {
-      topic_id : topic[j]._id,
-      topic_name : topic[j].topic_name
+  const to_res = [];
+  const topics = await topicModel.find({catagory_id : catagory._id});
+  for(j=0;j<topics.length;j++){
+    const topic = {
+      topic_id : topics[j]._id,
+      topic_name : topics[j].topic_name
     }
-    to_res.all_topic.push(to_res2);
+    to_res.push(topic);
   }
-  res.push(to_res);
+  to_res.push(to_res);
   try {
-    response.send(res);
+    response.send(to_res);
   } catch (error) {
     response.status(500).send(error);
   }
