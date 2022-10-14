@@ -6,7 +6,9 @@ const doc = {
       title: "API Library",
       description: "Contain all api from kulony backend"
    },
-   host: "localhost:4000",
+   // host: "localhost:4000",
+   host: "kulony-backend.herokuapp.com",
+   schemes: ['https'],
    securityDefinitions: {
       bearerAuth: {
             type: 'http',

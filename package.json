@@ -24,9 +24,7 @@
     "nodemailer": "^6.8.0",
     "passport-jwt": "^4.0.0",
     "swagger-autogen": "^2.22.0",
-    "swagger-ui-express": "^4.5.0"
-  },
-  "devDependencies": {
+    "swagger-ui-express": "^4.5.0",
     "ejs": "^3.1.8",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
