@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://kulony-backend.herokuapp.com//"
+      "url": "https://kulony-backend.herokuapp.com/"
     }
   ],
   "paths": {
