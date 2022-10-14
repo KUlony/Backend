@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "gendoc": "node swagger.js"
+    "start": "node swagger.js",
+    "nodemon": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
