@@ -174,7 +174,7 @@ router.put("/:post_id/edit", async (request, response) => {
 });
 
 router.post("/like/:post_id", async (request, response) => {
-  // #swagger.tags = ['post']
+  // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const like_post = new likepostModel({
     user_id : request.user.id,
