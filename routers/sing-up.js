@@ -50,9 +50,9 @@ router.post("/register/email", async (req, res) => {
   
     res.send("An Email sent to your account please verify");
       
-  } catch (error) {
-    res.status(500).send("An error occured");
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
   
 });
   
@@ -86,9 +86,9 @@ router.get("/register/email/checkOTP", async (req, res) => {
       await Otp.findByIdAndRemove(otp._id);
   
       res.send("email verified sucessfully");
-    } catch (error) {
-      res.status(400).send("An error occured");
-    }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
 
   
@@ -142,9 +142,9 @@ router.post('/login',async (req, res) => {
       success: true,
       message: "Logged in successfully!",
       token: "Bearer " + token })
-  }catch (error) {
-    res.status(400).send("An error login");
-  }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
   
 
 
@@ -169,9 +169,9 @@ router.get('/logout', passport.authenticate('jwt', { session: false }), async (r
     await user.updateOne({status_login: false})
     res.send("ok")
     
-  }catch (error) {
-    res.status(400).send("An error logout");
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
   
   
 });

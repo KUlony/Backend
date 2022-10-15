@@ -67,6 +67,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -85,11 +88,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -125,8 +128,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -351,7 +354,15 @@
           "Post"
         ],
         "description": "ขอข้อมูล post ทั้งหมดจาก Database",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -709,6 +720,9 @@
                     "example": "any"
                   },
                   "reply_content": {
+                    "example": "any"
+                  },
+                  "post_id": {
                     "example": "any"
                   }
                 }
@@ -1093,6 +1107,66 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/notification/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/notification/read/{notic_id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "notic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/notification/unread/{notic_id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "notic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
