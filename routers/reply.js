@@ -32,7 +32,7 @@ router.post("/create",async (request, response) => {
       await notice.save();
       response.send(reply);
     } catch (e) {
-      res.status(500).send({ message: e.message });
+      response.status(500).send({ message: e.message });
    }
 });
 
@@ -58,7 +58,7 @@ router.get("/:comment_id", async (request, response) => {
   }
     response.send(res);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -76,7 +76,7 @@ router.post("/:entity_id/report", async (request, response) => {
     await post.save();
     response.send(post);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -98,7 +98,7 @@ router.put("/:reply_id/edit", async (request, response) => {
     await replyModel.findByIdAndUpdate(request.params.reply_id,request.body)
     response.send("finish");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -112,7 +112,7 @@ router.put("/like/:reply_id", async (request, response) => {
     await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_like_count : check})
     response.send("liked");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -126,7 +126,7 @@ router.put("/unlike/:reply_id", async (request, response) => {
     await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_like_count : check})
     response.send("unliked");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 

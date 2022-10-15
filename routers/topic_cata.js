@@ -19,7 +19,7 @@ router.get("/:catagory", async (request, response) => {
     const topics = await topicModel.find({catagory_id : catagory._id});
     response.send(topics);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -47,7 +47,7 @@ router.get("/get_all_catagory_topic", async (request, response) => {
   }
     response.send(res);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -61,7 +61,7 @@ router.post("/create_topic", async (request, response) => {
     await topic.save();
     response.send(topic);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -79,7 +79,7 @@ router.post("/request_topic", async (request, response) => {
     await request_topic.save();
     response.send("Request sended");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 

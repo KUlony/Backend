@@ -33,7 +33,7 @@ router.get("/get_all_request_topic", async (request, response) => {
     }
       response.send(res);
     } catch (e) {
-        res.status(500).send({ message: e.message });
+        response.status(500).send({ message: e.message });
      }
 });
 
@@ -46,7 +46,7 @@ router.delete("/remove_request_topic/:request_id", async (request, response) => 
         await requesttopicModel.findByIdAndRemove(request.params.request_id);
         response.send("success");
     } catch (e) {
-        res.status(500).send({ message: e.message });
+        response.status(500).send({ message: e.message });
      }
 });
 
@@ -65,7 +65,7 @@ router.post("/accept_request_topic/:request_id", async (request, response) => {
         await requesttopicModel.findByIdAndRemove(request.params.request_id);
         response.send("success");
     } catch (e) {
-        res.status(500).send({ message: e.message });
+        response.status(500).send({ message: e.message });
      }
 });
 

@@ -22,7 +22,7 @@ router.get("/", async (req,res) => {
    }
 })
 
-router.get("/read/:notic_id", async (req,res) => {
+router.post("/read/:notic_id", async (req,res) => {
    try {
       await noticeModel.findByIdAndUpdate(req.params.notic_id, {readed: true})
       res.send("Readed")
@@ -31,7 +31,7 @@ router.get("/read/:notic_id", async (req,res) => {
    }
 })
 
-router.get("/unread/:notic_id", async (req,res) => {
+router.post("/unread/:notic_id", async (req,res) => {
    try {
       await noticeModel.findByIdAndUpdate(req.params.notic_id, {readed: false})
       res.send("Readed")

@@ -20,7 +20,7 @@ router.put("/edit_profile",async (request, response) => {
       await user.updateOne(request.body);
       response.status(200).send("ok");
     } catch (e) {
-      res.status(500).send({ message: e.message });
+      response.status(500).send({ message: e.message });
    }
 });
 
@@ -42,7 +42,7 @@ router.get("/:user_id/profile", async (request, response) => {
     }
       response.send(res);
     } catch (e) {
-      res.status(500).send({ message: e.message });
+      response.status(500).send({ message: e.message });
    }
 });
 
@@ -72,7 +72,7 @@ router.get("/following_topic", async (request, response) => {
     }
       response.send(res);
     } catch (e) {
-      res.status(500).send({ message: e.message });
+      response.status(500).send({ message: e.message });
    }
 });
 
@@ -88,7 +88,7 @@ router.post("/follow_topic/:topic_id", async (request, response) => {
     await followtopic.save();
     response.send(followtopic);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -136,7 +136,7 @@ router.get("/user_like_post", async (request, response) => {
   }
     response.send(res);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -177,7 +177,7 @@ router.get("/user_post", async (request, response) => {
   }
     response.send(res);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 

@@ -44,7 +44,7 @@ router.post("/create",async (request, response) => {
       await post.save();
       response.send(post);
     } catch (e) {
-      res.status(500).send({ message: e.message });
+      response.status(500).send({ message: e.message });
    }
 });
 
@@ -89,7 +89,7 @@ router.get("/all_post", async (request, response) => {
     }
     response.send(res);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -124,10 +124,17 @@ router.get("/:post_id", async (request, response) => {
     post_time : posts.post_time,
     user_like_status : to_res
   };
-
+    const viewuser = await userModel.findById(request.user.id)
+    if (!viewuser.visit_post.includes(request.params.post_id)) {
+      if (viewuser.visit_post.length >= 5){
+      viewuser.visit_post.pop()
+    }
+    viewuser.visit_post.unshift(request.params.post_id)
+    await userModel.updateOne({_id: request.user.id},{visit_post: viewuser.visit_post})
+  }
     response.send(res);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -145,7 +152,7 @@ router.post("/:entity_id/report", async (request, response) => {
     await post.save();
     response.send(post);
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -171,7 +178,7 @@ router.put("/:post_id/edit", async (request, response) => {
     await postModel.findByIdAndUpdate(request.params.post_id,request.body)
     response.send("finish");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -198,7 +205,7 @@ router.post("/like/:post_id", async (request, response) => {
     await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
     response.send("liked");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
@@ -214,7 +221,7 @@ router.delete("/unlike/:post_id", async (request, response) => {
     await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
     response.send("unliked");
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    response.status(500).send({ message: e.message });
  }
 });
 
