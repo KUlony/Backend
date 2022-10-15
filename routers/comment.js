@@ -12,7 +12,7 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 
 router.post("/create",async (request, response) => {
-    // #swagger.tags = ['Post']
+    // #swagger.tags = ['Comment']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     const comment = new commentModel({
       user_id : request.user.id,
@@ -28,7 +28,7 @@ router.post("/create",async (request, response) => {
 });
 
 router.get("/:post_id", async (request, response) => {
-  // #swagger.tags = ['Post']
+  // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
   const res = [];
@@ -56,7 +56,7 @@ router.get("/:post_id", async (request, response) => {
 });
 
 router.post("/:entity_id/report", async (request, response) => {
-  // #swagger.tags = ['Post']
+  // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const post = new reportpostModel({
     user_id : user_id_mock,
@@ -74,7 +74,7 @@ router.post("/:entity_id/report", async (request, response) => {
 });
 
 router.put("/:comment_id/edit", async (request, response) => {
-  // #swagger.tags = ['Post']
+  // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const oldcomment = await commentModel.findById(request.params.comment_id);
   const newcomment = new commentModel({
@@ -96,7 +96,7 @@ router.put("/:comment_id/edit", async (request, response) => {
 });
 
 router.put("/like/:comment_id", async (request, response) => {
-  // #swagger.tags = ['User']
+  // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     const comment = await commentModel.findById(request.params.comment_id);
@@ -110,7 +110,7 @@ router.put("/like/:comment_id", async (request, response) => {
 });
 
 router.put("/unlike/:comment_id", async (request, response) => {
-  // #swagger.tags = ['User']
+  // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     const comment = await commentModel.findById(request.params.comment_id);

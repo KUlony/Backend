@@ -12,7 +12,7 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 
 router.post("/create",async (request, response) => {
-    // #swagger.tags = ['Post']
+    // #swagger.tags = ['Reply']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
     const reply = new replyModel({
       user_id : request.user.id,
@@ -28,7 +28,7 @@ router.post("/create",async (request, response) => {
 });
 
 router.get("/:comment_id", async (request, response) => {
-  // #swagger.tags = ['Post']
+  // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const reply = await replyModel.find({comment_id : request.params.comment_id,reply_status : "visible"});
   const res = [];
@@ -54,7 +54,7 @@ router.get("/:comment_id", async (request, response) => {
 });
 
 router.post("/:entity_id/report", async (request, response) => {
-  // #swagger.tags = ['Post']
+  // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const post = new reportpostModel({
     user_id : user_id_mock,
@@ -72,7 +72,7 @@ router.post("/:entity_id/report", async (request, response) => {
 });
 
 router.put("/:reply_id/edit", async (request, response) => {
-  // #swagger.tags = ['Post']
+  // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const oldreply = await replyModel.findById(request.params.reply_id);
   const newreply = new replyModel({
@@ -94,7 +94,7 @@ router.put("/:reply_id/edit", async (request, response) => {
 });
 
 router.put("/like/:reply_id", async (request, response) => {
-  // #swagger.tags = ['User']
+  // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     const reply = await replyModel.findById(request.params.reply_id);
@@ -108,7 +108,7 @@ router.put("/like/:reply_id", async (request, response) => {
 });
 
 router.put("/unlike/:reply_id", async (request, response) => {
-  // #swagger.tags = ['User']
+  // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     const reply = await replyModel.findById(request.params.reply_id);
