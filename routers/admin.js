@@ -14,6 +14,7 @@ const requesttopicModel = require("../schemas/model_request_topic");
 router.get("/get_all_request_topic", async (request, response) => {
     // #swagger.tags = ['Admin']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    try {
     const user = await userModel.findById(request.user.id);
     if(!user.admin){response.status(500).send("not a admin");} 
     const request_topic = await requesttopicModel.find({});
@@ -30,29 +31,29 @@ router.get("/get_all_request_topic", async (request, response) => {
         }
         res.push(to_res)
     }
-    try {
       response.send(res);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    } catch (e) {
+        res.status(500).send({ message: e.message });
+     }
 });
 
 router.delete("/remove_request_topic/:request_id", async (request, response) => {
     // #swagger.tags = ['Admin']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    try {
     const user = await userModel.findById(request.user.id);
     if(user.admin === "false"){response.status(500).send("not a admin");} 
-    try {
         await requesttopicModel.findByIdAndRemove(request.params.request_id);
         response.send("success");
-    } catch (error) {
-        response.status(500).send(error);
-    }
+    } catch (e) {
+        res.status(500).send({ message: e.message });
+     }
 });
 
 router.post("/accept_request_topic/:request_id", async (request, response) => {
     // #swagger.tags = ['Admin']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    try {
     const user = await userModel.findById(request.user.id);
     if(user.admin === "false"){response.status(500).send("not a admin");} 
     const request_topic = await requesttopicModel.findById(request.params.request_id);
@@ -60,13 +61,12 @@ router.post("/accept_request_topic/:request_id", async (request, response) => {
         catagory_id : request.body.catagory_id,
         topic_name : request.body.topic_name
     })
-    try {
         await topic.save();
         await requesttopicModel.findByIdAndRemove(request.params.request_id);
         response.send("success");
-    } catch (error) {
-        response.status(500).send(error);
-    }
+    } catch (e) {
+        res.status(500).send({ message: e.message });
+     }
 });
 
 module.exports = router;

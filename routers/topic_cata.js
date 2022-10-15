@@ -18,14 +18,15 @@ router.get("/:catagory", async (request, response) => {
     const catagory = await catagoryModel.findOne({catagory_name: request.params.catagory});
     const topics = await topicModel.find({catagory_id : catagory._id});
     response.send(topics);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.get("/get_all_catagory_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const catagory = await catagoryModel.find({});
   const res = [];
   for (i=0;i<catagory.length;i++){
@@ -44,30 +45,30 @@ router.get("/get_all_catagory_topic", async (request, response) => {
     }
     res.push(to_res);
   }
-  try {
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/create_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const user = await userModel.findById(request.user.id);
   if(user.admin === "false"){response.status(500).send("not a admin");} 
   const topic = new topicModel(request.body);
-  try {
     await topic.save();
     response.send(topic);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/request_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const user = await userModel.findById(request.user.id);
   if(user.admin === "false"){response.status(500).send("not a admin");} 
   const request_topic = new requesttopicModel({
@@ -75,12 +76,11 @@ router.post("/request_topic", async (request, response) => {
     request_topic : request.query.topic,
     request_time : Date.now()
   });
-  try {
     await request_topic.save();
     response.send("Request sended");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 module.exports = router;

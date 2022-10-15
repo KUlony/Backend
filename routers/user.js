@@ -19,14 +19,15 @@ router.put("/edit_profile",async (request, response) => {
       
       await user.updateOne(request.body);
       response.status(200).send("ok");
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
 
 router.get("/:user_id/profile", async (request, response) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    try {
     const user = await userModel.findById(request.params.user_id);
     console.log(user);
     const res = {
@@ -39,16 +40,16 @@ router.get("/:user_id/profile", async (request, response) => {
         profile_pic_url : user.profile_pic_url,
         gender : user.gender
     }
-    try {
       response.send(res);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
 
 router.get("/following_topic", async (request, response) => {
     // #swagger.tags = ['User']
     // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    try {
     const all_topic = await topicModel.find();
     console.log(all_topic);
     //const user_follow_topic = await followtopicModel.findById(request.params.user_id);
@@ -69,27 +70,26 @@ router.get("/following_topic", async (request, response) => {
       console.log(to_res)
       res.push(to_res)
     }
-    try {
       response.send(res);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
 
 router.post("/follow_topic/:topic_id", async (request, response) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const followtopic = new followtopicModel({
     user_id : request.user.id,
     topic_id : request.params.topic_id,
     follow_time : Date.now()
   });
-  try {
     await followtopic.save();
     response.send(followtopic);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.delete("/unfollow_topic/:topic_id", async (request, response) => {
@@ -106,6 +106,7 @@ router.delete("/unfollow_topic/:topic_id", async (request, response) => {
 router.get("/user_like_post", async (request, response) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const like_post = await likepostModel.find({user_id : request.user.id});
   //console.log(like_post);
   
@@ -133,16 +134,16 @@ router.get("/user_like_post", async (request, response) => {
     }
     res.push(to_res)
   }
-  try {
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.get("/user_post", async (request, response) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const post = await postModel.find({user_id : request.user.id});
   const user = await userModel.findById(request.user.id);
   const res = {
@@ -174,11 +175,10 @@ router.get("/user_post", async (request, response) => {
     }
     res.post.push(to_res)
   }
-  try {
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 module.exports = router;
