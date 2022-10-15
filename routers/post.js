@@ -11,9 +11,11 @@ const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 
+let posts_per_page = 5
+
 router.post("/create",async (request, response) => {
     // #swagger.tags = ['Post']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    // #swagger.description = 'ส่ง post ที่ต้องการเพิ่มใน Database'
     const res = []
     const check = []
     for(i=0;i<request.body.topic_id.length;i++){
@@ -49,8 +51,10 @@ router.post("/create",async (request, response) => {
 
 router.get("/all_post", async (request, response) => {
   // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const posts = await postModel.find({post_status : "visible"});
+  // #swagger.description = 'ขอข้อมูล post ทั้งหมดจาก Database'
+  const posts = await postModel.find({post_status : "visible"})
+  .skip((req.query.page - 1)*posts_per_page)
+  .limit(posts_per_page)
   //console.log(posts);
   const res = [];
   
@@ -94,7 +98,7 @@ router.get("/all_post", async (request, response) => {
 
 router.get("/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ขอข้อมูลของ post_id นั้นๆ'
   const posts = await postModel.findById(request.params.post_id);
   var to_res = true
   const user = await userModel.findById(posts.user_id);
@@ -131,7 +135,7 @@ router.get("/:post_id", async (request, response) => {
 
 router.post("/:entity_id/report", async (request, response) => {
   // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ส่ง Report post'
   const post = new reportpostModel({
     user_id : request.user.id,
     entity_id : request.params.entity_id,
@@ -149,7 +153,7 @@ router.post("/:entity_id/report", async (request, response) => {
 
 router.put("/:post_id/edit", async (request, response) => {
   // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'แก้ไข post'
   const oldpost = await postModel.findById(request.params.post_id);
   const newpost = new postModel({
     user_id : oldpost.user_id,
@@ -175,7 +179,7 @@ router.put("/:post_id/edit", async (request, response) => {
 
 router.post("/like/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'Like post และส่ง notice ให้เจ้าของ Post'
   const like_post = new likepostModel({
     user_id : request.user.id,
     post_id : request.params.post_id,
@@ -195,7 +199,7 @@ router.post("/like/:post_id", async (request, response) => {
 
 router.delete("/unlike/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'Unlike post และลบ Notice ออก'
   try {
     await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
     const post = await postModel.findById(request.params.post_id);

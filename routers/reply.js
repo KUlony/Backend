@@ -13,7 +13,7 @@ const reportpostModel = require("../schemas/model_report_post");
 
 router.post("/create",async (request, response) => {
     // #swagger.tags = ['Reply']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    // #swagger.description = 'ส่งข้อมูลสำหรับสร้าง Reply'
     const reply = new replyModel({
       user_id : request.user.id,
       comment_id : request.body.comment_id,
@@ -21,7 +21,8 @@ router.post("/create",async (request, response) => {
     });
     try {
       await reply.save();
-      response.send(reply);
+      const to_send = await replyModel.findOne(reply)
+      response.send(to_send);
     } catch (error) {
       response.status(500).send(error);
     }
@@ -29,7 +30,7 @@ router.post("/create",async (request, response) => {
 
 router.get("/:comment_id", async (request, response) => {
   // #swagger.tags = ['Reply']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ขอ reply ทั้งหมดของ Comment นั้น'
   const reply = await replyModel.find({comment_id : request.params.comment_id,reply_status : "visible"});
   const res = [];
   for (i=0;i<reply.length;i++){
@@ -56,7 +57,7 @@ router.get("/:comment_id", async (request, response) => {
 
 router.post("/:entity_id/report", async (request, response) => {
   // #swagger.tags = ['Reply']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ส่ง report Reply'
   const post = new reportpostModel({
     user_id : request.user.id,
     entity_id : request.params.entity_id,
@@ -74,7 +75,7 @@ router.post("/:entity_id/report", async (request, response) => {
 
 router.put("/:reply_id/edit", async (request, response) => {
   // #swagger.tags = ['Reply']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'แก้ไข Reply'
   const oldreply = await replyModel.findById(request.params.reply_id);
   const newreply = new replyModel({
     user_id : oldreply.user_id,
@@ -96,7 +97,7 @@ router.put("/:reply_id/edit", async (request, response) => {
 
 router.put("/like/:reply_id", async (request, response) => {
   // #swagger.tags = ['Reply']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'like reply'
   try {
     const reply = await replyModel.findById(request.params.reply_id);
     var check = 0;
@@ -110,7 +111,7 @@ router.put("/like/:reply_id", async (request, response) => {
 
 router.put("/unlike/:reply_id", async (request, response) => {
   // #swagger.tags = ['Reply']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'unlike reply'
   try {
     const reply = await replyModel.findById(request.params.reply_id);
     var check = 0;

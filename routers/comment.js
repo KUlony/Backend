@@ -13,7 +13,7 @@ const reportpostModel = require("../schemas/model_report_post");
 
 router.post("/create",async (request, response) => {
     // #swagger.tags = ['Comment']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    // #swagger.description = 'สร้าง Comment โดยส่ง User_id ของคนคอมเม้น Post_id ของโพสที่จะคอมเม้นและ Comment_content'
     const comment = new commentModel({
       user_id : request.user.id,
       post_id : request.body.post_id,
@@ -21,7 +21,8 @@ router.post("/create",async (request, response) => {
     });
     try {
       await comment.save();
-      response.send(comment);
+      const to_send = await commentModel.findOne(comment)
+      response.send(to_send);
     } catch (error) {
       response.status(500).send(error);
     }
@@ -29,7 +30,7 @@ router.post("/create",async (request, response) => {
 
 router.get("/:post_id", async (request, response) => {
   // #swagger.tags = ['Comment']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ขอข้อมูลของ Comment ทั้งหมดของ post_id นั้น'
   const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
   const res = [];
   for (i=0;i<comment.length;i++){
@@ -58,7 +59,7 @@ router.get("/:post_id", async (request, response) => {
 
 router.post("/:entity_id/report", async (request, response) => {
   // #swagger.tags = ['Comment']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ส่ง Report comment'
   const post = new reportpostModel({
     user_id : request.user.id,
     entity_id : request.params.entity_id,
@@ -76,7 +77,7 @@ router.post("/:entity_id/report", async (request, response) => {
 
 router.put("/:comment_id/edit", async (request, response) => {
   // #swagger.tags = ['Comment']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'แก้ไข Comment'
   const oldcomment = await commentModel.findById(request.params.comment_id);
   const newcomment = new commentModel({
     user_id : oldcomment.user_id,
@@ -98,7 +99,7 @@ router.put("/:comment_id/edit", async (request, response) => {
 
 router.put("/like/:comment_id", async (request, response) => {
   // #swagger.tags = ['Comment']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'Like comment'
   try {
     const comment = await commentModel.findById(request.params.comment_id);
     var check = 0;
@@ -112,7 +113,7 @@ router.put("/like/:comment_id", async (request, response) => {
 
 router.put("/unlike/:comment_id", async (request, response) => {
   // #swagger.tags = ['Comment']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'Unlike comment'
   try {
     const comment = await commentModel.findById(request.params.comment_id);
     var check = 0;

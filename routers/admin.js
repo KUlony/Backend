@@ -13,7 +13,7 @@ const requesttopicModel = require("../schemas/model_request_topic");
 
 router.get("/get_all_request_topic", async (request, response) => {
     // #swagger.tags = ['Admin']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    // #swagger.description = 'รับข้อมูล Request Topic ทั้งหมด'
     const user = await userModel.findById(request.user.id);
     if(!user.admin){response.status(500).send("not a admin");} 
     const request_topic = await requesttopicModel.find({});
@@ -39,7 +39,7 @@ router.get("/get_all_request_topic", async (request, response) => {
 
 router.delete("/remove_request_topic/:request_id", async (request, response) => {
     // #swagger.tags = ['Admin']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    // #swagger.description = 'ลบ Request topic ออกจาก Database'
     const user = await userModel.findById(request.user.id);
     if(user.admin === "false"){response.status(500).send("not a admin");} 
     try {
@@ -52,7 +52,7 @@ router.delete("/remove_request_topic/:request_id", async (request, response) => 
 
 router.post("/accept_request_topic/:request_id", async (request, response) => {
     // #swagger.tags = ['Admin']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+    // #swagger.description = 'ตอบรับ Request topic โดยส่ง topic_name และ catagory_id ที่ต้องการเพิ่มใน Database จากนั้นทำการลบ Request ออกจาก Database'
     const user = await userModel.findById(request.user.id);
     if(user.admin === "false"){response.status(500).send("not a admin");} 
     const request_topic = await requesttopicModel.findById(request.params.request_id);

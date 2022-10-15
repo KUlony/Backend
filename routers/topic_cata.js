@@ -13,7 +13,7 @@ const requesttopicModel = require("../schemas/model_request_topic");
 
 router.get("/:catagory", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ขอ Topic ของ Catagory นั้น'
   try {
     const catagory = await catagoryModel.findOne({catagory_name: request.params.catagory});
     const topics = await topicModel.find({catagory_id : catagory._id});
@@ -25,7 +25,7 @@ router.get("/:catagory", async (request, response) => {
 
 router.get("/get_all_catagory_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ขอ Topic และ Catagory ทั้งหมด'
   const catagory = await catagoryModel.find({});
   const res = [];
   for (i=0;i<catagory.length;i++){
@@ -53,7 +53,7 @@ router.get("/get_all_catagory_topic", async (request, response) => {
 
 router.post("/create_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'สร้าง Topic ใหม่'
   const user = await userModel.findById(request.user.id);
   if(user.admin === "false"){response.status(500).send("not a admin");} 
   const topic = new topicModel(request.body);
@@ -67,7 +67,7 @@ router.post("/create_topic", async (request, response) => {
 
 router.post("/request_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ส่ง Request topic'
   const user = await userModel.findById(request.user.id);
   if(user.admin === "false"){response.status(500).send("not a admin");} 
   const request_topic = new requesttopicModel({
