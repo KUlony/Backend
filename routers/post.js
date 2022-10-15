@@ -174,7 +174,7 @@ router.put("/:post_id/edit", async (request, response) => {
 });
 
 router.post("/like/:post_id", async (request, response) => {
-  // #swagger.tags = ['User']
+  // #swagger.tags = ['post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const like_post = new likepostModel({
     user_id : request.user.id,
@@ -194,7 +194,7 @@ router.post("/like/:post_id", async (request, response) => {
 });
 
 router.delete("/unlike/:post_id", async (request, response) => {
-  // #swagger.tags = ['User']
+  // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
