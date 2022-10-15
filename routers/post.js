@@ -10,10 +10,12 @@ const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
+const noticeModel = require("../schemas/model_notification")
 
 router.post("/create",async (request, response) => {
-    // #swagger.tags = ['Post']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
     const res = []
     const check = []
     for(i=0;i<request.body.topic_id.length;i++){
@@ -39,62 +41,62 @@ router.post("/create",async (request, response) => {
       post_photo_url : request.body.post_photo_url
     });
   
-    try {
       await post.save();
       response.send(post);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    } catch (e) {
+      response.status(500).send({ message: e.message });
+   }
 });
 
 router.get("/all_post", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const posts = await postModel.find({post_status : "visible"});
-  //console.log(posts);
-  const res = [];
-  
-  for (let i=0; i < posts.length;i++){
-    //console.log("hi")
-    var to_res = true
-    const user = await userModel.findById(posts[i].user_id);
-    const comment = await commentModel.find({post_id : posts[i]._id,comment_status : "visible"})
-    //console.log(posts[i])
-    //console.log(user)
-    const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : posts[i]._id})
-    if (user_like_sta.length === 0){
-      to_res = false
-    };
-    const a_post = {
-      author : {
-        user_id : posts[i].user_id,
-        username : user.user_name,
-        profile_pic_url : user.profile_pic_url,
-      },
-      post_id : posts[i]._id,
-      post_catagory : posts[i].catagory_id,
-      post_topic : posts[i].topic_id,
-      post_title : posts[i].post_title,
-      post_content :posts[i].post_content,
-      cover_photo_url : posts[i].cover_photo_url,
-      post_photo_url : posts[i].post_photo_url,
-      post_like_count : posts[i].post_like_count,
-      post_comment_count : comment.length,
-      post_time : posts[i].post_time,
-      user_like_status : to_res
-    };
-    res.push(a_post);
-  }
   try {
+    const posts = await postModel.find({post_status : "visible"});
+    //console.log(posts);
+    const res = [];
+    
+    for (let i=0; i < posts.length;i++){
+      //console.log("hi")
+      var to_res = true
+      const user = await userModel.findById(posts[i].user_id);
+      const comment = await commentModel.find({post_id : posts[i]._id,comment_status : "visible"})
+      //console.log(posts[i])
+      //console.log(user)
+      const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : posts[i]._id})
+      if (user_like_sta.length === 0){
+        to_res = false
+      };
+      const a_post = {
+        author : {
+          user_id : posts[i].user_id,
+          username : user.user_name,
+          profile_pic_url : user.profile_pic_url,
+        },
+        post_id : posts[i]._id,
+        post_catagory : posts[i].catagory_id,
+        post_topic : posts[i].topic_id,
+        post_title : posts[i].post_title,
+        post_content :posts[i].post_content,
+        cover_photo_url : posts[i].cover_photo_url,
+        post_photo_url : posts[i].post_photo_url,
+        post_like_count : posts[i].post_like_count,
+        post_comment_count : comment.length,
+        post_time : posts[i].post_time,
+        user_like_status : to_res
+      };
+      res.push(a_post);
+    }
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.get("/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const posts = await postModel.findById(request.params.post_id);
   var to_res = true
   const user = await userModel.findById(posts.user_id);
@@ -122,16 +124,24 @@ router.get("/:post_id", async (request, response) => {
     post_time : posts.post_time,
     user_like_status : to_res
   };
-  try {
-    response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
+    const viewuser = await userModel.findById(request.user.id)
+    if (!viewuser.visit_post.includes(request.params.post_id)) {
+      if (viewuser.visit_post.length >= 5){
+      viewuser.visit_post.pop()
+    }
+    viewuser.visit_post.unshift(request.params.post_id)
+    await userModel.updateOne({_id: request.user.id},{visit_post: viewuser.visit_post})
   }
+    response.send(res);
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/:entity_id/report", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const post = new reportpostModel({
     user_id : request.user.id,
     entity_id : request.params.entity_id,
@@ -139,17 +149,17 @@ router.post("/:entity_id/report", async (request, response) => {
     report_type : request.body.report_type,
     report_time : Date.now()
   });
-  try {
     await post.save();
     response.send(post);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.put("/:post_id/edit", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const oldpost = await postModel.findById(request.params.post_id);
   const newpost = new postModel({
     user_id : oldpost.user_id,
@@ -164,33 +174,39 @@ router.put("/:post_id/edit", async (request, response) => {
     post_status : "edited",
     post_delete_time : Date.now()
   });
-  try {
     await newpost.save();
     await postModel.findByIdAndUpdate(request.params.post_id,request.body)
     response.send("finish");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/like/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const like_post = new likepostModel({
-    user_id : request.user.id,
-    post_id : request.params.post_id,
-    like_time : Date.now()
-  });
   try {
+    const like_post = new likepostModel({
+      user_id : request.user.id,
+      post_id : request.params.post_id,
+      like_time : Date.now()
+    });
     await like_post.save();
     const post = await postModel.findById(request.params.post_id);
     var check = 0;
     check = check + post.post_like_count + 1
+    const notice = new noticeModel({
+      entity_user_id: post.user_id,
+      entity_id: request.params.post_id,
+      action_user_id: request.user.id,
+      notice_type: "like"
+    })
+    await notice.save();
     await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
     response.send("liked");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.delete("/unlike/:post_id", async (request, response) => {
@@ -198,14 +214,15 @@ router.delete("/unlike/:post_id", async (request, response) => {
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   try {
     await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
+    await noticeModel.findOneAndRemove({post_id: request.params.post_id, action_user_id: request.user.id })
     const post = await postModel.findById(request.params.post_id);
     var check = 0;
     check = check + post.post_like_count - 1
     await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
     response.send("unliked");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 module.exports = router;
