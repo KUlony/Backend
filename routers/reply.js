@@ -74,6 +74,10 @@ router.post("/:entity_id/report", async (request, response) => {
 router.put("/:reply_id/edit", async (request, response) => {
   // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const reply = await replyModel.findById(request.params.reply_id);
+  if (reply.user_id !== request.user.id) {
+    response.status(500).send("not your reply");
+  };
   const oldreply = await replyModel.findById(request.params.reply_id);
   const newreply = new replyModel({
     user_id : oldreply.user_id,
@@ -124,6 +128,10 @@ router.put("/unlike/:reply_id", async (request, response) => {
 router.put("/:reply_id/delete", async (request, response) => {
   // #swagger.tags = ['Reply']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const reply = await replyModel.findById(request.params.reply_id);
+  if (reply.user_id !== request.user.id) {
+    response.status(500).send("not your reply");
+  };
   try {
     await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_status : "deleted"})
     response.send("deleted");

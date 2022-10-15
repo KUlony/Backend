@@ -150,6 +150,10 @@ router.post("/:entity_id/report", async (request, response) => {
 router.put("/:post_id/edit", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const post = await postModel.findById(request.params.post_id);
+  if (post.user_id !== request.user.id) {
+    response.status(500).send("not your post");
+  };
   const oldpost = await postModel.findById(request.params.post_id);
   const newpost = new postModel({
     user_id : oldpost.user_id,
@@ -211,6 +215,10 @@ router.delete("/unlike/:post_id", async (request, response) => {
 router.put("/:post_id/delete", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const post = await postModel.findById(request.params.post_id);
+  if (post.user_id !== request.user.id) {
+    response.status(500).send("not your post");
+  };
   try {
     await postModel.findOneAndUpdate({_id : request.params.post_id},{post_status : "deleted"})
     response.send("deleted");

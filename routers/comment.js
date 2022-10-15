@@ -76,6 +76,10 @@ router.post("/:entity_id/report", async (request, response) => {
 router.put("/:comment_id/edit", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const comment = await commentModel.findById(request.params.comment_id);
+  if (comment.user_id !== request.user.id) {
+    response.status(500).send("not your comment");
+  };
   const oldcomment = await commentModel.findById(request.params.comment_id);
   const newcomment = new commentModel({
     user_id : oldcomment.user_id,
@@ -126,6 +130,10 @@ router.put("/unlike/:comment_id", async (request, response) => {
 router.put("/:comment_id/delete", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const comment = await commentModel.findById(request.params.comment_id);
+  if (comment.user_id !== request.user.id) {
+    response.status(500).send("not your comment");
+  };
   try {
     await commentModel.findOneAndUpdate({_id : request.params.comment_id},{comment_status : "deleted"})
     response.send("deleted");
