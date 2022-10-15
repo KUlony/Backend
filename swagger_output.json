@@ -574,7 +574,7 @@
         }
       }
     },
-    "/api/topic/{catagory}/topic": {
+    "/api/topic/{catagory}": {
       "get": {
         "tags": [
           "Topic/Catagory"

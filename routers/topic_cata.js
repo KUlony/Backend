@@ -11,22 +11,13 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const requesttopicModel = require("../schemas/model_request_topic");
 
-router.get("/:catagory/topic", async (request, response) => {
+router.get("/:catagory", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const catagory = await catagoryModel.find({catagory_name: request.params.catagory});
-  const to_res = [];
-  const topics = await topicModel.find({catagory_id : catagory._id});
-  for(j=0;j<topics.length;j++){
-    const topic = {
-      topic_id : topics[j]._id,
-      topic_name : topics[j].topic_name
-    }
-    to_res.push(topic);
-  }
-  to_res.push(to_res);
   try {
-    response.send(to_res);
+    const catagory = await catagoryModel.findOne({catagory_name: request.params.catagory});
+    const topics = await topicModel.find({catagory_id : catagory._id});
+    response.send(topics);
   } catch (error) {
     response.status(500).send(error);
   }
