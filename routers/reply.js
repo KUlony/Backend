@@ -121,4 +121,15 @@ router.put("/unlike/:reply_id", async (request, response) => {
   }
 });
 
+router.put("/:reply_id/delete", async (request, response) => {
+  // #swagger.tags = ['Reply']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
+    await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_status : "deleted"})
+    response.send("deleted");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 module.exports = router;

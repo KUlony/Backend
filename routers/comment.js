@@ -123,4 +123,15 @@ router.put("/unlike/:comment_id", async (request, response) => {
   }
 });
 
+router.put("/:comment_id/delete", async (request, response) => {
+  // #swagger.tags = ['Comment']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
+    await commentModel.findOneAndUpdate({_id : request.params.comment_id},{comment_status : "deleted"})
+    response.send("deleted");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 module.exports = router;

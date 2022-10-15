@@ -208,4 +208,15 @@ router.delete("/unlike/:post_id", async (request, response) => {
   }
 });
 
+router.put("/:post_id/delete", async (request, response) => {
+  // #swagger.tags = ['Post']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
+    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_status : "deleted"})
+    response.send("deleted");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
 module.exports = router;
