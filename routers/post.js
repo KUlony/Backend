@@ -124,6 +124,7 @@ router.get("/:post_id", async (request, response) => {
     post_time : posts.post_time,
     user_like_status : to_res
   };
+
     response.send(res);
   } catch (e) {
     res.status(500).send({ message: e.message });
@@ -188,8 +189,8 @@ router.post("/like/:post_id", async (request, response) => {
     var check = 0;
     check = check + post.post_like_count + 1
     const notice = new noticeModel({
-      content_user_id: post.user_id,
-      content_id: request.params.post_id,
+      entity_user_id: post.user_id,
+      entity_id: request.params.post_id,
       action_user_id: request.user.id,
       notice_type: "like"
     })

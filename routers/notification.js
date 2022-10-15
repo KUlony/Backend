@@ -14,7 +14,7 @@ const noticeModel = require("../schemas/model_notification")
 router.get("/", async (req,res) => {
    try{
       notices = await noticeModel
-      .find({content_user_id: req.user.id})
+      .find({entity_user_id: req.user.id})
       .limit(20)
       res.send(notices)
    } catch (e) {

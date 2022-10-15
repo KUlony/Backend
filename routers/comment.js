@@ -24,8 +24,8 @@ router.post("/create",async (request, response) => {
       await comment.save();
       const post = postModel.findById(request.body.post_id)
       const notice = new noticeModel({
-        content_user_id: post.user_id,
-        content_id: request.body.post_id,
+        entity_user_id: post.user_id,
+        entity_id: request.body.post_id,
         action_user_id: request.user.id,
         notice_type: "comment"
       })

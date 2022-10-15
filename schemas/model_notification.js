@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const notice = new mongoose.Schema({
-   content_user_id: {
+   entity_user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
    },
 
-   content_id :{
+   entity_id :{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Post'
    },
