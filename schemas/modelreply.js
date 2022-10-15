@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const ReplySchema = new mongoose.Schema({
-  reply_id : {
-    type : Number,
-    default : 0,
-  },
   comment_id : {
-    type : Number,
-    required : true,
+    type: mongoose.Schema.Types.ObjectId,
+		ref: 'Comment'
+  },
+  user_id : {
+    type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
   },
   reply_content: {
     type: String,
@@ -21,8 +21,8 @@ const ReplySchema = new mongoose.Schema({
     default : Date.now(),
   },
   reply_status : {
-    type : Boolean,
-    default : true,
+    type : String,
+    default : "visible",
   },
   reply_delete_time : {
     type : Date,

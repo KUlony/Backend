@@ -4,6 +4,10 @@ const CommentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
 		ref: 'Post'
   },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+  },
   comment_content: {
     type: String,
     required: true,
@@ -17,8 +21,8 @@ const CommentSchema = new mongoose.Schema({
     default : Date.now(),
   },
   comment_status : {
-    type : Boolean,
-    default : true,
+    type : String,
+    default : "visible",
   },
   comment_delete_time : {
     type : Date,
