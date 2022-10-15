@@ -133,7 +133,7 @@ router.post("/:entity_id/report", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
   const post = new reportpostModel({
-    user_id : user_id_mock,
+    user_id : request.user.id,
     entity_id : request.params.entity_id,
     entity_type : "post",
     report_type : request.body.report_type,
