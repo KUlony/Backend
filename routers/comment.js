@@ -10,26 +10,36 @@ const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
+const noticeModel = require("../schemas/model_notification")
 
 router.post("/create",async (request, response) => {
-    // #swagger.tags = ['Comment']
-    // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.tags = ['Comment']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
     const comment = new commentModel({
       user_id : request.user.id,
       post_id : request.body.post_id,
       comment_content : request.body.comment_content,
     });
-    try {
       await comment.save();
+      const post = postModel.findById(request.body.post_id)
+      const notice = new noticeModel({
+        content_user_id: post.user_id,
+        content_id: request.body.post_id,
+        action_user_id: request.user.id,
+        notice_type: "comment"
+      })
+      await notice.save();
       response.send(comment);
-    } catch (error) {
-      response.status(500).send(error);
-    }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
 
 router.get("/:post_id", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
   const res = [];
   for (i=0;i<comment.length;i++){
@@ -48,16 +58,16 @@ router.get("/:post_id", async (request, response) => {
     };
     res.push(to_res);
   }
-  try {
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/:entity_id/report", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
   const post = new reportpostModel({
     user_id : request.user.id,
     entity_id : request.params.entity_id,
@@ -65,12 +75,11 @@ router.post("/:entity_id/report", async (request, response) => {
     report_type : request.body.report_type,
     report_time : Date.now()
   });
-  try {
     await post.save();
     response.send(post);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.put("/:comment_id/edit", async (request, response) => {
@@ -90,9 +99,9 @@ router.put("/:comment_id/edit", async (request, response) => {
     await newcomment.save();
     await commentModel.findByIdAndUpdate(request.params.comment_id,request.body)
     response.send("finish");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.put("/like/:comment_id", async (request, response) => {
@@ -104,9 +113,9 @@ router.put("/like/:comment_id", async (request, response) => {
     check = check + comment.comment_like_count + 1
     await commentModel.findOneAndUpdate({_id : request.params.comment_id},{comment_like_count : check})
     response.send("liked");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.put("/unlike/:comment_id", async (request, response) => {
@@ -118,9 +127,9 @@ router.put("/unlike/:comment_id", async (request, response) => {
     check = check + comment.comment_like_count - 1
     await commentModel.findOneAndUpdate({_id : request.params.comment_id},{comment_like_count : check})
     response.send("unliked");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 module.exports = router;
