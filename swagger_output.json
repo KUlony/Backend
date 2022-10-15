@@ -457,7 +457,7 @@
     "/api/post/like/{post_id}": {
       "post": {
         "tags": [
-          "User"
+          "Post"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -483,7 +483,7 @@
     "/api/post/unlike/{post_id}": {
       "delete": {
         "tags": [
-          "User"
+          "Post"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -509,7 +509,7 @@
     "/api/comment/create": {
       "post": {
         "tags": [
-          "Post"
+          "Comment"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
@@ -543,7 +543,7 @@
     "/api/comment/{post_id}": {
       "get": {
         "tags": [
-          "Post"
+          "Comment"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -569,7 +569,7 @@
     "/api/comment/{entity_id}/report": {
       "post": {
         "tags": [
-          "Post"
+          "Comment"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -609,7 +609,7 @@
     "/api/comment/{comment_id}/edit": {
       "put": {
         "tags": [
-          "Post"
+          "Comment"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -635,7 +635,7 @@
     "/api/comment/like/{comment_id}": {
       "put": {
         "tags": [
-          "User"
+          "Comment"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -661,7 +661,7 @@
     "/api/comment/unlike/{comment_id}": {
       "put": {
         "tags": [
-          "User"
+          "Comment"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -687,7 +687,7 @@
     "/api/reply/create": {
       "post": {
         "tags": [
-          "Post"
+          "Reply"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
@@ -721,7 +721,7 @@
     "/api/reply/{comment_id}": {
       "get": {
         "tags": [
-          "Post"
+          "Reply"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -747,7 +747,7 @@
     "/api/reply/{entity_id}/report": {
       "post": {
         "tags": [
-          "Post"
+          "Reply"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -787,7 +787,7 @@
     "/api/reply/{reply_id}/edit": {
       "put": {
         "tags": [
-          "Post"
+          "Reply"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -813,7 +813,7 @@
     "/api/reply/like/{reply_id}": {
       "put": {
         "tags": [
-          "User"
+          "Reply"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [
@@ -839,7 +839,7 @@
     "/api/reply/unlike/{reply_id}": {
       "put": {
         "tags": [
-          "User"
+          "Reply"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [

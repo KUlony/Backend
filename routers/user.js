@@ -30,15 +30,13 @@ router.get("/:user_id/profile", async (request, response) => {
     const user = await userModel.findById(request.params.user_id);
     console.log(user);
     const res = {
-        user_name : user.username,
+        user_name : user.user_name,
         user_firtname : user.user_firtname,
         user_lastname : user.user_lastname,
         user_bio : user.bio,
-        ku_gen : user.ku_gen,
+        education : user.education,
+        contact : user.contact,
         profile_pic_url : user.profile_pic_url,
-        faculty : user.faculty,
-        department : user.department,
-        campus : user.campus,
         gender : user.gender
     }
     try {
