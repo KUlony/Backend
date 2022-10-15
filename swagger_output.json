@@ -277,58 +277,6 @@
         }
       }
     },
-    "/api/user/like_post/{post_id}": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/user/unlike_post/{post_id}": {
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
-        "parameters": [
-          {
-            "name": "post_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/searchtopic/topic": {
       "get": {
         "tags": [
@@ -506,13 +454,22 @@
         }
       }
     },
-    "/api/commment/create": {
+    "/api/post/like/{post_id}": {
       "post": {
         "tags": [
-          "Comment"
+          "User"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -523,13 +480,200 @@
         }
       }
     },
-    "/api/commment/": {
-      "get": {
+    "/api/post/unlike/{post_id}": {
+      "delete": {
         "tags": [
-          "Comment"
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/create": {
+      "post": {
+        "tags": [
+          "Post"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "post_id": {
+                    "example": "any"
+                  },
+                  "comment_content": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comment/{post_id}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/{entity_id}/report": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "report_type": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comment/{comment_id}/edit": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/like/{comment_id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/unlike/{comment_id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -543,7 +687,7 @@
     "/api/reply/create": {
       "post": {
         "tags": [
-          "Reply"
+          "Post"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
         "parameters": [],
@@ -554,16 +698,160 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment_id": {
+                    "example": "any"
+                  },
+                  "reply_content": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
-    "/api/reply/": {
+    "/api/reply/{comment_id}": {
       "get": {
         "tags": [
-          "Reply"
+          "Post"
         ],
         "description": "ค้นหาโพสต์ด้วยข้อความ",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/{entity_id}/report": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "report_type": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reply/{reply_id}/edit": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/like/{reply_id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/unlike/{reply_id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

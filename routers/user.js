@@ -3,6 +3,7 @@ const router = express.Router()
 const postModel = require("../schemas/modelpost");
 const userModel = require("../schemas/modeluser");
 const commentModel = require("../schemas/modelcomment");
+const replyModel = require("../schemas/modelreply");
 const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
@@ -177,41 +178,6 @@ router.get("/user_post", async (request, response) => {
   }
   try {
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
-});
-
-router.post("/like_post/:post_id", async (request, response) => {
-  // #swagger.tags = ['User']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const like_post = new likepostModel({
-    user_id : request.user.id,
-    post_id : request.params.post_id,
-    like_time : Date.now()
-  });
-  try {
-    await like_post.save();
-    const post = await postModel.findById(request.params.post_id);
-    var check = 0;
-    check = check + post.post_like_count + 1
-    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
-    response.send("liked");
-  } catch (error) {
-    response.status(500).send(error);
-  }
-});
-
-router.delete("/unlike_post/:post_id", async (request, response) => {
-  // #swagger.tags = ['User']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  try {
-    await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
-    const post = await postModel.findById(request.params.post_id);
-    var check = 0;
-    check = check + post.post_like_count - 1
-    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
-    response.send("unliked");
   } catch (error) {
     response.status(500).send(error);
   }

@@ -4,6 +4,7 @@ const router = express.Router()
 const postModel = require("../schemas/modelpost");
 const userModel = require("../schemas/modeluser");
 const commentModel = require("../schemas/modelcomment");
+const replyModel = require("../schemas/modelreply");
 const catagoryModel = require("../schemas/modelcatagory");
 const topicModel = require("../schemas/modeltopic");
 const followtopicModel = require("../schemas/model_following_topic");
@@ -57,7 +58,7 @@ router.get("/all_post", async (request, response) => {
     //console.log("hi")
     var to_res = true
     const user = await userModel.findById(posts[i].user_id);
-    const comment = await commentModel.find({post_id : posts[i]._id})
+    const comment = await commentModel.find({post_id : posts[i]._id,comment_status : "visible"})
     //console.log(posts[i])
     //console.log(user)
     const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : posts[i]._id})
@@ -167,6 +168,41 @@ router.put("/:post_id/edit", async (request, response) => {
     await newpost.save();
     await postModel.findByIdAndUpdate(request.params.post_id,request.body)
     response.send("finish");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+router.post("/like/:post_id", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  const like_post = new likepostModel({
+    user_id : request.user.id,
+    post_id : request.params.post_id,
+    like_time : Date.now()
+  });
+  try {
+    await like_post.save();
+    const post = await postModel.findById(request.params.post_id);
+    var check = 0;
+    check = check + post.post_like_count + 1
+    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
+    response.send("liked");
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+router.delete("/unlike/:post_id", async (request, response) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  try {
+    await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
+    const post = await postModel.findById(request.params.post_id);
+    var check = 0;
+    check = check + post.post_like_count - 1
+    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
+    response.send("unliked");
   } catch (error) {
     response.status(500).send(error);
   }
