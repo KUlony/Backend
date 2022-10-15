@@ -40,6 +40,7 @@ router.get("/:comment_id", async (request, response) => {
         username : user.user_name,
         profile_pic_url : user.profile_pic_url,
       },
+      reply_id: reply[i]._id,
       reply_content :reply[i].reply_content,
       reply_like_count : reply[i].reply_like_count,
       reply_time : reply[i].reply_time,
