@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node swagger.js",
+    "nodemon": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,9 +22,9 @@
     "mongodb": "^4.10.0",
     "mongoose": "^6.6.3",
     "nodemailer": "^6.8.0",
-    "passport-jwt": "^4.0.0"
-  },
-  "devDependencies": {
+    "passport-jwt": "^4.0.0",
+    "swagger-autogen": "^2.22.0",
+    "swagger-ui-express": "^4.5.0",
     "ejs": "^3.1.8",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",

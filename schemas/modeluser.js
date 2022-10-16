@@ -1,4 +1,39 @@
 const mongoose = require("mongoose");
+
+const educationSchema = new mongoose.Schema({
+  school : {
+    type : String,
+    default : null,
+  },
+  degree : {
+    type : String,
+    default : null
+  },
+  field_of_study : {
+    type : String,
+    default : null
+  },
+  start_date : {
+    type : String,
+    default : null
+  },
+  end_date : {
+    type : String,
+    default : null
+  }
+});
+
+const contactSchema = new mongoose.Schema({
+  facebook : {
+    type : String,
+    default : null
+  },
+  ig : {
+    type : String,
+    default : null
+  }
+})
+
 const UserSchema = new mongoose.Schema({
   visit_post : [mongoose.Schema.Types.ObjectId],
   user_name : {
@@ -13,27 +48,19 @@ const UserSchema = new mongoose.Schema({
     type : String,
     default : null,
   },
+  education : [{
+    type : educationSchema,
+    default : null
+  }],
+  contact : {
+    type : contactSchema,
+    default : null
+  },
   user_bio : {
     type : String,
     default : null,
   },
-  ku_gen : {
-    type : Number,
-    default : null,
-  },
   profile_pic_url : {
-    type : String,
-    default : null,
-  },
-  faculty : {
-    type : String,
-    default : null,
-  },
-  department : {
-    type : String,
-    default : null,
-  },
-  campus : {
     type : String,
     default : null,
   },
@@ -43,7 +70,7 @@ const UserSchema = new mongoose.Schema({
   },
   admin : {
     type : Boolean,
-    default : null,
+    default : false,
   },
   email : {
     type : String,

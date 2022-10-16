@@ -8,8 +8,13 @@ const {compareSync} = require('bcrypt');
 const bcrypt  = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const { updateOne } = require("../schemas/modelotp");
 
 router.post("/register/email", async (req, res) => {
+  // #swagger.tags = ['Sign up']
+  // #swagger.description = 'ใช้สมัคร User ใหม่โดยจะส่ง OTP ยืนยันไปทาง Email'
+  /* #swagger.security = [{
+  }] */
   try {
     const { email,password, confirm_password } = req.body;
     if ( !email || !password || !confirm_password) {
@@ -38,13 +43,16 @@ router.post("/register/email", async (req, res) => {
     res.send("An Email sent to your account please verify");
     // res.redirect('/api/sing-up/register/email/checkOTP')
       
-  } catch (error) {
-    res.status(400).send("An error occured");
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
   
 });
-  
-router.post("/register/email/checkOTP", async (req, res) => {
+router.get("/register/email/checkOTP", async (req, res) => {
+  // #swagger.tags = ['Sign up']
+  // #swagger.description = 'สำหรับใช้เช็ค OTP'
+  /* #swagger.security = [{
+  }] */
     try {
       const user = await UserModel.findOne({ email: req.body.email });
       if (!user) return res.status(400).send("Not find email");
@@ -59,13 +67,16 @@ router.post("/register/email/checkOTP", async (req, res) => {
 
       await Otp.findByIdAndRemove(otp._id);
       res.send("email verified sucessfully");
-    } catch (error) {
-      res.status(400).send("An error occured");
-    }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
 
-  
-router.post('/login',async(req, res) => {
+router.post('/login',async (req, res) => {
+  // #swagger.tags = ['Login/Logout']
+  // #swagger.description = 'ใช้เพื่อ Login'
+  /* #swagger.security = [{
+  }] */
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
     if (!user) {
@@ -99,29 +110,32 @@ router.post('/login',async(req, res) => {
       success: true,
       message: "Logged in successfully!",
       token: "Bearer " + token })
-    
-  }catch (error) {
-    res.status(400).send("An error login");
-  }
+    } catch (e) {
+      res.status(500).send({ message: e.message });
+   }
 });
   
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
-    return res.status(200).send({
-        success: true,
-        user: {
-            id: req.user._id,
-        }
-    })
+  // #swagger.ignore = true
+  return res.status(200).send({
+      success: true,
+      user: {
+          id: req.user._id,
+          
+      }
+  })
 });
 
 router.get('/logout', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  // #swagger.tags = ['Login/Logout']
+  // #swagger.description = 'ใช้ Logout'
   try {
     const user = await UserModel.findOne({ _id: req.user.id });
     await user.updateOne({status_login : false})
     res.send("ok")
-  }catch (error) {
-    res.status(400).send("An error logout");
-  }
+  }catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.post('/forgotpassword',async (req,res) => {
@@ -144,9 +158,9 @@ router.post('/forgotpassword',async (req,res) => {
     res.send("An Email sent to your account please verify your identity");
 
   }
-  catch (error) {
-    res.status(400).send("An error forgetpassword");
-  }
+  catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.get("/forgotpassword/checkOTP", async (req, res) => {
@@ -162,9 +176,9 @@ router.get("/forgotpassword/checkOTP", async (req, res) => {
       res.status(200).send("Verify your identity sucessfully");
     };
     
-  } catch (error) {
-    res.status(400).send("An error occured");
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/forgotpassword/resetpassword",async(req,res) => {
@@ -179,9 +193,9 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
     res.status(200).send("Reset password sucessfully");
 
     
-  } catch (error) {
-    
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/changepassword" ,passport.authenticate('jwt', { session: false }), async(req, res) => {
@@ -197,9 +211,9 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
     const hashedPassword = await bcrypt.hash(req.body.newpassword,10);
     await user.updateOne({ password: hashedPassword });
     res.status(200).send("Change password sucessfully");
-  } catch (error) {
-    
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 
@@ -211,9 +225,9 @@ router.get("/newotp/verify/email",async(req,res) => {
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your Email ", message);
     res.send("An Email sent to your account please verify email");
-  } catch (error) {
-    
-  }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 
 });
 
@@ -225,10 +239,9 @@ router.get("/newotp/verify/forgotpassword",async(req,res) => {
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your Email ", message);
     res.send("An Email sent to your account please verify email");
-  } catch (error) {
-    
-  }
-
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+ }
 });
 
 

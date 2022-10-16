@@ -1,0 +1,1270 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Library",
+    "description": "Contain all api from kulony backend"
+  },
+  "servers": [
+    {
+      "url": "https://kulony-backend.herokuapp.com/"
+    }
+  ],
+  "paths": {
+    "/api/sing-up/register/email": {
+      "post": {
+        "tags": [
+          "Sign up"
+        ],
+        "description": "ใช้สมัคร User ใหม่โดยจะส่ง OTP ยืนยันไปทาง Email",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {}
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "confirmpassword": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sing-up/register/email/checkOTP": {
+      "get": {
+        "tags": [
+          "Sign up"
+        ],
+        "description": "สำหรับใช้เช็ค OTP",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {}
+        ]
+      }
+    },
+    "/api/sing-up/login": {
+      "post": {
+        "tags": [
+          "Login/Logout"
+        ],
+        "description": "ใช้เพื่อ Login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {}
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sing-up/logout": {
+      "get": {
+        "tags": [
+          "Login/Logout"
+        ],
+        "description": "ใช้ Logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/edit_profile": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "แก้ไข Profile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/{user_id}/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "ขอข้อมูล User profile",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/following_topic": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "ขอ topic ที่ user follow ไว้",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/follow_topic/{topic_id}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "ส่ง Topic ที่ user ต้องการ Follow",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/unfollow_topic/{topic_id}": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Unfollow topic ที่ user follow ไว้",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/user_like_post": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "ขอ post ที่ user like ไว้",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/mypost": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "ขอ Post ที่ user เป็นคนเขียน",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/searchtopic/topic": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหา Topic ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/post/create": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ส่ง post ที่ต้องการเพิ่มใน Database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "topic_id": {
+                    "example": "any"
+                  },
+                  "post_title": {
+                    "example": "any"
+                  },
+                  "post_content": {
+                    "example": "any"
+                  },
+                  "cover_photo_url": {
+                    "example": "any"
+                  },
+                  "post_photo_url": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/post/all_post": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ขอข้อมูล post ทั้งหมดจาก Database",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/post/{post_id}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ขอข้อมูลของ post_id นั้นๆ",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/post/{entity_id}/report": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ส่ง Report post",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "report_type": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/post/{post_id}/edit": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "description": "แก้ไข post",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/post/like/{post_id}": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Like post และส่ง notice ให้เจ้าของ Post",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/post/unlike/{post_id}": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "Unlike post และลบ Notice ออก",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/post/{post_id}/delete": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ลบ post นั้น",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/create": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "สร้าง Comment โดยส่ง User_id ของคนคอมเม้น Post_id ของโพสที่จะคอมเม้นและ Comment_content",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "post_id": {
+                    "example": "any"
+                  },
+                  "comment_content": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comment/{post_id}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "ขอข้อมูลของ Comment ทั้งหมดของ post_id นั้น",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/{entity_id}/report": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "ส่ง Report comment",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "report_type": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comment/{comment_id}/edit": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "แก้ไข Comment",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/like/{comment_id}": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Like comment",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/unlike/{comment_id}": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Unlike comment",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/{comment_id}/delete": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "ลบ comment นั้น",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/create": {
+      "post": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "ส่งข้อมูลสำหรับสร้าง Reply",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment_id": {
+                    "example": "any"
+                  },
+                  "reply_content": {
+                    "example": "any"
+                  },
+                  "post_id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reply/{comment_id}": {
+      "get": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "ขอ reply ทั้งหมดของ Comment นั้น",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/{entity_id}/report": {
+      "post": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "ส่ง report Reply",
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "report_type": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reply/{reply_id}/edit": {
+      "put": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "แก้ไข Reply",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/like/{reply_id}": {
+      "put": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "like reply",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/unlike/{reply_id}": {
+      "put": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "unlike reply",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/{reply_id}/delete": {
+      "put": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "ลบ reply นั้น",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/{catagory}": {
+      "get": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ขอ Topic ของ Catagory นั้น",
+        "parameters": [
+          {
+            "name": "catagory",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/get_all_catagory_topic": {
+      "get": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ขอ Topic และ Catagory ทั้งหมด",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/create_topic": {
+      "post": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "สร้าง Topic ใหม่",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/request_topic": {
+      "post": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ส่ง Request topic",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/search/post": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/search/post/topic": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหาโพสต์ด้วย topic",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/admin/get_all_request_topic": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "รับข้อมูล Request Topic ทั้งหมด",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/admin/remove_request_topic/{request_id}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "ลบ Request topic ออกจาก Database",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/admin/accept_request_topic/{request_id}": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "ตอบรับ Request topic โดยส่ง topic_name และ catagory_id ที่ต้องการเพิ่มใน Database จากนั้นทำการลบ Request ออกจาก Database",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "catagory_id": {
+                    "example": "any"
+                  },
+                  "topic_name": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notification/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/notification/read/{notic_id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "notic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/notification/unread/{notic_id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "notic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
