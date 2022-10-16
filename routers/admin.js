@@ -168,12 +168,33 @@ router.put("/delete_reported_entity/:report_id", async (request, response) => {
         if(!user.admin){response.status(500).send("not a admin");} 
         const report = await reportpostModel.findById(request.params.report_id)
         if(report.entity_type === "post"){
-            await postModel.findByIdAndUpdate(report.entity_id,{post_status : "deleted by admin"})
+            const post = postModel.findById(report.entity_id)
+            const notice = new noticeModel({
+                entity_user_id: post.user_id,
+                entity_id: report.entity_id,
+                notice_type: "postdeleted"
+            })
+            await notice.save();
+            await postModel.findByIdAndUpdate(report.entity_id,{post_status : "deleted by admin"}) 
         }
         else if (report.entity_type === "comment"){
+            const comment = commentModel.findById(report.entity_id)
+            const notice = new noticeModel({
+                entity_user_id: comment.user_id,
+                entity_id: report.entity_id,
+                notice_type: "commentdeleted"
+            })
+            await notice.save();
             await commentModel.findByIdAndUpdate(report.entity_id,{comment_status : "deleted by admin"})
         }
         else {
+            const reply = replyModel.findById(report.entity_id)
+            const notice = new noticeModel({
+                entity_user_id: reply.user_id,
+                entity_id: report.entity_id,
+                notice_type: "replydeleted"
+            })
+            await notice.save();
             await replyModel.findByIdAndUpdate(report.entity_id,{reply_status : "deleted by admin"})
         }
         await reportpostModel.findByIdAndRemove(request.params.report_id)
