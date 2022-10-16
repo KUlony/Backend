@@ -145,9 +145,12 @@ router.get("/mypost", async (request, response) => {
   // #swagger.description = 'ขอ Post ที่ user เป็นคนเขียน'
   try {
   const post = await postModel.find({user_id : request.user.id});
+  
+
   const user = await userModel.findById(request.user.id);
   const res = {
     author : {
+      
       user_id : request.user.id,
       username : user.user_name,
       profile_pic_url : user.profile_pic_url,
@@ -162,6 +165,7 @@ router.get("/mypost", async (request, response) => {
       to = false
     };
     const to_res = {
+      post_id : post[i]._id,
       post_title : post[i].post_title,
       post_content : post[i].post_content,
       cover_photo_url : post[i].cover_photo_url,

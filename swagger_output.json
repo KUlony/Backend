@@ -458,6 +458,28 @@
         }
       }
     },
+    "/api/searchtopic/user": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/post/create": {
       "post": {
         "tags": [
@@ -1462,6 +1484,31 @@
             "name": "notic_id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/app/homeroute/": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "description": "ขอข้อมูลไปแสดงในหน้า Home",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
             "schema": {
               "type": "string"
             }
