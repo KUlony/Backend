@@ -40,6 +40,8 @@ router.get("/topic", async (req, res) => {
 });
 
 router.get("/user", async (req, res) => {
+    // #swagger.tags = ['Search']
+    // #swagger.description = 'ค้นหา User ด้วยข้อความ'
     try {
         let results;
         if(req.query.text) {
