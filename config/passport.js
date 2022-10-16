@@ -7,8 +7,8 @@ var dotenv = require("dotenv");
 dotenv.config();
 
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = process.env.SECRET;
-// opts.secretOrKey ="Random";
+// opts.secretOrKey ="Random string";
+opts.secretOrKey ="Random";
 
 passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
    
