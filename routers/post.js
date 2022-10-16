@@ -261,6 +261,4 @@ router.put("/:post_id/delete", async (request, response) => {
   }
 });
 
-
-
 module.exports = router;
