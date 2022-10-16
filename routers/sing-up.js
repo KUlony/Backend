@@ -155,6 +155,7 @@ router.get("/forgotpassword/checkOTP", async (req, res) => {
     if (!user) return res.status(400).send("Not find email");
     const otp = await Otp.findOne({email: req.body.email});
     if (!otp) return res.status(400).send("Enter wrong email");
+    if (otp.otp != req.body.otp ) return res.status(400).send("wrong OTP");
     if (otp.otp == req.body.otp ) {
       await Otp.findByIdAndRemove(otp._id);
       await user.updateOne({verified_resetpassword : true})
