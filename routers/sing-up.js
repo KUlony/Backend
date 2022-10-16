@@ -79,6 +79,7 @@ router.post('/login',async (req, res) => {
   }] */
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
+    console.log(user)
     if (!user) {
       res.status(401).send({
           success: false,
