@@ -61,7 +61,6 @@ router.get("/all_post", async (request, response) => {
     response.send("Wrong page number")
   } else {
     const posts = await postModel.find({post_status : "visible"})
-    .sort({"post_time": -1})
     .skip((request.query.page - 1)*posts_per_page)
     .limit(posts_per_page)
     //console.log(posts);
@@ -261,5 +260,7 @@ router.put("/:post_id/delete", async (request, response) => {
     response.status(500).send({ message: e.message });
   }
 });
+
+
 
 module.exports = router;

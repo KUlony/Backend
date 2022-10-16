@@ -84,6 +84,10 @@ const UserSchema = new mongoose.Schema({
     type : Boolean,
     default : false
   },
+  verified_resetpassword : {
+    type : Boolean,
+    default : false
+  }, 
   last_login : {
     type : Date,
     default : null,
