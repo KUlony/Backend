@@ -12,6 +12,8 @@ const reportpostModel = require("../schemas/model_report_post");
 const noticeModel = require("../schemas/model_notification")
 
 router.get("/", async (req,res) => {
+    // #swagger.tags = ['Notice']
+    // #swagger.description = 'ข้อ notice ทั้งหมดของ user'
    try{
       notices = await noticeModel
       .find({entity_user_id: req.user.id})
@@ -23,6 +25,8 @@ router.get("/", async (req,res) => {
 })
 
 router.post("/read/:notic_id", async (req,res) => {
+    // #swagger.tags = ['Notice']
+    // #swagger.description = 'เปลี่ยน status ของ notice เป็น readed : true'
    try {
       await noticeModel.findByIdAndUpdate(req.params.notic_id, {readed: true})
       res.send("Readed")
@@ -32,6 +36,8 @@ router.post("/read/:notic_id", async (req,res) => {
 })
 
 router.post("/unread/:notic_id", async (req,res) => {
+    // #swagger.tags = ['Notice']
+    // #swagger.description = 'เปลี่ยน status ของ notice เป็น readed : false'
    try {
       await noticeModel.findByIdAndUpdate(req.params.notic_id, {readed: false})
       res.send("Readed")

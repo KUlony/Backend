@@ -11,7 +11,7 @@ const passport = require('passport');
 const { updateOne } = require("../schemas/modelotp");
 
 router.post("/register/email", async (req, res) => {
-  // #swagger.tags = ['Sign up']
+  // #swagger.tags = ['Auth']
   // #swagger.description = 'ใช้สมัคร User ใหม่โดยจะส่ง OTP ยืนยันไปทาง Email'
   /* #swagger.security = [{
   }] */
@@ -49,7 +49,7 @@ router.post("/register/email", async (req, res) => {
   
 });
 router.get("/register/email/checkOTP", async (req, res) => {
-  // #swagger.tags = ['Sign up']
+  // #swagger.tags = ['Auth']
   // #swagger.description = 'สำหรับใช้เช็ค OTP'
   /* #swagger.security = [{
   }] */
@@ -141,6 +141,8 @@ router.get('/logout', passport.authenticate('jwt', { session: false }), async (r
 });
 
 router.post('/forgotpassword',async (req,res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'ส่งคำขอลืมรหัสผ่าน'
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
     if (!user) {
@@ -166,6 +168,8 @@ router.post('/forgotpassword',async (req,res) => {
 });
 
 router.get("/forgotpassword/checkOTP", async (req, res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'ยืนยัน OTP เพื่อขอเปลี่ยนหัสผ่าน'
   try {
     const user = await UserModel.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Not find email");
@@ -184,6 +188,8 @@ router.get("/forgotpassword/checkOTP", async (req, res) => {
 });
 
 router.post("/forgotpassword/resetpassword",async(req,res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'เปลี่ยนรหัสผ่านเพราะลืมหัสผ่านเก่า'
   try {
     const user = await UserModel.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("Not find email");
@@ -201,6 +207,8 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
 });
 
 router.post("/changepassword" ,passport.authenticate('jwt', { session: false }), async(req, res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'ขอเปลี่ยนรหัสผ่าน'
   try {
     const user = await UserModel.findOne({ _id: req.user.id });
     if (!compareSync(req.body.currentpassword, user.password) ) {
@@ -220,6 +228,8 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
 
 
 router.get("/newotp/verify/email",async(req,res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'ขอ OTP สำหรับยืนยัน email ใหม่'
   try {
     const OTP = Math.floor(100000 + Math.random()*900000)
     const otp = await Otp.findOne({ email: req.body.email });
@@ -234,6 +244,8 @@ router.get("/newotp/verify/email",async(req,res) => {
 });
 
 router.get("/newotp/verify/forgotpassword",async(req,res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'ขอ OTP สำหรับยืนยัน Email เพื่อเปลี่ยนรหัสใหม่'
   try {
     const OTP = Math.floor(100000 + Math.random()*900000)
     const otp = await Otp.findOne({ email: req.body.email });
