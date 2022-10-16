@@ -506,6 +506,32 @@
         }
       }
     },
+    "/api/post/{post_id}/delete": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/comment/create": {
       "post": {
         "tags": [
@@ -684,6 +710,32 @@
         }
       }
     },
+    "/api/comment/{comment_id}/delete": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/reply/create": {
       "post": {
         "tags": [
@@ -837,6 +889,32 @@
       }
     },
     "/api/reply/unlike/{reply_id}": {
+      "put": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/{reply_id}/delete": {
       "put": {
         "tags": [
           "Reply"
