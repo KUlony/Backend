@@ -34,7 +34,7 @@ router.get("/:user_id/profile", async (request, response) => {
         user_name : user.user_name,
         user_firtname : user.user_firtname,
         user_lastname : user.user_lastname,
-        user_bio : user.bio,
+        user_bio : user.user_bio,
         education : user.education,
         contact : user.contact,
         profile_pic_url : user.profile_pic_url,
