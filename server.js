@@ -11,6 +11,7 @@ const adminroute = require("./routers/admin")
 const searchtopicroute = require("./routers/searchtopic")
 const sing_uproute = require("./routers/sing-up")
 const notificationroute = require("./routers/notification")
+const homeroute = require("./routers/home")
 const session = require('express-session');
 const passport = require('passport');
 const auth = passport.authenticate('jwt', { session: false })
@@ -53,6 +54,7 @@ app.use("/api/topic",auth, topic_cataroute)
 app.use("/api/search",auth,searchroute)
 app.use("/api/admin",auth,adminroute)
 app.use("/api/notification",auth,notificationroute)
+app.use("/api/home",auth, homeroute)
 
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.listen(process.env.PORT || 4000, () => {
