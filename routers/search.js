@@ -25,11 +25,6 @@ router.get("/post", async (req, res) => {
          let posts = await postModel
          .aggregate([
             {
-               $match: {
-                  post_status : "visible",
-               }
-            },
-            {
                $search: {
                   index: "searchPost",
                   compound: {
@@ -64,6 +59,11 @@ router.get("/post", async (req, res) => {
                      ],
                   },
                },
+            },
+            {
+               $match: {
+                  post_status : "visible",
+               }
             },
          ])
          .skip((req.query.page - 1)*posts_per_page)
