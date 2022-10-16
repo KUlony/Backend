@@ -171,27 +171,30 @@ router.put("/:post_id/edit", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'แก้ไข post'
   try {
-  const post = await postModel.findById(request.params.post_id);
-  if (post.user_id !== request.user.id) {
-    response.status(500).send("not your post");
-  };
-  const oldpost = await postModel.findById(request.params.post_id);
-  const newpost = new postModel({
-    user_id : oldpost.user_id,
-    catagory_id : oldpost.catagory_id,
-    topic_id : oldpost.topic_id,
-    post_title : oldpost.post_title,
-    post_content : oldpost.post_content,
-    cover_photo_url : oldpost.cover_photo_url,
-    post_photo_url : oldpost.post_photo_url,
-    post_like_count : oldpost.post_like_count,
-    post_time : oldpost.post_time,
-    post_status : "edited",
-    post_delete_time : Date.now()
-  });
-    await newpost.save();
-    await postModel.findByIdAndUpdate(request.params.post_id,request.body)
-    response.send("finish");
+    const post = await postModel.findById(request.params.post_id);
+    let check = String(post.user_id)
+    if (check !== request.user.id) {
+      response.status(400).send("not your post");
+    }
+    else{
+      const oldpost = await postModel.findById(request.params.post_id);
+      const newpost = new postModel({
+        user_id : oldpost.user_id,
+        catagory_id : oldpost.catagory_id,
+        topic_id : oldpost.topic_id,
+        post_title : oldpost.post_title,
+        post_content : oldpost.post_content,
+        cover_photo_url : oldpost.cover_photo_url,
+        post_photo_url : oldpost.post_photo_url,
+        post_like_count : oldpost.post_like_count,
+        post_time : oldpost.post_time,
+        post_status : "edited",
+        post_delete_time : Date.now()
+      });
+      await newpost.save();
+      await postModel.findByIdAndUpdate(request.params.post_id,request.body)
+      response.send("finish");
+    }
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
@@ -243,30 +246,18 @@ router.delete("/unlike/:post_id", async (request, response) => {
 router.put("/:post_id/delete", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'ลบ post นั้น'
-  const post = await postModel.findById(request.params.post_id);
-  if (post.user_id !== request.user.id) {
-    response.status(500).send("not your post");
-  };
   try {
-    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_status : "deleted"})
-    response.send("deleted");
-  } catch (error) {
-    response.status(500).send(error);
-  }
-});
-
-router.put("/:post_id/delete", async (request, response) => {
-  // #swagger.tags = ['Post']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const post = await postModel.findById(request.params.post_id);
-  if (post.user_id !== request.user.id) {
-    response.status(500).send("not your post");
-  };
-  try {
-    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_status : "deleted"})
-    response.send("deleted");
-  } catch (error) {
-    response.status(500).send(error);
+    const post = await postModel.findById(request.params.post_id);
+    let check = String(post.user_id)
+    if (check !== request.user.id) {
+      response.status(400).send("not your post");
+    }
+    else{
+      await postModel.findOneAndUpdate({_id : request.params.post_id},{post_status : "deleted"})
+      response.send("deleted");
+    };
+  } catch (e) {
+    response.status(500).send({ message: e.message });
   }
 });
 
