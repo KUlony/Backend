@@ -86,19 +86,26 @@ router.put("/:reply_id/edit", async (request, response) => {
   // #swagger.tags = ['Reply']
   // #swagger.description = 'แก้ไข Reply'
   try {
-  const oldreply = await replyModel.findById(request.params.reply_id);
-  const newreply = new replyModel({
-    user_id : oldreply.user_id,
-    comment_id : oldreply.comment_id,
-    reply_content : oldreply.reply_content,
-    reply_like_count : oldreply.reply_like_count,
-    reply_time : oldreply.reply_time,
-    reply_status : "edited",
-    reply_delete_time : Date.now()
-  });
-    await newreply.save();
-    await replyModel.findByIdAndUpdate(request.params.reply_id,request.body)
-    response.send("finish");
+    const reply = await replyModel.findById(request.params.reply_id);
+    let check = String(reply.user_id)
+    if (check !== request.user.id) {
+      response.status(500).send("not your reply");
+    }
+    else {
+      const oldreply = await replyModel.findById(request.params.reply_id);
+      const newreply = new replyModel({
+        user_id : oldreply.user_id,
+        comment_id : oldreply.comment_id,
+        reply_content : oldreply.reply_content,
+        reply_like_count : oldreply.reply_like_count,
+        reply_time : oldreply.reply_time,
+        reply_status : "edited",
+        reply_delete_time : Date.now()
+      });
+      await newreply.save();
+      await replyModel.findByIdAndUpdate(request.params.reply_id,request.body)
+      response.send("finish");
+    }
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
@@ -130,6 +137,24 @@ router.put("/unlike/:reply_id", async (request, response) => {
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
+});
+
+router.put("/:reply_id/delete", async (request, response) => {
+  // #swagger.tags = ['Reply']
+  // #swagger.description = 'ลบ reply นั้น'
+  try {
+    const reply = await replyModel.findById(request.params.reply_id);
+    let check = String(reply.user_id)
+    if (check !== request.user.id) {
+      response.status(500).send("not your reply");
+    }
+    else{
+      await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_status : "deleted"})
+      response.send("deleted");
+    }
+  } catch (error) {
+    response.status(500).send(error);
+  }
 });
 
 module.exports = router;

@@ -517,6 +517,35 @@
         }
       }
     },
+    "/api/post/{post_id}/delete": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "description": "ลบ post นั้น",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/comment/create": {
       "post": {
         "tags": [
@@ -675,6 +704,32 @@
           "Comment"
         ],
         "description": "Unlike comment",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/comment/{comment_id}/delete": {
+      "put": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "ลบ comment นั้น",
         "parameters": [
           {
             "name": "comment_id",
@@ -856,6 +911,32 @@
           "Reply"
         ],
         "description": "unlike reply",
+        "parameters": [
+          {
+            "name": "reply_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reply/{reply_id}/delete": {
+      "put": {
+        "tags": [
+          "Reply"
+        ],
+        "description": "ลบ reply นั้น",
         "parameters": [
           {
             "name": "reply_id",

@@ -87,20 +87,27 @@ router.post("/:entity_id/report", async (request, response) => {
 router.put("/:comment_id/edit", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'แก้ไข Comment'
-  const oldcomment = await commentModel.findById(request.params.comment_id);
-  const newcomment = new commentModel({
-    user_id : oldcomment.user_id,
-    post_id : oldcomment.post_id,
-    comment_content : oldcomment.comment_content,
-    comment_like_count : oldcomment.comment_like_count,
-    comment_time : oldcomment.comment_time,
-    comment_status : "edited",
-    comment_delete_time : Date.now()
-  });
   try {
-    await newcomment.save();
-    await commentModel.findByIdAndUpdate(request.params.comment_id,request.body)
-    response.send("finish");
+    const comment = await commentModel.findById(request.params.comment_id);
+    let check = String(comment.user_id)
+    if (check !== request.user.id) {
+      response.status(500).send("not your comment");
+    }
+    else {
+      const oldcomment = await commentModel.findById(request.params.comment_id);
+      const newcomment = new commentModel({
+        user_id : oldcomment.user_id,
+        post_id : oldcomment.post_id,
+        comment_content : oldcomment.comment_content,
+        comment_like_count : oldcomment.comment_like_count,
+        comment_time : oldcomment.comment_time,
+        comment_status : "edited",
+        comment_delete_time : Date.now()
+      });
+      await newcomment.save();
+      await commentModel.findByIdAndUpdate(request.params.comment_id,request.body)
+      response.send("finish");
+    }
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
@@ -132,6 +139,24 @@ router.put("/unlike/:comment_id", async (request, response) => {
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
+});
+
+router.put("/:comment_id/delete", async (request, response) => {
+  // #swagger.tags = ['Comment']
+  // #swagger.description = 'ลบ comment นั้น'
+  try {
+    const comment = await commentModel.findById(request.params.comment_id);
+    let check = String(comment.user_id)
+    if (check !== request.user.id) {
+      response.status(500).send("not your comment");
+    }
+    else{
+      await commentModel.findOneAndUpdate({_id : request.params.comment_id},{comment_status : "deleted"})
+      response.send("deleted");
+    }
+  } catch (error) {
+    response.status(500).send(error);
+  }
 });
 
 module.exports = router;
