@@ -67,6 +67,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -85,11 +88,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -125,8 +128,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -136,7 +139,7 @@
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "แก้ไข Profile",
         "parameters": [],
         "responses": {
           "200": {
@@ -153,7 +156,7 @@
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอข้อมูล User profile",
         "parameters": [
           {
             "name": "user_id",
@@ -179,7 +182,7 @@
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอ topic ที่ user follow ไว้",
         "parameters": [],
         "responses": {
           "200": {
@@ -196,7 +199,7 @@
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่ง Topic ที่ user ต้องการ Follow",
         "parameters": [
           {
             "name": "topic_id",
@@ -222,7 +225,7 @@
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "Unfollow topic ที่ user follow ไว้",
         "parameters": [
           {
             "name": "topic_id",
@@ -248,7 +251,7 @@
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอ post ที่ user like ไว้",
         "parameters": [],
         "responses": {
           "200": {
@@ -260,12 +263,12 @@
         }
       }
     },
-    "/api/user/user_post": {
+    "/api/user/mypost": {
       "get": {
         "tags": [
           "User"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอ Post ที่ user เป็นคนเขียน",
         "parameters": [],
         "responses": {
           "200": {
@@ -282,7 +285,7 @@
         "tags": [
           "Search"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ค้นหา Topic ด้วยข้อความ",
         "parameters": [
           {
             "name": "text",
@@ -307,7 +310,7 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่ง post ที่ต้องการเพิ่มใน Database",
         "parameters": [],
         "responses": {
           "200": {
@@ -350,8 +353,16 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
-        "parameters": [],
+        "description": "ขอข้อมูล post ทั้งหมดจาก Database",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -367,7 +378,7 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอข้อมูลของ post_id นั้นๆ",
         "parameters": [
           {
             "name": "post_id",
@@ -393,7 +404,7 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่ง Report post",
         "parameters": [
           {
             "name": "entity_id",
@@ -433,7 +444,7 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "แก้ไข post",
         "parameters": [
           {
             "name": "post_id",
@@ -459,7 +470,7 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "Like post และส่ง notice ให้เจ้าของ Post",
         "parameters": [
           {
             "name": "post_id",
@@ -485,7 +496,7 @@
         "tags": [
           "Post"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "Unlike post และลบ Notice ออก",
         "parameters": [
           {
             "name": "post_id",
@@ -537,7 +548,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "สร้าง Comment โดยส่ง User_id ของคนคอมเม้น Post_id ของโพสที่จะคอมเม้นและ Comment_content",
         "parameters": [],
         "responses": {
           "200": {
@@ -571,7 +582,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอข้อมูลของ Comment ทั้งหมดของ post_id นั้น",
         "parameters": [
           {
             "name": "post_id",
@@ -597,7 +608,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่ง Report comment",
         "parameters": [
           {
             "name": "entity_id",
@@ -637,7 +648,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "แก้ไข Comment",
         "parameters": [
           {
             "name": "comment_id",
@@ -663,7 +674,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "Like comment",
         "parameters": [
           {
             "name": "comment_id",
@@ -689,7 +700,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "Unlike comment",
         "parameters": [
           {
             "name": "comment_id",
@@ -741,7 +752,7 @@
         "tags": [
           "Reply"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่งข้อมูลสำหรับสร้าง Reply",
         "parameters": [],
         "responses": {
           "200": {
@@ -762,6 +773,9 @@
                   },
                   "reply_content": {
                     "example": "any"
+                  },
+                  "post_id": {
+                    "example": "any"
                   }
                 }
               }
@@ -775,7 +789,7 @@
         "tags": [
           "Reply"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอ reply ทั้งหมดของ Comment นั้น",
         "parameters": [
           {
             "name": "comment_id",
@@ -801,7 +815,7 @@
         "tags": [
           "Reply"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่ง report Reply",
         "parameters": [
           {
             "name": "entity_id",
@@ -841,7 +855,7 @@
         "tags": [
           "Reply"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "แก้ไข Reply",
         "parameters": [
           {
             "name": "reply_id",
@@ -867,7 +881,7 @@
         "tags": [
           "Reply"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "like reply",
         "parameters": [
           {
             "name": "reply_id",
@@ -893,33 +907,7 @@
         "tags": [
           "Reply"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
-        "parameters": [
-          {
-            "name": "reply_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/reply/{reply_id}/delete": {
-      "put": {
-        "tags": [
-          "Reply"
-        ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "unlike reply",
         "parameters": [
           {
             "name": "reply_id",
@@ -945,7 +933,7 @@
         "tags": [
           "Topic/Catagory"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอ Topic ของ Catagory นั้น",
         "parameters": [
           {
             "name": "catagory",
@@ -971,7 +959,7 @@
         "tags": [
           "Topic/Catagory"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ขอ Topic และ Catagory ทั้งหมด",
         "parameters": [],
         "responses": {
           "200": {
@@ -988,7 +976,7 @@
         "tags": [
           "Topic/Catagory"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "สร้าง Topic ใหม่",
         "parameters": [],
         "responses": {
           "200": {
@@ -1005,7 +993,7 @@
         "tags": [
           "Topic/Catagory"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ส่ง Request topic",
         "parameters": [
           {
             "name": "topic",
@@ -1094,7 +1082,7 @@
         "tags": [
           "Admin"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "รับข้อมูล Request Topic ทั้งหมด",
         "parameters": [],
         "responses": {
           "200": {
@@ -1111,7 +1099,7 @@
         "tags": [
           "Admin"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ลบ Request topic ออกจาก Database",
         "parameters": [
           {
             "name": "request_id",
@@ -1137,7 +1125,7 @@
         "tags": [
           "Admin"
         ],
-        "description": "ค้นหาโพสต์ด้วยข้อความ",
+        "description": "ตอบรับ Request topic โดยส่ง topic_name และ catagory_id ที่ต้องการเพิ่มใน Database จากนั้นทำการลบ Request ออกจาก Database",
         "parameters": [
           {
             "name": "request_id",
@@ -1171,6 +1159,66 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/notification/": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/notification/read/{notic_id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "notic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/notification/unread/{notic_id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "notic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

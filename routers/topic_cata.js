@@ -11,30 +11,22 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const requesttopicModel = require("../schemas/model_request_topic");
 
-router.get("/:catagory/topic", async (request, response) => {
+router.get("/:catagory", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
-  const catagory = await catagoryModel.find({catagory_name: request.params.catagory});
-  const to_res = [];
-  const topics = await topicModel.find({catagory_id : catagory._id});
-  for(j=0;j<topics.length;j++){
-    const topic = {
-      topic_id : topics[j]._id,
-      topic_name : topics[j].topic_name
-    }
-    to_res.push(topic);
-  }
-  to_res.push(to_res);
+  // #swagger.description = 'ขอ Topic ของ Catagory นั้น'
   try {
-    response.send(to_res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+    const catagory = await catagoryModel.findOne({catagory_name: request.params.catagory});
+    const topics = await topicModel.find({catagory_id : catagory._id});
+    response.send(topics);
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.get("/get_all_catagory_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ขอ Topic และ Catagory ทั้งหมด'
+  try {
   const catagory = await catagoryModel.find({});
   const res = [];
   for (i=0;i<catagory.length;i++){
@@ -53,30 +45,30 @@ router.get("/get_all_catagory_topic", async (request, response) => {
     }
     res.push(to_res);
   }
-  try {
     response.send(res);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/create_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'สร้าง Topic ใหม่'
+  try {
   const user = await userModel.findById(request.user.id);
   if(user.admin === "false"){response.status(500).send("not a admin");} 
   const topic = new topicModel(request.body);
-  try {
     await topic.save();
     response.send(topic);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/request_topic", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ค้นหาโพสต์ด้วยข้อความ'
+  // #swagger.description = 'ส่ง Request topic'
+  try {
   const user = await userModel.findById(request.user.id);
   if(user.admin === "false"){response.status(500).send("not a admin");} 
   const request_topic = new requesttopicModel({
@@ -84,12 +76,11 @@ router.post("/request_topic", async (request, response) => {
     request_topic : request.query.topic,
     request_time : Date.now()
   });
-  try {
     await request_topic.save();
     response.send("Request sended");
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 module.exports = router;
