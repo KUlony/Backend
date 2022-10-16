@@ -25,11 +25,6 @@ router.get("/post", async (req, res) => {
          let posts = await postModel
          .aggregate([
             {
-               $match: {
-                  post_status : "visible",
-               }
-            },
-            {
                $search: {
                   index: "searchPost",
                   compound: {
@@ -109,8 +104,7 @@ router.get("/post/topic", async (req, res) => {
    // #swagger.description = 'ค้นหาโพสต์ด้วย topic'
    try{
       let posts = await postModel.find({
-         topic_id: req.query.text,
-         post_status : "visible",
+         topic_id: req.query.text
       })
       .sort({"post_time": -1})
       .skip((req.query.page - 1)*posts_per_page)
