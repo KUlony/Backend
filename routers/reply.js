@@ -111,34 +111,6 @@ router.put("/:reply_id/edit", async (request, response) => {
  }
 });
 
-router.put("/like/:reply_id", async (request, response) => {
-  // #swagger.tags = ['Reply']
-  // #swagger.description = 'like reply'
-  try {
-    const reply = await replyModel.findById(request.params.reply_id);
-    var check = 0;
-    check = check + reply.reply_like_count + 1
-    await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_like_count : check})
-    response.send("liked");
-  } catch (e) {
-    response.status(500).send({ message: e.message });
- }
-});
-
-router.put("/unlike/:reply_id", async (request, response) => {
-  // #swagger.tags = ['Reply']
-  // #swagger.description = 'unlike reply'
-  try {
-    const reply = await replyModel.findById(request.params.reply_id);
-    var check = 0;
-    check = check + reply.reply_like_count - 1
-    await replyModel.findOneAndUpdate({_id : request.params.reply_id},{reply_like_count : check})
-    response.send("unliked");
-  } catch (e) {
-    response.status(500).send({ message: e.message });
- }
-});
-
 router.put("/:reply_id/delete", async (request, response) => {
   // #swagger.tags = ['Reply']
   // #swagger.description = 'ลบ reply นั้น'

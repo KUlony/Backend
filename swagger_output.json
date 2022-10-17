@@ -684,6 +684,9 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -709,6 +712,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "500": {
             "description": "Internal Server Error"
@@ -851,58 +857,6 @@
           "Comment"
         ],
         "description": "แก้ไข Comment",
-        "parameters": [
-          {
-            "name": "comment_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/comment/like/{comment_id}": {
-      "put": {
-        "tags": [
-          "Comment"
-        ],
-        "description": "Like comment",
-        "parameters": [
-          {
-            "name": "comment_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/comment/unlike/{comment_id}": {
-      "put": {
-        "tags": [
-          "Comment"
-        ],
-        "description": "Unlike comment",
         "parameters": [
           {
             "name": "comment_id",
@@ -1078,58 +1032,6 @@
         }
       }
     },
-    "/api/reply/like/{reply_id}": {
-      "put": {
-        "tags": [
-          "Reply"
-        ],
-        "description": "like reply",
-        "parameters": [
-          {
-            "name": "reply_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/reply/unlike/{reply_id}": {
-      "put": {
-        "tags": [
-          "Reply"
-        ],
-        "description": "unlike reply",
-        "parameters": [
-          {
-            "name": "reply_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/reply/{reply_id}/delete": {
       "put": {
         "tags": [
@@ -1139,32 +1041,6 @@
         "parameters": [
           {
             "name": "reply_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/topic/{catagory}": {
-      "get": {
-        "tags": [
-          "Topic/Catagory"
-        ],
-        "description": "ขอ Topic ของ Catagory นั้น",
-        "parameters": [
-          {
-            "name": "catagory",
             "in": "path",
             "required": true,
             "schema": {
@@ -1226,6 +1102,32 @@
           {
             "name": "topic",
             "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/get/{catagory}": {
+      "get": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ขอ Topic ของ Catagory นั้น",
+        "parameters": [
+          {
+            "name": "catagory",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -1529,7 +1431,7 @@
         }
       }
     },
-    "/app/homeroute/": {
+    "/api/home/": {
       "get": {
         "tags": [
           "Home"

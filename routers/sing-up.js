@@ -110,7 +110,8 @@ router.post('/login',async (req, res) => {
       success: true,
       message: "Logged in successfully!",
       token: "Bearer " + token ,
-      user_id : user._id  
+      user_id : user._id,
+      admin : user.admin
     })
     } catch (e) {
       res.status(500).send({ message: e.message });

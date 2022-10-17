@@ -205,24 +205,29 @@ router.post("/like/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'Like post และส่ง notice ให้เจ้าของ Post'
   try {
-  const like_post = new likepostModel({
-    user_id : request.user.id,
-    post_id : request.params.post_id,
-    like_time : Date.now()
-  });
-    await like_post.save();
-    const post = await postModel.findById(request.params.post_id);
-    var check = 0;
-    check = check + post.post_like_count + 1
-    const notice = new noticeModel({
-      entity_user_id: post.user_id,
-      entity_id: request.params.post_id,
-      action_user_id: request.user.id,
-      notice_type: "like"
-    })
-    await notice.save();
-    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
-    response.send("liked");
+    const check = await likepostModel.findOne({user_id : request.user.id, post_id : request.params.post_id})
+    if (check){
+      response.status(400).send("already liked");
+    }
+    else{
+      const like_post = new likepostModel({
+        user_id : request.user.id,
+        post_id : request.params.post_id,
+        like_time : Date.now()
+      });
+      await like_post.save();
+      const post = await postModel.findById(request.params.post_id);
+      const like_post_count = await likepostModel.find({post_id : request.params.post_id})
+      const notice = new noticeModel({
+        entity_user_id: post.user_id,
+        entity_id: request.params.post_id,
+        action_user_id: request.user.id,
+        notice_type: "like"
+      })
+      await notice.save();
+      await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : like_post_count.length})
+      response.send("liked");
+    }
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
@@ -232,13 +237,17 @@ router.delete("/unlike/:post_id", async (request, response) => {
   // #swagger.tags = ['Post']
   // #swagger.description = 'Unlike post และลบ Notice ออก'
   try {
-    await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
-    await noticeModel.findOneAndRemove({post_id: request.params.post_id, action_user_id: request.user.id })
-    const post = await postModel.findById(request.params.post_id);
-    var check = 0;
-    check = check + post.post_like_count - 1
-    await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : check})
-    response.send("unliked");
+    const check = await likepostModel.findOne({user_id : request.user.id, post_id : request.params.post_id})
+    if (!check){
+      response.status(400).send("not liked yet");
+    }
+    else {
+      await likepostModel.findOneAndRemove({user_id : request.user.id, post_id : request.params.post_id });
+      await noticeModel.findOneAndRemove({post_id: request.params.post_id, action_user_id: request.user.id })
+      const like_post_count = await likepostModel.find({post_id : request.params.post_id})
+      await postModel.findOneAndUpdate({_id : request.params.post_id},{post_like_count : like_post_count.length})
+      response.send("unliked");
+    }
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
