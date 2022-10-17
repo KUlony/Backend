@@ -72,7 +72,7 @@ router.post("/request_topic", async (request, response) => {
   }
 });
 
-router.get("/:catagory", async (request, response) => {
+router.get("/get/:catagory", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ขอ Topic ของ Catagory นั้น'
   try {
