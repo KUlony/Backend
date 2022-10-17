@@ -54,12 +54,11 @@ app.use("/api/topic",auth, topic_cataroute)
 app.use("/api/search",auth,searchroute)
 app.use("/api/admin",auth,adminroute)
 app.use("/api/notification",auth,notificationroute)
-app.use("/app/homeroute",auth,homeroute)
+app.use("/api/home",auth,homeroute)
 
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.listen(process.env.PORT || 4000, () => {
   console.log("Server is running at port 4000");
 });
-
 
 //npx nodemon server.js

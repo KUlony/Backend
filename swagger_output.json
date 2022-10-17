@@ -14,7 +14,7 @@
     "/api/sing-up/register/email": {
       "post": {
         "tags": [
-          "Sign up"
+          "Auth"
         ],
         "description": "ใช้สมัคร User ใหม่โดยจะส่ง OTP ยืนยันไปทาง Email",
         "parameters": [],
@@ -57,7 +57,7 @@
     "/api/sing-up/register/email/checkOTP": {
       "get": {
         "tags": [
-          "Sign up"
+          "Auth"
         ],
         "description": "สำหรับใช้เช็ค OTP",
         "parameters": [],
@@ -136,7 +136,10 @@
     },
     "/api/sing-up/forgotpassword": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "ส่งคำขอลืมรหัสผ่าน",
         "parameters": [],
         "responses": {
           "200": {
@@ -167,7 +170,10 @@
     },
     "/api/sing-up/forgotpassword/checkOTP": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "ยืนยัน OTP เพื่อขอเปลี่ยนหัสผ่าน",
         "parameters": [],
         "responses": {
           "200": {
@@ -184,7 +190,10 @@
     },
     "/api/sing-up/forgotpassword/resetpassword": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "เปลี่ยนรหัสผ่านเพราะลืมหัสผ่านเก่า",
         "parameters": [],
         "responses": {
           "200": {
@@ -221,7 +230,10 @@
     },
     "/api/sing-up/changepassword": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "ขอเปลี่ยนรหัสผ่าน",
         "parameters": [],
         "responses": {
           "200": {
@@ -261,7 +273,10 @@
     },
     "/api/sing-up/newotp/verify/email": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "ขอ OTP สำหรับยืนยัน email ใหม่",
         "parameters": [],
         "responses": {
           "200": {
@@ -275,7 +290,10 @@
     },
     "/api/sing-up/newotp/verify/forgotpassword": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "ขอ OTP สำหรับยืนยัน Email เพื่อเปลี่ยนรหัสใหม่",
         "parameters": [],
         "responses": {
           "200": {
@@ -460,7 +478,10 @@
     },
     "/api/searchtopic/user": {
       "get": {
-        "description": "",
+        "tags": [
+          "Search"
+        ],
+        "description": "ค้นหา User ด้วยข้อความ",
         "parameters": [
           {
             "name": "text",
@@ -1441,7 +1462,10 @@
     },
     "/api/notification/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Notice"
+        ],
+        "description": "ข้อ notice ทั้งหมดของ user",
         "parameters": [],
         "responses": {
           "200": {
@@ -1455,7 +1479,10 @@
     },
     "/api/notification/read/{notic_id}": {
       "post": {
-        "description": "",
+        "tags": [
+          "Notice"
+        ],
+        "description": "เปลี่ยน status ของ notice เป็น readed : true",
         "parameters": [
           {
             "name": "notic_id",
@@ -1478,7 +1505,10 @@
     },
     "/api/notification/unread/{notic_id}": {
       "post": {
-        "description": "",
+        "tags": [
+          "Notice"
+        ],
+        "description": "เปลี่ยน status ของ notice เป็น readed : false",
         "parameters": [
           {
             "name": "notic_id",

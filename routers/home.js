@@ -40,7 +40,6 @@ router.get("/", async (req, res) => {
          topics.forEach(() => {
             topics.push(mongoose.Types.ObjectId(topics.shift()))
          });
-         console.log(topics)
          let posts = await postModel
          .aggregate([
             { $sort: {
@@ -62,7 +61,6 @@ router.get("/", async (req, res) => {
          ])
          .skip((req.query.page - 1)*posts_per_page)
          .limit(posts_per_page)
-         console.log(posts)
          let to_res = false;
          let payload = [];
          for (let i=0; i < posts.length;i++){
