@@ -22,10 +22,10 @@ router.post("/register/email", async (req, res) => {
     }
     let user = await UserModel.findOne({ email: email });
     if (user) {
-      return res.status(400).send("User with given email already exist!")
+      return res.status(400).send("An account with this email already exists!")
     }
     if (password != confirm_password) {
-      res.status(400).send('Passwords do not match' );
+      res.status(400).send('Passwords do NOT match, please try again.' );
     }
     const hashedPassword = await bcrypt.hash(req.body.password,10);
     user = await new UserModel({
@@ -48,7 +48,7 @@ router.post("/register/email", async (req, res) => {
  }
   
 });
-router.get("/register/email/checkOTP", async (req, res) => {
+router.post("/register/email/checkOTP", async (req, res) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'สำหรับใช้เช็ค OTP'
   /* #swagger.security = [{
@@ -82,7 +82,7 @@ router.post('/login',async (req, res) => {
     if (!user) {
       res.status(401).send({
           success: false,
-          message: "Could not find the email."
+          message: "No account associated with the email address"
       })
     }
     if (!user.verified) {
@@ -98,21 +98,23 @@ router.post('/login',async (req, res) => {
         message: "Incorrect password"
       })
     }
-    const payload = {
+    else {
+      const payload = {
       email: user.email,
       id: user._id,
       verified : true,      
+      }
+      //console.log(payload.id);
+      await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
+      const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
+      res.status(200).send({
+        success: true,
+        message: "Logged in successfully!",
+        token: "Bearer " + token ,
+        user_id : user._id,
+        admin : user.admin
+      })
     }
-    //console.log(payload.id);
-    await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
-    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
-    res.status(200).send({
-      success: true,
-      message: "Logged in successfully!",
-      token: "Bearer " + token ,
-      user_id : user._id,
-      admin : user.admin
-    })
     } catch (e) {
       res.status(500).send({ message: e.message });
    }
@@ -218,7 +220,7 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
         message: "Incorrect password"
       })
     }
-    if (req.body.newpassword != req.body.confirm_newpassword) return res.status(400).send("Newpasswords do not match");
+    if (req.body.newpassword != req.body.confirm_newpassword) return res.status(400).send("Passwords do NOT match, please try again.");
     const hashedPassword = await bcrypt.hash(req.body.newpassword,10);
     await user.updateOne({ password: hashedPassword });
     res.status(200).send("Change password sucessfully");
@@ -228,7 +230,7 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
 });
 
 
-router.get("/newotp/verify/email",async(req,res) => {
+router.post("/newotp/verify/email",async(req,res) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'ขอ OTP สำหรับยืนยัน email ใหม่'
   try {
@@ -244,7 +246,7 @@ router.get("/newotp/verify/email",async(req,res) => {
 
 });
 
-router.get("/newotp/verify/forgotpassword",async(req,res) => {
+router.post("/newotp/verify/forgotpassword",async(req,res) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'ขอ OTP สำหรับยืนยัน Email เพื่อเปลี่ยนรหัสใหม่'
   try {

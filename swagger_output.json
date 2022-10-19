@@ -55,7 +55,7 @@
       }
     },
     "/api/sing-up/register/email/checkOTP": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -74,7 +74,24 @@
         },
         "security": [
           {}
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "otp": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/sing-up/login": {
@@ -272,7 +289,7 @@
       }
     },
     "/api/sing-up/newotp/verify/email": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -285,11 +302,25 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
     "/api/sing-up/newotp/verify/forgotpassword": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -301,6 +332,20 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
