@@ -84,7 +84,7 @@ router.get("/get_topic/:catagory", async (request, response) => {
  }
 });
 
-router.get("/get_topic_name", async (request, response) => {
+router.get("/get_topic_data", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ส่ง Topic ID เพื่อรับข้อมูล Topic นั้น'
   try {

@@ -496,6 +496,31 @@
         }
       }
     },
+    "/api/user/is_my_entity": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "เช็คว่า Entity นั้นเป็นของเราหรือไม่",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/searchtopic/topic": {
       "get": {
         "tags": [
@@ -1162,7 +1187,7 @@
         }
       }
     },
-    "/api/topic/get/{catagory}": {
+    "/api/topic/get_topic/{catagory}": {
       "get": {
         "tags": [
           "Topic/Catagory"
@@ -1173,6 +1198,31 @@
             "name": "catagory",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/get_topic_data": {
+      "get": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ส่ง Topic ID เพื่อรับข้อมูล Topic นั้น",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
             "schema": {
               "type": "string"
             }
