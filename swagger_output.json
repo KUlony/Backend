@@ -38,13 +38,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "password": {
-                    "example": "any"
-                  },
                   "email": {
                     "example": "any"
                   },
-                  "confirm_password": {
+                  "password": {
                     "example": "any"
                   }
                 }
