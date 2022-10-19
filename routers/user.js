@@ -185,4 +185,19 @@ router.get("/mypost", async (request, response) => {
  }
 });
 
+router.get("/is_my_entity", async (req, res) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'เช็คว่า Entity นั้นเป็นของเราหรือไม่'
+  try {
+    post = await postModel.findOne({_id: req.query.id, user_id: req.user.id})
+    comment = await commentModel.findOne({_id: req.query.id, user_id: req.user.id})
+    reply = await replyModel.findOne({_id: req.query.id, user_id: req.user.id})
+    if (post || comment || reply){
+      res.send(true)
+    } else { res.send(false) }
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+  }
+})
+
 module.exports = router;
