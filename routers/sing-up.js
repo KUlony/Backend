@@ -57,7 +57,7 @@ router.post("/register/email", async (req, res) => {
       message: "An Email sent to your account please verify",
       
     })
-    
+    //new
       
   } catch (e) {
     res.status(500).send({ message: e.message });
