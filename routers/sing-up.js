@@ -18,16 +18,27 @@ router.post("/register/email", async (req, res) => {
   try {
     const { email,password, confirm_password } = req.body;
     if ( !email || !password || !confirm_password) {
-      res.status(400).send('Please enter all fields');
+      res.status(400).send({
+        success: false,
+        message: "Body do NOT match, please try again."
+    });
     }
     let user = await UserModel.findOne({ email: email });
     if (user) {
-      return res.status(400).send("An account with this email already exists!")
+      return res.status(400).send({
+        success: false,
+        message: "An account with this email already exists!"
+    })
     }
-    if (password != confirm_password) {
-      res.status(400).send('Passwords do NOT match, please try again.' );
+    if (password !== confirm_password) {
+      res.status(400).send({
+        success: false,
+        message: "Passwords do NOT match, please try again."
+    });
     }
     const hashedPassword = await bcrypt.hash(req.body.password,10);
+    const message = OTP.toString()
+    await sendEmail(user.email, "Verify Email", message);
     user = await new UserModel({
       email: req.body.email,
       password :  hashedPassword
@@ -38,10 +49,15 @@ router.post("/register/email", async (req, res) => {
       email: req.body.email,
       otp:OTP.toString()
     }).save();
-    const message = OTP.toString()
-    await sendEmail(user.email, "Verify Email", message);
-    res.send("An Email sent to your account please verify");
-    // res.redirect('/api/sing-up/register/email/checkOTP')
+    res.status(200).send({
+      success: true,
+      message: "An Email sent to your account please verify",
+      
+    })
+    
+    
+    
+   
       
   } catch (e) {
     res.status(500).send({ message: e.message });
@@ -55,18 +71,32 @@ router.post("/register/email/checkOTP", async (req, res) => {
   }] */
     try {
       const user = await UserModel.findOne({ email: req.body.email });
-      if (!user) return res.status(400).send("Not find email");
+      if (!user) return res.status(400).send({
+        success: false,
+        message: "No account associated with the email address."
+    });
       const otp = await Otp.findOne({email: req.body.email});
-      if (!otp) return res.status(400).send("Enter wrong email");
-      if (otp.otp != req.body.otp) {
-        return res.status(400).send("Wrong OTP");
+      if (!otp) return res.status(400).send({
+        success: false,
+        message: "No account associated with the OTP address."
+    });
+      if (otp.otp !== req.body.otp) {
+        return res.status(400).send({
+          success: false,
+          message: "OTP do NOT match, please try again."
+      });
       }
-      if (otp.otp == req.body.otp ) {
+      if (otp.otp === req.body.otp ) {
         await user.updateOne({  verified: true });
       };
 
       await Otp.findByIdAndRemove(otp._id);
-      res.send("email verified sucessfully");
+      
+      res.status(200).send({
+        success: true,
+        message: "Email verified sucessfully",
+        
+      })
     } catch (e) {
       res.status(500).send({ message: e.message });
    }
@@ -95,7 +125,7 @@ router.post('/login',async (req, res) => {
     if (!compareSync(req.body.password, user.password)) {
       res.status(401).send({
         success: false,
-        message: "Incorrect password"
+        message: "Passwords do NOT match, please try again."
       })
     }
     else {
@@ -137,7 +167,11 @@ router.get('/logout', passport.authenticate('jwt', { session: false }), async (r
   try {
     const user = await UserModel.findOne({ _id: req.user.id });
     await user.updateOne({status_login : false})
-    res.send("ok")
+    res.status(200).send({
+      success: true,
+      message: "Logged out successfully!",
+      
+    })
   }catch (e) {
     res.status(500).send({ message: e.message });
  }
@@ -151,7 +185,7 @@ router.post('/forgotpassword',async (req,res) => {
     if (!user) {
       res.status(401).send({
           success: false,
-          message: "Could not find the email."
+          message: "No account associated with the email address."
       })
     }
     const OTP = Math.floor(100000 + Math.random()*900000)
@@ -162,7 +196,12 @@ router.post('/forgotpassword',async (req,res) => {
     }).save();
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your identity ", message);
-    res.send("An Email sent to your account please verify your identity");
+    
+    res.status(200).send({
+      success: true,
+      message: "An Email sent to your account please verify your identity",
+      
+    })
 
   }
   catch (e) {
@@ -175,14 +214,28 @@ router.get("/forgotpassword/checkOTP", async (req, res) => {
   // #swagger.description = 'ยืนยัน OTP เพื่อขอเปลี่ยนหัสผ่าน'
   try {
     const user = await UserModel.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send("Not find email");
+    if (!user) return res.status(400).send({
+      success: false,
+      message: "No account associated with the email address."
+  });
     const otp = await Otp.findOne({email: req.body.email});
-    if (!otp) return res.status(400).send("Enter wrong email");
-    if (otp.otp != req.body.otp ) return res.status(400).send("wrong OTP");
-    if (otp.otp == req.body.otp ) {
+    if (!otp) return res.status(400).send({
+      success: false,
+      message: "No account associated with the otp address."
+  });
+    if (otp.otp !== req.body.otp ) return res.status(400).send({
+      success: false,
+      message: "OTP do NOT match, please try again."
+  });
+    if (otp.otp === req.body.otp ) {
       await Otp.findByIdAndRemove(otp._id);
       await user.updateOne({verified_resetpassword : true})
-      res.status(200).send("Verify your identity sucessfully");
+      
+      res.status(200).send({
+        success: true,
+        message: "Verify your identity sucessfully",
+        
+      })
     };
     
   } catch (e) {
@@ -195,13 +248,27 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
   // #swagger.description = 'เปลี่ยนรหัสผ่านเพราะลืมหัสผ่านเก่า'
   try {
     const user = await UserModel.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send("Not find email");
-    if (!user.verified_resetpassword) return res.status(400).send("Verify Email");
+    if (!user) return res.status(400).send({
+      success: false,
+      message: "No account associated with the email address."
+  });
+    if (!user.verified_resetpassword) return res.status(400).send({
+      success: false,
+      message: "No Verify your identity."
+  });
     
-    if (req.body.password != req.body.confirm_password) return res.status(400).send("Passwords do not match");
+    if (req.body.password !== req.body.confirm_password) return res.status(400).send({
+      success: false,
+      message: "Passwords do NOT match, please try again."
+  });
     const hashedPassword = await bcrypt.hash(req.body.password,10);
     await user.updateOne({ password: hashedPassword ,verified_resetpassword : false});
-    res.status(200).send("Reset password sucessfully");
+    
+    res.status(200).send({
+      success: true,
+      message: "Reset password sucessfully",
+      
+    })
 
     
   } catch (e) {
@@ -217,13 +284,18 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
     if (!compareSync(req.body.currentpassword, user.password) ) {
       res.status(401).send({
         success: false,
-        message: "Incorrect password"
+        message: "Currentpasswords do NOT match, please try again."
       })
     }
-    if (req.body.newpassword != req.body.confirm_newpassword) return res.status(400).send("Passwords do NOT match, please try again.");
+    if (req.body.newpassword !== req.body.confirm_newpassword) return res.status(400).send("Newpasswords do NOT match, please try again.");
     const hashedPassword = await bcrypt.hash(req.body.newpassword,10);
     await user.updateOne({ password: hashedPassword });
-    res.status(200).send("Change password sucessfully");
+   
+    res.status(200).send({
+      success: true,
+      message: "Change password sucessfully"
+      
+    });
   } catch (e) {
     res.status(500).send({ message: e.message });
  }
@@ -239,7 +311,12 @@ router.post("/newotp/verify/email",async(req,res) => {
     await otp.updateOne({otp :OTP.toString()})
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your Email ", message);
-    res.send("An Email sent to your account please verify email");
+    
+    res.status(200).send({
+      success: true,
+      message: "An Email sent to your account please verify email"
+      
+    });
   } catch (e) {
     res.status(500).send({ message: e.message });
  }
@@ -255,7 +332,12 @@ router.post("/newotp/verify/forgotpassword",async(req,res) => {
     await otp.updateOne({otp :OTP.toString()})
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your Email ", message);
-    res.send("An Email sent to your account please verify email");
+   
+    res.status(200).send({
+      success: true,
+      message: "An Email sent to your account please verify email"
+      
+    });
   } catch (e) {
     res.status(500).send({ message: e.message });
  }
