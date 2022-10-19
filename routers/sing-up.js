@@ -41,13 +41,13 @@ router.post("/register/email", async (req, res) => {
     const message = OTP.toString()
     await sendEmail(user.email, "Verify Email", message);
     user = await new UserModel({
-      email: req.body.email,
+      email: email,
       password :  hashedPassword
     }).save();
     
     console.log(OTP);
     await new Otp({
-      email: req.body.email,
+      email: email,
       otp:OTP.toString()
     }).save();
     
