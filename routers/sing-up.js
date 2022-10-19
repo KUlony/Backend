@@ -36,6 +36,7 @@ router.post("/register/email", async (req, res) => {
         message: "Passwords do NOT match, please try again."
     });
     }
+    const OTP = Math.floor(100000 + Math.random()*900000);
     const hashedPassword = await bcrypt.hash(req.body.password,10);
     const message = OTP.toString()
     await sendEmail(user.email, "Verify Email", message);
@@ -43,7 +44,7 @@ router.post("/register/email", async (req, res) => {
       email: req.body.email,
       password :  hashedPassword
     }).save();
-    const OTP = Math.floor(100000 + Math.random()*900000);
+    
     console.log(OTP);
     await new Otp({
       email: req.body.email,
