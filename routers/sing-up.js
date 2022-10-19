@@ -19,13 +19,13 @@ router.post("/register/email", async (req, res) => {
     
     const user = await UserModel.findOne({ email: req.body.email });
     if (user) {
-      res.status(400).send({
+      return res.status(400).send({
         success: false,
         message: "An account with this email already exists!"
       })
     }
-    if (req.password !== req.confirm_password) {
-      res.status(400).send({
+    if (req.body.password !== req.body.confirm_password) {
+      return res.status(400).send({
         success: false,
         message: "Passwords do NOT match, please try again."
       });
@@ -47,7 +47,7 @@ router.post("/register/email", async (req, res) => {
     }).save();
     
     
-    res.status(200).send({
+    return res.status(200).send({
       success: true,
       message: "An Email sent to your account please verify",
       
@@ -68,20 +68,20 @@ router.post("/register/email/checkOTP", async (req, res) => {
     try {
       const user = await UserModel.findOne({ email: req.body.email });
       if (!user) { 
-        res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: "No account associated with the email address."
         });
       }
       const otp = await Otp.findOne({email: req.body.email});
       if (!otp) {
-        res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: "No account associated with the OTP address."
         });
       }
       if (otp.otp !== req.body.otp) {
-        res.status(400).send({
+        return res.status(400).send({
           success: false,
           message: "OTP do NOT match, please try again."
         });
@@ -92,7 +92,7 @@ router.post("/register/email/checkOTP", async (req, res) => {
 
       await Otp.findByIdAndRemove(otp._id);
       
-      res.status(200).send({
+      return res.status(200).send({
         success: true,
         message: "Email verified sucessfully",
         
@@ -110,20 +110,20 @@ router.post('/login',async (req, res) => {
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
     if (!user) {
-      res.status(401).send({
+      return res.status(401).send({
           success: false,
           message: "No account associated with the email address"
       })
     }
     if (!user.verified) {
-      res.status(401).send({
+      return res.status(401).send({
         success: false,
         message: "Verify email againt"
     })
     }
     // Incorrect password
     if (!compareSync(req.body.password, user.password)) {
-      res.status(401).send({
+      return res.status(401).send({
         success: false,
         message: "Passwords do NOT match, please try again."
       })
@@ -137,7 +137,7 @@ router.post('/login',async (req, res) => {
       //console.log(payload.id);
       await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
       const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
-      res.status(200).send({
+      return res.status(200).send({
         success: true,
         message: "Logged in successfully!",
         token: "Bearer " + token ,
@@ -183,21 +183,22 @@ router.post('/forgotpassword',async (req,res) => {
   try {
     const user =  await UserModel.findOne({ email: req.body.email })
     if (!user) {
-      res.status(401).send({
+      return res.status(401).send({
           success: false,
           message: "No account associated with the email address."
       })
     }
     const OTP = Math.floor(100000 + Math.random()*900000)
+    const message = OTP.toString()
+    await sendEmail(req.body.email, "Verify your identity ", message);
     console.log(OTP)
     await new Otp({
       email: req.body.email,
       otp:OTP.toString()
     }).save();
-    const message = OTP.toString()
-    await sendEmail(req.body.email, "Verify your identity ", message);
     
-    res.status(200).send({
+    
+    return res.status(200).send({
       success: true,
       message: "An Email sent to your account please verify your identity",
       
@@ -217,21 +218,21 @@ router.get("/forgotpassword/checkOTP", async (req, res) => {
     if (!user) return res.status(400).send({
       success: false,
       message: "No account associated with the email address."
-  });
+    });
     const otp = await Otp.findOne({email: req.body.email});
     if (!otp) return res.status(400).send({
       success: false,
       message: "No account associated with the otp address."
-  });
+    });
     if (otp.otp !== req.body.otp ) return res.status(400).send({
       success: false,
       message: "OTP do NOT match, please try again."
-  });
+    });
     if (otp.otp === req.body.otp ) {
       await Otp.findByIdAndRemove(otp._id);
       await user.updateOne({verified_resetpassword : true})
       
-      res.status(200).send({
+      return res.status(200).send({
         success: true,
         message: "Verify your identity sucessfully",
         
@@ -264,7 +265,7 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
     const hashedPassword = await bcrypt.hash(req.body.password,10);
     await user.updateOne({ password: hashedPassword ,verified_resetpassword : false});
     
-    res.status(200).send({
+    return res.status(200).send({
       success: true,
       message: "Reset password sucessfully",
       
@@ -282,16 +283,20 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
   try {
     const user = await UserModel.findOne({ _id: req.user.id });
     if (!compareSync(req.body.currentpassword, user.password) ) {
-      res.status(401).send({
+      return res.status(400).send({
         success: false,
         message: "Currentpasswords do NOT match, please try again."
       })
     }
-    if (req.body.newpassword !== req.body.confirm_newpassword) return res.status(400).send("Newpasswords do NOT match, please try again.");
+    
+    if (req.body.newpassword !== req.body.confirm_newpassword) return res.status(400).send({
+      success: false,
+      message: "Newpasswords do NOT match, please try again."
+    });
     const hashedPassword = await bcrypt.hash(req.body.newpassword,10);
     await user.updateOne({ password: hashedPassword });
    
-    res.status(200).send({
+    return res.status(200).send({
       success: true,
       message: "Change password sucessfully"
       
@@ -308,11 +313,16 @@ router.post("/newotp/verify/email",async(req,res) => {
   try {
     const OTP = Math.floor(100000 + Math.random()*900000)
     const otp = await Otp.findOne({ email: req.body.email });
+    if (!otp) return res.status(400).send({
+      success: false,
+      message: "Haven't requested OTP yet."
+    });
     await otp.updateOne({otp :OTP.toString()})
+    console.log(OTP)
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your Email ", message);
     
-    res.status(200).send({
+    return res.status(200).send({
       success: true,
       message: "An Email sent to your account please verify email"
       
@@ -329,11 +339,16 @@ router.post("/newotp/verify/forgotpassword",async(req,res) => {
   try {
     const OTP = Math.floor(100000 + Math.random()*900000)
     const otp = await Otp.findOne({ email: req.body.email });
+    if (!otp) return res.status(400).send({
+      success: false,
+      message: "Haven't requested OTP yet."
+    });
     await otp.updateOne({otp :OTP.toString()})
+    console.log(OTP)
     const message = OTP.toString()
     await sendEmail(req.body.email, "Verify your Email ", message);
    
-    res.status(200).send({
+    return res.status(200).send({
       success: true,
       message: "An Email sent to your account please verify email"
       
