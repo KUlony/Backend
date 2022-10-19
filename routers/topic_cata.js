@@ -72,7 +72,7 @@ router.post("/request_topic", async (request, response) => {
   }
 });
 
-router.get("/get/:catagory", async (request, response) => {
+router.get("/get_topic/:catagory", async (request, response) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ขอ Topic ของ Catagory นั้น'
   try {
@@ -83,4 +83,16 @@ router.get("/get/:catagory", async (request, response) => {
     response.status(500).send({ message: e.message });
  }
 });
+
+router.get("/get_topic_name", async (request, response) => {
+  // #swagger.tags = ['Topic/Catagory']
+  // #swagger.description = 'ส่ง Topic ID เพื่อรับข้อมูล Topic นั้น'
+  try {
+    const topic = await topicModel.findOne({_id: request.query.id});
+    response.send(topic);
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
+});
+
 module.exports = router;
