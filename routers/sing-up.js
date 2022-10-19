@@ -16,21 +16,15 @@ router.post("/register/email", async (req, res) => {
   /* #swagger.security = [{
   }] */
   try {
-    const { email,password, confirm_password } = req.body;
-    if ( !email || !password || !confirm_password) {
-      res.status(400).send({
-        success: false,
-         message: "Body do NOT match, please try again."
-      });
-    }
-    let user = await UserModel.findOne({ email: email });
+    
+    const user = await UserModel.findOne({ email: req.body.email });
     if (user) {
-      return res.status(400).send({
+      res.status(400).send({
         success: false,
         message: "An account with this email already exists!"
       })
     }
-    if (password != confirm_password) {
+    if (req.password !== req.confirm_password) {
       res.status(400).send({
         success: false,
         message: "Passwords do NOT match, please try again."
@@ -39,15 +33,16 @@ router.post("/register/email", async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password,10);
     const OTP = Math.floor(100000 + Math.random()*900000);
     const message = OTP.toString()
-    await sendEmail(user.email, "Verify Email", message);
-    user = await new UserModel({
-      email: email,
+    await sendEmail(req.body.email, "Verify Email", message);
+    await UserModel({
+      email:  req.body.email ,
       password :  hashedPassword
     }).save();
     
+    
     console.log(OTP);
-    await new Otp({
-      email: email,
+    await Otp({
+      email:  req.body.email ,
       otp:OTP.toString()
     }).save();
     
