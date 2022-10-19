@@ -20,50 +20,51 @@ router.post("/register/email", async (req, res) => {
     if ( !email || !password || !confirm_password) {
       res.status(400).send({
         success: false,
-        message: "Body do NOT match, please try again."
-    });
+         message: "Body do NOT match, please try again."
+      });
     }
     let user = await UserModel.findOne({ email: email });
     if (user) {
       return res.status(400).send({
         success: false,
         message: "An account with this email already exists!"
-    })
+      })
     }
-    if (password !== confirm_password) {
+    if (password != confirm_password) {
       res.status(400).send({
         success: false,
         message: "Passwords do NOT match, please try again."
-    });
+      });
     }
     const hashedPassword = await bcrypt.hash(req.body.password,10);
+    const OTP = Math.floor(100000 + Math.random()*900000);
     const message = OTP.toString()
     await sendEmail(user.email, "Verify Email", message);
     user = await new UserModel({
       email: req.body.email,
       password :  hashedPassword
     }).save();
-    const OTP = Math.floor(100000 + Math.random()*900000);
+    
     console.log(OTP);
     await new Otp({
       email: req.body.email,
       otp:OTP.toString()
     }).save();
+    
+    
     res.status(200).send({
       success: true,
       message: "An Email sent to your account please verify",
       
     })
     
-    
-    
-   
       
   } catch (e) {
     res.status(500).send({ message: e.message });
  }
   
 });
+
 router.post("/register/email/checkOTP", async (req, res) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'สำหรับใช้เช็ค OTP'
@@ -71,20 +72,24 @@ router.post("/register/email/checkOTP", async (req, res) => {
   }] */
     try {
       const user = await UserModel.findOne({ email: req.body.email });
-      if (!user) return res.status(400).send({
-        success: false,
-        message: "No account associated with the email address."
-    });
+      if (!user) { 
+        res.status(400).send({
+          success: false,
+          message: "No account associated with the email address."
+        });
+      }
       const otp = await Otp.findOne({email: req.body.email});
-      if (!otp) return res.status(400).send({
-        success: false,
-        message: "No account associated with the OTP address."
-    });
+      if (!otp) {
+        res.status(400).send({
+          success: false,
+          message: "No account associated with the OTP address."
+        });
+      }
       if (otp.otp !== req.body.otp) {
-        return res.status(400).send({
+        res.status(400).send({
           success: false,
           message: "OTP do NOT match, please try again."
-      });
+        });
       }
       if (otp.otp === req.body.otp ) {
         await user.updateOne({  verified: true });
