@@ -55,7 +55,7 @@
       }
     },
     "/api/sing-up/register/email/checkOTP": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -74,7 +74,24 @@
         },
         "security": [
           {}
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "otp": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/sing-up/login": {
@@ -1117,7 +1134,7 @@
         }
       }
     },
-    "/api/topic/get/{catagory}": {
+    "/api/topic/get_topic/{catagory}": {
       "get": {
         "tags": [
           "Topic/Catagory"
@@ -1128,6 +1145,31 @@
             "name": "catagory",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/topic/get_topic_name": {
+      "get": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ส่ง Topic ID เพื่อรับข้อมูล Topic นั้น",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
             "schema": {
               "type": "string"
             }

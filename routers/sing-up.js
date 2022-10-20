@@ -48,7 +48,7 @@ router.post("/register/email", async (req, res) => {
  }
   
 });
-router.get("/register/email/checkOTP", async (req, res) => {
+router.post("/register/email/checkOTP", async (req, res) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'สำหรับใช้เช็ค OTP'
   /* #swagger.security = [{
@@ -98,21 +98,22 @@ router.post('/login',async (req, res) => {
         message: "Incorrect password"
       })
     }
-    const payload = {
-      email: user.email,
-      id: user._id,
-      verified : true,      
-    }
-    //console.log(payload.id);
-    await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
-    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
-    res.status(200).send({
-      success: true,
-      message: "Logged in successfully!",
-      token: "Bearer " + token ,
-      user_id : user._id,
-      admin : user.admin
-    })
+    else {
+      const payload = {
+        email: user.email,
+        id: user._id,
+        verified : true,      
+      }
+      //console.log(payload.id);
+      await user.updateOne({ _id: user._id,last_login : Date.now() ,status_login: true });
+      const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" });
+      res.status(200).send({
+        success: true,
+        message: "Logged in successfully!",
+        token: "Bearer " + token ,
+        user_id : user._id,
+        admin : user.admin
+      })}
     } catch (e) {
       res.status(500).send({ message: e.message });
    }
