@@ -38,10 +38,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "password": {
+                  "email": {
                     "example": "any"
                   },
-                  "email": {
+                  "password": {
                     "example": "any"
                   },
                   "confirm_password": {
@@ -259,9 +259,6 @@
           "400": {
             "description": "Bad Request"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -289,7 +286,7 @@
       }
     },
     "/api/sing-up/newotp/verify/email": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -299,14 +296,31 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/sing-up/newotp/verify/forgotpassword": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -316,8 +330,25 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -458,6 +489,31 @@
         ],
         "description": "ขอ Post ที่ user เป็นคนเขียน",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/is_my_entity": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "เช็คว่า Entity นั้นเป็นของเราหรือไม่",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1160,7 +1216,7 @@
         }
       }
     },
-    "/api/topic/get_topic_name": {
+    "/api/topic/get_topic_data": {
       "get": {
         "tags": [
           "Topic/Catagory"
