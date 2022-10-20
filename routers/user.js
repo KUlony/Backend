@@ -144,7 +144,7 @@ router.get("/mypost", async (request, response) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'ขอ Post ที่ user เป็นคนเขียน'
   try {
-  const post = await postModel.find({user_id : request.user.id});
+  const post = await postModel.find({user_id : request.user.id, post_status : "visible"});
   
 
   const user = await userModel.findById(request.user.id);
