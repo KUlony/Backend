@@ -40,7 +40,8 @@ router.post("/create",async (request, response) => {
       post_title : request.body.post_title,
       post_content : request.body.post_content,
       cover_photo_url : request.body.cover_photo_url,
-      post_photo_url : request.body.post_photo_url
+      post_photo_url : request.body.post_photo_url,
+      post_time : Date.now()
     });
   
       await post.save();

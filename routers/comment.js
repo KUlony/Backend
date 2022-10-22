@@ -20,6 +20,7 @@ router.post("/create",async (request, response) => {
       user_id : request.user.id,
       post_id : request.body.post_id,
       comment_content : request.body.comment_content,
+      comment_time : Date.now()
     });
       await comment.save();
       const to_send = await commentModel.findOne(comment)
