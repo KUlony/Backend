@@ -113,7 +113,7 @@ router.get("/:post_id", async (request, response) => {
   const posts = await postModel.findById(request.params.post_id);
   var to_res = true
   const user = await userModel.findById(posts.user_id);
-  const comment = await commentModel.find({post_id : posts._id})
+  const comment = await commentModel.find({post_id : posts._id,comment_status : "visible"})
   //console.log(posts[i])
   //console.log(user)
   const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : posts._id})
