@@ -46,7 +46,7 @@ router.get("/:post_id", async (request, response) => {
   const res = [];
   for (i=0;i<comment.length;i++){
     const user = await userModel.findById(comment[i].user_id);
-    const reply = await replyModel.find({comment_id : comment[i]._id});
+    const reply = await replyModel.find({comment_id : comment[i]._id,reply_status : "visible"});
     const to_res = {
       author : {
         user_id : user._id,
