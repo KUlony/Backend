@@ -210,7 +210,7 @@ router.post('/forgotpassword',async (req,res) => {
  }
 });
 
-router.get("/forgotpassword/checkOTP", async (req, res) => {
+router.post("/forgotpassword/checkOTP", async (req, res) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'ยืนยัน OTP เพื่อขอเปลี่ยนหัสผ่าน'
   try {
