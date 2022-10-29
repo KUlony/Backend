@@ -101,7 +101,8 @@ router.put("/:reply_id/edit", async (request, response) => {
         reply_like_count : oldreply.reply_like_count,
         reply_time : oldreply.reply_time,
         reply_status : "edited",
-        reply_delete_time : Date.now()
+        reply_delete_time : Date.now(),
+        reply_before_edit_id : request.params.reply_id
       });
       await newreply.save();
       await replyModel.findByIdAndUpdate(request.params.reply_id,request.body)

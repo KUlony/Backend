@@ -103,7 +103,8 @@ router.put("/:comment_id/edit", async (request, response) => {
         comment_like_count : oldcomment.comment_like_count,
         comment_time : oldcomment.comment_time,
         comment_status : "edited",
-        comment_delete_time : Date.now()
+        comment_delete_time : Date.now(),
+        comment_before_edit_id : request.params.comment_id
       });
       await newcomment.save();
       await commentModel.findByIdAndUpdate(request.params.comment_id,request.body)
