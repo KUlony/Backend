@@ -27,7 +27,10 @@ const ReplySchema = new mongoose.Schema({
   reply_delete_time : {
     type : Date,
     default : null,
-  }
+  },
+  reply_before_edit_id : {
+    type: mongoose.Schema.Types.ObjectId,
+  },
 });
 const Reply = mongoose.model("Reply", ReplySchema );
 module.exports = Reply;

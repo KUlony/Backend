@@ -43,7 +43,10 @@ const PostSchema = new mongoose.Schema({
         type : Date,
         timestamps : true ,
         default : null,
-    }
+    },
+    post_before_edit_id : {
+        type: mongoose.Schema.Types.ObjectId,
+    },
 });
 const Post = mongoose.model("Post", PostSchema);
 module.exports = Post;

@@ -191,7 +191,8 @@ router.put("/:post_id/edit", async (request, response) => {
         post_like_count : oldpost.post_like_count,
         post_time : oldpost.post_time,
         post_status : "edited",
-        post_delete_time : Date.now()
+        post_delete_time : Date.now(),
+        post_before_edit_id : request.params.post_id
       });
       await newpost.save();
       await postModel.findByIdAndUpdate(request.params.post_id,request.body)

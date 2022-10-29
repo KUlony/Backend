@@ -27,7 +27,10 @@ const CommentSchema = new mongoose.Schema({
   comment_delete_time : {
     type : Date,
     default : null,
-  }
+  },
+  comment_before_edit_id : {
+    type: mongoose.Schema.Types.ObjectId,
+  },
 });
 const Comment = mongoose.model("Comment", CommentSchema );
 module.exports = Comment;
