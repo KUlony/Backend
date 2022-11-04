@@ -121,6 +121,7 @@ router.get("/user_like_post", async (request, response) => {
         username : user.user_name,
         profile_pic_url : user.profile_pic_url,
       },
+      post_id : post._id,
       post_title : post.post_title,
       post_content : post.post_content,
       cover_photo_url : post.cover_photo_url,
