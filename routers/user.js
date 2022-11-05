@@ -172,7 +172,7 @@ router.get("/mypost", async (request, response) => {
       cover_photo_url : post[i].cover_photo_url,
       post_photo_url : post[i].post_photo_url,
       post_catagory : post[i].catagory_id,
-      post_topic : post[i].catagory_id,
+      post_topic : post[i].topic_id,
       post_like_count : post[i].post_like_count,
       post_comment_count : comment.length,
       post_time : post[i].post_time,
