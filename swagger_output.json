@@ -1408,12 +1408,46 @@
         }
       }
     },
-    "/api/admin/get_all_report": {
+    "/api/admin/get_post_report": {
       "get": {
         "tags": [
           "Admin"
         ],
-        "description": "รับข้อมูล report ทั้งหมด",
+        "description": "รับข้อมูล report post ทั้งหมด",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/admin/get_comment_report": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "รับข้อมูล report comment ทั้งหมด",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/admin/get_reply_report": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "รับข้อมูล report reply ทั้งหมด",
         "parameters": [],
         "responses": {
           "200": {
