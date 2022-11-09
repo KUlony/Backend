@@ -133,7 +133,7 @@ router.get("/get_all_report", async (request, response) => {
                     reporter_profile_pic_url : author.profile_pic_url,
                     report_type : report[i].report_type,
                     reply_id : report[i].entity_id,
-                    reply_user_id : post.user_id,
+                    reply_user_id : reply.user_id,
                     reply_user_name : reported_user.user_name,
                     reply_profile_pic_url : reported_user.profile_pic_url,
                     reply_content : reply.reply_content,
