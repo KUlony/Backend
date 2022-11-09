@@ -263,6 +263,10 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
       success: false,
       message: "No Verify your identity."
   });
+    if(req.body.password === "" || req.confirm_password === "") return res.status(400).send({
+      success: false,
+      message: "Please enter your password"
+  });
     
     if (req.body.password !== req.body.confirm_password) return res.status(400).send({
       success: false,
