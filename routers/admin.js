@@ -188,95 +188,19 @@ router.get("/get_reply_report", async (req, res) => {
     }
 })
 
-// router.get("/get_all_report", async (request, response) => {
-//     // #swagger.tags = ['Admin']
-//     // #swagger.description = 'รับข้อมูล report ทั้งหมด'
-//     try {
-//         const user = await userModel.findById(request.user.id);
-//         if(!user.admin){response.status(500).send("not a admin");} 
-//         const report = await reportpostModel.find({});
-//         //console.log(report)
-//         res = {
-//             post : [],
-//             comment : [],
-//             reply : []
-//         };
-//         for(i=0;i<report.length;i++){
-//             const author = await userModel.findById(report[i].user_id);
-//             var to_res = {}
-//             if(report[i].entity_type === "post"){
-//                 const post = await postModel.findById(report[i].entity_id)
-//                 const reported_user = await userModel.findById(post.user_id)
-//                 to_res = {
-//                     report_id : report[i]._id,
-//                     reporter_user_id : report[i].user_id,
-//                     reporter_user_name : author.user_name,
-//                     reporter_profile_pic_url : author.profile_pic_url,
-//                     report_type : report[i].report_type,
-//                     post_id : report[i].entity_id,
-//                     post_user_id : post.user_id,
-//                     post_user_name : reported_user.user_name,
-//                     post_profile_pic_url : reported_user.profile_pic_url,
-//                     post_title : post.post_title,
-//                     post_content : post.post_content,
-//                     cover_photo_url : post.cover_photo_url,
-//                     post_photo_url : post.post_photo_url
-//                 }
-//                 res.post.push(to_res);
-//             }
-//             else if (report[i].entity_type === "comment"){
-//                 const comment = await commentModel.findById(report[i].entity_id)
-//                 const reported_user = await userModel.findById(comment.user_id)
-//                 to_res = {
-//                     report_id : report[i]._id,
-//                     reporter_user_id : report[i].user_id,
-//                     reporter_user_name : author.user_name,
-//                     reporter_profile_pic_url : author.profile_pic_url,
-//                     report_type : report[i].report_type,
-//                     comment_id : report[i].entity_id,
-//                     comment_user_id : comment.user_id,
-//                     comment_user_name : reported_user.user_name,
-//                     comment_profile_pic_url : reported_user.profile_pic_url,
-//                     comment_content : comment.comment_content,
-//                 }
-//                 res.comment.push(to_res);
-//             }
-//             else {
-//                 const reply = await replyModel.findById(report[i].entity_id)
-//                 const reported_user = await userModel.findById(reply.user_id)
-//                 to_res = {
-//                     report_id : report[i]._id,
-//                     reporter_user_id : report[i].user_id,
-//                     reporter_user_name : author.user_name,
-//                     reporter_profile_pic_url : author.profile_pic_url,
-//                     report_type : report[i].report_type,
-//                     reply_id : report[i].entity_id,
-//                     reply_user_id : reply.user_id,
-//                     reply_user_name : reported_user.user_name,
-//                     reply_profile_pic_url : reported_user.profile_pic_url,
-//                     reply_content : reply.reply_content,
-//                 }
-//                 res.reply.push(to_res);
-//             }
-//         }
-//         response.send(res);
-//     } catch (e) {
-//         response.status(500).send({ message: e.message });
-//      }
-// });
-
-router.delete("/delete_report/:report_id", async (request, response) => {
+router.delete("/delete_report/:entity_id",async (req, res) => {
     // #swagger.tags = ['Admin']
-    // #swagger.description = 'ลบ report ที่ส่งมา'
-    try {
-        const user = await userModel.findById(request.user.id);
+    // #swagger.description = 'ลบ report ของ entity นั้น'
+    try{
+        const user = await userModel.findById(req.user.id);
         if(!user.admin){response.status(500).send("not a admin");} 
-        await reportpostModel.findByIdAndRemove(request.params.report_id)
-        response.send("deleted")
+
+        await reportpostModel.deleteMany({entity_id: req.params.entity_id})
+        res.send("Done")
     } catch (e) {
-        response.status(500).send({ message: e.message });
-     }
-});
+        res.status(500).send({message: e.message})
+    }
+})
 
 router.put("/delete_reported_entity/:report_id", async (request, response) => {
     // #swagger.tags = ['Admin']

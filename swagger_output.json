@@ -1459,15 +1459,15 @@
         }
       }
     },
-    "/api/admin/delete_report/{report_id}": {
+    "/api/admin/delete_report/{entity_id}": {
       "delete": {
         "tags": [
           "Admin"
         ],
-        "description": "ลบ report ที่ส่งมา",
+        "description": "ลบ report ของ entity นั้น",
         "parameters": [
           {
-            "name": "report_id",
+            "name": "entity_id",
             "in": "path",
             "required": true,
             "schema": {
