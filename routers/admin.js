@@ -86,8 +86,17 @@ router.get("/get_post_report", async (req, res) => {
                 $group: {
                     _id: "$entity_id",
                     report_type: { $addToSet: "$report_type"},
-                    number_user: { $count: {} },
+                    user: { $addToSet: "$user_id" },
                     last_report: { $max: "$report_time" }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    report_type: 1,
+                    user: 1,
+                    last_report: 1,
+                    count_user: { $size: "$user"}
                 }
             }
         ])
@@ -112,8 +121,17 @@ router.get("/get_comment_report", async (req, res) => {
                 $group: {
                     _id: "$entity_id",
                     report_type: { $addToSet: "$report_type"},
-                    number_user: { $count: {} },
+                    user: { $addToSet: "$user_id" },
                     last_report: { $max: "$report_time" }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    report_type: 1,
+                    user: 1,
+                    last_report: 1,
+                    count_user: { $size: "$user"}
                 }
             }
         ])
@@ -138,8 +156,17 @@ router.get("/get_reply_report", async (req, res) => {
                 $group: {
                     _id: "$entity_id",
                     report_type: { $addToSet: "$report_type"},
-                    number_user: { $count: {} },
+                    user: { $addToSet: "$user_id" },
                     last_report: { $max: "$report_time" }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    report_type: 1,
+                    user: 1,
+                    last_report: 1,
+                    count_user: { $size: "$user"}
                 }
             }
         ])
