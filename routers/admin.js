@@ -11,6 +11,7 @@ const followtopicModel = require("../schemas/model_following_topic");
 const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const noticeModel = require("../schemas/model_notification")
+const requesttopicModel = require("../schemas/model_request_topic");
 
 router.get("/get_all_request_topic", async (request, response) => {
     // #swagger.tags = ['Admin']
