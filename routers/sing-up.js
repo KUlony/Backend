@@ -24,6 +24,12 @@ router.post("/register/email", async (req, res) => {
         message: "An account with this email already exists!"
       })
     }
+    if(req.body.password === "" || req.confirm_password === "") {
+      return res.status(400).send({
+        success: false,
+        message: "Please enter your password"
+      });
+    }
     if (req.body.password !== req.body.confirm_password) {
       return res.status(400).send({
         success: false,

@@ -186,7 +186,7 @@
       }
     },
     "/api/sing-up/forgotpassword/checkOTP": {
-      "get": {
+      "post": {
         "tags": [
           "Auth"
         ],
@@ -201,6 +201,23 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "otp": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
