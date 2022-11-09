@@ -12,6 +12,7 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const noticeModel = require("../schemas/model_notification")
 const requesttopicModel = require("../schemas/model_request_topic");
+const { date } = require("joi");
 
 router.get("/get_all_request_topic", async (request, response) => {
     // #swagger.tags = ['Admin']
@@ -23,13 +24,18 @@ router.get("/get_all_request_topic", async (request, response) => {
     res = [];
     for(i=0;i<request_topic.length;i++){
         const author = await userModel.findById(request_topic[i].user_id);
+        let date = request_topic[i].request_time.toISOString()
+        date = date.split("T")[0]
+        date = date.split("-")
         const to_res = {
             request_id : request_topic[i]._id,
             user_id : request_topic[i].user_id,
             user_name : author.user_name,
             profile_pic_url : author.profile_pic_url,
             request_topic : request_topic[i].request_topic,
-            request_time : request_topic[i].request_time
+            year : Number(date[0]),
+            month : Number(date[1]),
+            day : Number(date[2])
         }
         res.push(to_res)
     }
@@ -95,7 +101,9 @@ router.get("/get_post_report", async (req, res) => {
                     _id: 1,
                     report_type: 1,
                     user: 1,
-                    last_report: 1,
+                    year: { $year: "$last_report"},
+                    month: { $month: "$last_report"},
+                    day: { $dayOfMonth: "$last_report"},
                     count_user: { $size: "$user"}
                 }
             }
@@ -130,7 +138,9 @@ router.get("/get_comment_report", async (req, res) => {
                     _id: 1,
                     report_type: 1,
                     user: 1,
-                    last_report: 1,
+                    year: { $year: "$last_report"},
+                    month: { $month: "$last_report"},
+                    day: { $day: "$last_report"},
                     count_user: { $size: "$user"}
                 }
             }
@@ -165,7 +175,9 @@ router.get("/get_reply_report", async (req, res) => {
                     _id: 1,
                     report_type: 1,
                     user: 1,
-                    last_report: 1,
+                    year: { $year: "$last_report"},
+                    month: { $month: "$last_report"},
+                    day: { $day: "$last_report"},
                     count_user: { $size: "$user"}
                 }
             }
