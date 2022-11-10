@@ -15,10 +15,26 @@ router.get("/", async (req,res) => {
     // #swagger.tags = ['Notice']
     // #swagger.description = 'ข้อ notice ทั้งหมดของ user'
    try{
-      notices = await noticeModel
+      const notices = await noticeModel
       .find({entity_user_id: req.user.id})
       .limit(20)
-      res.send(notices)
+      const to_res = []
+      for (i=0;i<notices.length;i++){
+         const action_user = await userModel.findById(notices[i].action_user_id)
+         const entity_user = await userModel.findById(notices[i].entity_user_id)
+         const to_res2 = {
+            action_user : {
+               action_user_id : notices[i].action_user_id,
+               action_user_name : action_user.user_name,
+               action_user_pic : action_user.profile_pic_url
+            },
+            entity_id : notices[i].entity_id,
+            notice_type : notices[i].notice_type,
+            notice_time : notices[i].notice_time
+         }
+         to_res.push(to_res2)
+      }
+      res.send(to_res)
    } catch (e) {
       res.status(500).send({ message: e.message });
    }
