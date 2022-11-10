@@ -24,7 +24,7 @@ router.post("/create",async (request, response) => {
     });
       await comment.save();
       const to_send = await commentModel.findOne(comment)
-      const post = postModel.findById(request.body.post_id)
+      const post = await postModel.findById(request.body.post_id)
       const notice = new noticeModel({
         entity_user_id: post.user_id,
         entity_id: request.body.post_id,

@@ -24,10 +24,10 @@ router.post("/create",async (request, response) => {
     });
       await reply.save();
       const to_send = await replyModel.findOne(reply)
-      const comment = postModel.findById(request.body.comment_id)
+      const comment = await commentModel.findById(request.body.comment_id)
       const notice = new noticeModel({
         entity_user_id: comment.user_id,
-        entity_id: request.body.post_id,
+        entity_id: comment.post_id,
         action_user_id: request.user.id,
         notice_type: "reply"
       })
