@@ -52,7 +52,7 @@ router.get("/user", async (req, res) => {
                         compound: {
                             should: [
                                 {
-                                    text: {
+                                    autocomplete: {
                                         query: req.query.text,
                                         path: "user_name",
                                         fuzzy: {
@@ -61,7 +61,7 @@ router.get("/user", async (req, res) => {
                                     }
                                 },
                                 {
-                                    text: {
+                                    autocomplete: {
                                         query: req.query.text,
                                         path: "user_firtname",
                                         fuzzy: {
@@ -70,7 +70,7 @@ router.get("/user", async (req, res) => {
                                     }
                                 },
                                 {
-                                    text: {
+                                    autocomplete: {
                                         query: req.query.text,
                                         path: "user_lastname",
                                         fuzzy: {
