@@ -56,7 +56,7 @@ router.get("/user", async (req, res) => {
                                         query: req.query.text,
                                         path: "user_name",
                                         fuzzy: {
-                                            maxEdits: 2,
+                                            maxEdits: 1,
                                         }
                                     }
                                 },
@@ -65,7 +65,7 @@ router.get("/user", async (req, res) => {
                                         query: req.query.text,
                                         path: "user_firtname",
                                         fuzzy: {
-                                            maxEdits: 2,
+                                            maxEdits: 1,
                                         }
                                     }
                                 },
@@ -74,7 +74,7 @@ router.get("/user", async (req, res) => {
                                         query: req.query.text,
                                         path: "user_lastname",
                                         fuzzy: {
-                                            maxEdits: 2,
+                                            maxEdits: 1,
                                         }
                                     }
                                 }
