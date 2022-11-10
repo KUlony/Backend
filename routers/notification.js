@@ -23,6 +23,7 @@ router.get("/", async (req,res) => {
          const action_user = await userModel.findById(notices[i].action_user_id)
          const entity_user = await userModel.findById(notices[i].entity_user_id)
          const to_res2 = {
+            notic_id : notices[i]._id,
             action_user : {
                action_user_id : notices[i].action_user_id,
                action_user_name : action_user.user_name,
