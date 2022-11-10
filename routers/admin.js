@@ -113,7 +113,7 @@ router.get("/get_post_report", async (req, res) => {
                     $sort: { count_user: -1 }
                 }
             ])
-        } else if (req.query.sortby === "lasted") {
+        } else if (req.query.sortby === "lated") {
             report = await reportpostModel.aggregate([
                 {
                     $match: { entity_type: "post"}
@@ -184,7 +184,7 @@ router.get("/get_comment_report", async (req, res) => {
                     $sort: { count_user: -1 }
                 }
             ])
-        } else if (req.query.sortby === "lasted") {
+        } else if (req.query.sortby === "lated") {
             report = await reportpostModel.aggregate([
                 {
                     $match: { entity_type: "post"}
@@ -255,7 +255,7 @@ router.get("/get_reply_report", async (req, res) => {
                     $sort: { count_user: -1 }
                 }
             ])
-        } else if (req.query.sortby === "lasted") {
+        } else if (req.query.sortby === "lated") {
             report = await reportpostModel.aggregate([
                 {
                     $match: { entity_type: "post"}
