@@ -31,7 +31,8 @@ router.get("/", async (req,res) => {
             },
             entity_id : notices[i].entity_id,
             notice_type : notices[i].notice_type,
-            notice_time : notices[i].notice_time
+            notice_time : notices[i].notice_time,
+            readed : notices[i].readed
          }
          to_res.push(to_res2)
       }
