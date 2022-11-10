@@ -32,7 +32,7 @@ router.get("/:user_id/profile", async (request, response) => {
     console.log(user);
     const res = {
         user_name : user.user_name,
-        user_firtname : user.user_firtname,
+        user_firstname : user.user_firtname,
         user_lastname : user.user_lastname,
         user_bio : user.user_bio,
         education : user.education,
