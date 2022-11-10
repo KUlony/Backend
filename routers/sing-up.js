@@ -40,7 +40,7 @@ router.post("/register/email", async (req, res) => {
     const OTP = Math.floor(100000 + Math.random()*900000);
     const message =  OTP.toString()
     const text1 = "You are officially In ✔"
-    const text2 = "Pleas enter the sign up OTP to get started"
+    const text2 = "Please enter the sign up OTP to get started"
     await sendEmail(req.body.email, "Verify Email", message,text1,text2);
     await UserModel({
       email:  req.body.email ,
@@ -199,7 +199,7 @@ router.post('/forgotpassword',async (req,res) => {
     const OTP = Math.floor(100000 + Math.random()*900000)
     const message =   OTP.toString()
     const text1 = "Verify your identity ✔"
-    const text2 = "Pleas enter the forgotpassword OTP to get started"
+    const text2 = "Please enter the forgotpassword OTP to get started"
     await sendEmail(req.body.email, "Verify your identity ", message,text1,text2);
     console.log(OTP)
     await new Otp({
@@ -335,7 +335,7 @@ router.post("/newotp/verify/email",async(req,res) => {
     console.log(OTP)
     const message = OTP.toString()
     const text1 = "You are officially In ✔"
-    const text2 = "Pleas enter the sign up OTP to get started"
+    const text2 = "Please enter the sign up OTP to get started"
     await sendEmail(req.body.email, "Verify Email", message,text1,text2);
     
     
@@ -362,8 +362,8 @@ router.post("/newotp/verify/forgotpassword",async(req,res) => {
     });
     await otp.updateOne({otp :OTP.toString()})
     console.log(OTP)
-    const text1 = "Please verify your identity ✔"
-    const text2 = "Pleas enter the forgotpassword OTP to get started"
+    const text1 = "Verify your identity ✔"
+    const text2 = "Please enter the forgotpassword OTP to get started"
     await sendEmail(req.body.email, "Verify your identity ", message,text1,text2);
    
     return res.status(200).send({
