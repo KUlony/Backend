@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
     type : String,
     default : null,
   },
-  user_firtname : {
+  user_firstname : {
     type : String,
     default : null,
   },
