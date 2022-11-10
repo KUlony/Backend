@@ -84,30 +84,64 @@ router.get("/get_post_report", async (req, res) => {
         const user = await userModel.findById(req.user.id);
         if(!user.admin){response.status(500).send("not a admin");} 
         
-        const report = await reportpostModel.aggregate([
-            {
-                $match: { entity_type: "post"}
-            },
-            {
-                $group: {
-                    _id: "$entity_id",
-                    report_type: { $addToSet: "$report_type"},
-                    user: { $addToSet: "$user_id" },
-                    last_report: { $max: "$report_time" }
+        let report = []
+        if (!req.query.sortby || req.query.sortby === "reported") {
+            report = await reportpostModel.aggregate([
+                {
+                    $match: { entity_type: "post"}
+                },
+                {
+                    $group: {
+                        _id: "$entity_id",
+                        report_type: { $addToSet: "$report_type"},
+                        user: { $addToSet: "$user_id" },
+                        last_report: { $max: "$report_time" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        report_type: 1,
+                        user: 1,
+                        year: { $year: "$last_report"},
+                        month: { $month: "$last_report"},
+                        day: { $dayOfMonth: "$last_report"},
+                        count_user: { $size: "$user"}
+                    }
+                },
+                {
+                    $sort: { count_user: -1 }
                 }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    report_type: 1,
-                    user: 1,
-                    year: { $year: "$last_report"},
-                    month: { $month: "$last_report"},
-                    day: { $dayOfMonth: "$last_report"},
-                    count_user: { $size: "$user"}
+            ])
+        } else if (req.query.sortby === "lasted") {
+            report = await reportpostModel.aggregate([
+                {
+                    $match: { entity_type: "post"}
+                },
+                {
+                    $group: {
+                        _id: "$entity_id",
+                        report_type: { $addToSet: "$report_type"},
+                        user: { $addToSet: "$user_id" },
+                        last_report: { $max: "$report_time" }
+                    }
+                },
+                {
+                    $sort: { last_report: -1 }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        report_type: 1,
+                        user: 1,
+                        year: { $year: "$last_report"},
+                        month: { $month: "$last_report"},
+                        day: { $dayOfMonth: "$last_report"},
+                        count_user: { $size: "$user"}
+                    }
                 }
-            }
-        ])
+            ])
+        }
         res.send(report)
     } catch (e){
         res.status(500).send({message: e.message})
@@ -121,30 +155,64 @@ router.get("/get_comment_report", async (req, res) => {
         const user = await userModel.findById(req.user.id);
         if(!user.admin){response.status(500).send("not a admin");} 
         
-        const report = await reportpostModel.aggregate([
-            {
-                $match: { entity_type: "comment"}
-            },
-            {
-                $group: {
-                    _id: "$entity_id",
-                    report_type: { $addToSet: "$report_type"},
-                    user: { $addToSet: "$user_id" },
-                    last_report: { $max: "$report_time" }
+        let report = []
+        if (!req.query.sortby || req.query.sortby === "reported") {
+            report = await reportpostModel.aggregate([
+                {
+                    $match: { entity_type: "comment"}
+                },
+                {
+                    $group: {
+                        _id: "$entity_id",
+                        report_type: { $addToSet: "$report_type"},
+                        user: { $addToSet: "$user_id" },
+                        last_report: { $max: "$report_time" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        report_type: 1,
+                        user: 1,
+                        year: { $year: "$last_report"},
+                        month: { $month: "$last_report"},
+                        day: { $dayOfMonth: "$last_report"},
+                        count_user: { $size: "$user"}
+                    }
+                },
+                {
+                    $sort: { count_user: -1 }
                 }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    report_type: 1,
-                    user: 1,
-                    year: { $year: "$last_report"},
-                    month: { $month: "$last_report"},
-                    day: { $day: "$last_report"},
-                    count_user: { $size: "$user"}
+            ])
+        } else if (req.query.sortby === "lasted") {
+            report = await reportpostModel.aggregate([
+                {
+                    $match: { entity_type: "post"}
+                },
+                {
+                    $group: {
+                        _id: "$entity_id",
+                        report_type: { $addToSet: "$report_type"},
+                        user: { $addToSet: "$user_id" },
+                        last_report: { $max: "$report_time" }
+                    }
+                },
+                {
+                    $sort: { last_report: -1 }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        report_type: 1,
+                        user: 1,
+                        year: { $year: "$last_report"},
+                        month: { $month: "$last_report"},
+                        day: { $dayOfMonth: "$last_report"},
+                        count_user: { $size: "$user"}
+                    }
                 }
-            }
-        ])
+            ])
+        }
         res.send(report)
     } catch (e){
         res.status(500).send({message: e.message})
@@ -158,30 +226,64 @@ router.get("/get_reply_report", async (req, res) => {
         const user = await userModel.findById(req.user.id);
         if(!user.admin){response.status(500).send("not a admin");} 
         
-        const report = await reportpostModel.aggregate([
-            {
-                $match: { entity_type: "reply"}
-            },
-            {
-                $group: {
-                    _id: "$entity_id",
-                    report_type: { $addToSet: "$report_type"},
-                    user: { $addToSet: "$user_id" },
-                    last_report: { $max: "$report_time" }
+        let report = []
+        if (!req.query.sortby || req.query.sortby === "reported") {
+            report = await reportpostModel.aggregate([
+                {
+                    $match: { entity_type: "reply"}
+                },
+                {
+                    $group: {
+                        _id: "$entity_id",
+                        report_type: { $addToSet: "$report_type"},
+                        user: { $addToSet: "$user_id" },
+                        last_report: { $max: "$report_time" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        report_type: 1,
+                        user: 1,
+                        year: { $year: "$last_report"},
+                        month: { $month: "$last_report"},
+                        day: { $dayOfMonth: "$last_report"},
+                        count_user: { $size: "$user"}
+                    }
+                },
+                {
+                    $sort: { count_user: -1 }
                 }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    report_type: 1,
-                    user: 1,
-                    year: { $year: "$last_report"},
-                    month: { $month: "$last_report"},
-                    day: { $day: "$last_report"},
-                    count_user: { $size: "$user"}
+            ])
+        } else if (req.query.sortby === "lasted") {
+            report = await reportpostModel.aggregate([
+                {
+                    $match: { entity_type: "post"}
+                },
+                {
+                    $group: {
+                        _id: "$entity_id",
+                        report_type: { $addToSet: "$report_type"},
+                        user: { $addToSet: "$user_id" },
+                        last_report: { $max: "$report_time" }
+                    }
+                },
+                {
+                    $sort: { last_report: -1 }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        report_type: 1,
+                        user: 1,
+                        year: { $year: "$last_report"},
+                        month: { $month: "$last_report"},
+                        day: { $dayOfMonth: "$last_report"},
+                        count_user: { $size: "$user"}
+                    }
                 }
-            }
-        ])
+            ])
+        }
         res.send(report)
     } catch (e){
         res.status(500).send({message: e.message})
