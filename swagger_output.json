@@ -430,22 +430,13 @@
         }
       }
     },
-    "/api/user/follow_topic/{topic_id}": {
+    "/api/user/follow_topic": {
       "post": {
         "tags": [
           "User"
         ],
         "description": "ส่ง Topic ที่ user ต้องการ Follow",
-        "parameters": [
-          {
-            "name": "topic_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -453,31 +444,19 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      }
-    },
-    "/api/user/unfollow_topic/{topic_id}": {
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "description": "Unfollow topic ที่ user follow ไว้",
-        "parameters": [
-          {
-            "name": "topic_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "topic_id": {
+                    "example": "any"
+                  }
+                }
+              }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -875,13 +854,22 @@
         }
       }
     },
-    "/api/comment/get_post_parent": {
+    "/api/comment/get_comment_data/{comment_id}": {
       "get": {
         "tags": [
           "Topic/Catagory"
         ],
         "description": "ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
