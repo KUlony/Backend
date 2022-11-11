@@ -13,36 +13,48 @@ const reportpostModel = require("../schemas/model_report_post");
 const noticeModel = require("../schemas/model_notification")
 
 router.post("/create",async (request, response) => {
-    // #swagger.tags = ['Comment']
-    // #swagger.description = 'สร้าง Comment โดยส่ง User_id ของคนคอมเม้น Post_id ของโพสที่จะคอมเม้นและ Comment_content'
-    try {
+  // #swagger.tags = ['Comment']
+  // #swagger.description = 'สร้าง Comment โดยส่ง User_id ของคนคอมเม้น Post_id ของโพสที่จะคอมเม้นและ Comment_content'
+  try {
     const comment = new commentModel({
       user_id : request.user.id,
       post_id : request.body.post_id,
       comment_content : request.body.comment_content,
       comment_time : Date.now()
     });
-      await comment.save();
-      const to_send = await commentModel.findOne(comment)
-      const post = await postModel.findById(request.body.post_id)
-      const notice = new noticeModel({
-        entity_user_id: post.user_id,
-        entity_id: request.body.post_id,
-        action_user_id: request.user.id,
-        notice_type: "comment"
-      })
-      await notice.save();
-      response.send(to_send);
-    } catch (e) {
-      response.status(500).send({ message: e.message });
-   }
+    await comment.save();
+    const to_send = await commentModel.findOne(comment)
+    const post = await postModel.findById(request.body.post_id)
+    const notice = new noticeModel({
+      entity_user_id: post.user_id,
+      entity_id: request.body.post_id,
+      action_user_id: request.user.id,
+      notice_type: "comment"
+    })
+    await notice.save();
+    response.send(to_send);
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+  }
 });
+
+router.get("/get_post_parent", async (req,res) => {
+  // #swagger.tags = ['Topic/Catagory']
+  // #swagger.description = 'ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น'
+  try {
+    const comment = await commentModel.findById(req.body.comment_id)
+    if (comment) res.send(comment.post_id)
+    else {res.send({message: "comment id not found"})}
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+  }
+})
 
 router.get("/:post_id", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'ขอข้อมูลของ Comment ทั้งหมดของ post_id นั้น'
   try {
-  const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
+    const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
   const res = [];
   for (i=0;i<comment.length;i++){
     const user = await userModel.findById(comment[i].user_id);
@@ -78,11 +90,11 @@ router.post("/:entity_id/report", async (request, response) => {
     report_type : request.body.report_type,
     report_time : Date.now()
   });
-    await post.save();
-    response.send(post);
-  } catch (e) {
-    response.status(500).send({ message: e.message });
- }
+  await post.save();
+  response.send(post);
+} catch (e) {
+  response.status(500).send({ message: e.message });
+}
 });
 
 router.put("/:comment_id/edit", async (request, response) => {
@@ -133,5 +145,6 @@ router.put("/:comment_id/delete", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
 
 module.exports = router;
