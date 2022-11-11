@@ -111,6 +111,10 @@ router.get("/:post_id", async (request, response) => {
   // #swagger.description = 'ขอข้อมูลของ post_id นั้นๆ'
   try {
   const posts = await postModel.findById(request.params.post_id);
+  if (!posts) { 
+    response.send({ message: "post not found"})
+    return
+  }
   var to_res = true
   const user = await userModel.findById(posts.user_id);
   const comment = await commentModel.find({post_id : posts._id,comment_status : "visible"})
