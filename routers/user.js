@@ -47,33 +47,26 @@ router.get("/:user_id/profile", async (request, response) => {
 });
 
 router.get("/following_topic", async (request, response) => {
-    // #swagger.tags = ['User']
-    // #swagger.description = 'ขอ topic ที่ user follow ไว้'
-    try {
-    const all_topic = await topicModel.find();
-    console.log(all_topic);
-    //const user_follow_topic = await followtopicModel.findById(request.params.user_id);
-    const res = [];
-    for (i = 0; i < all_topic.length; i++){
-      const user_follow = await followtopicModel.find({ user_id : request.user.id, topic_id : all_topic[i]._id});
-      const to_res={};
-      // console.log(i);
-      if (user_follow.length === 0){
-        to_res.topic_id = all_topic[i]._id
-        to_res.topic_name = all_topic[i].topic_name
-        to_res.user_follow_status = false
-      } else{
-        to_res.topic_id = all_topic[i]._id
-        to_res.topic_name = all_topic[i].topic_name
-        to_res.user_follow_status = true
-      };
-      console.log(to_res)
-      res.push(to_res)
+  // #swagger.tags = ['User']
+  // #swagger.description = 'ขอ topic ที่ user follow ไว้'
+  try {
+  const all_topic = await topicModel.find();
+  const res = [];
+  const user_follow = new Set(await followtopicModel.find({ user_id : request.user.id}))
+  for (i = 0; i < all_topic.length; i++){
+    let follow = false
+    if (user_follow.has(all_topic[i])) follow = true
+    const to_res={
+      topic_id : all_topic[i]._id,
+      topic_name : all_topic[i].topic_name,
+      user_follow_status : follow
     }
-      response.send(res);
-    } catch (e) {
-      response.status(500).send({ message: e.message });
-   }
+    res.push(to_res)
+  }
+    response.send(res);
+  } catch (e) {
+    response.status(500).send({ message: e.message });
+ }
 });
 
 router.post("/follow_topic", async (request, response) => {
