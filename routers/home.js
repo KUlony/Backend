@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
          }
          for (let i=0; i<user.visit_post.length; i++){
             const post = await postModel.findById(user.visit_post[i])
+            if (!post) {continue}
             for (let j=0; j<post.topic_id.length; j++){
                if (!topics.includes(post.topic_id[j].toString())){
                topics.push(post.topic_id[j].toString())
