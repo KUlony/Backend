@@ -111,12 +111,14 @@ router.get("/user_like_post", async (request, response) => {
   //console.log(like_post);
   
   const res = []
+  // console.log(like_post)
   for(i=0 ;i<like_post.length;i++){
-    const post = await postModel.find({_id : like_post[i].post_id,status : "visible"});
+    let post = await postModel.find({_id : like_post[i].post_id,status : "visible"});
+    console.log(post)
     if(post.length == 0) continue;
-    if(!post[i]) continue;
+    post = post[0]
     const comment = await commentModel.find({post_id : like_post[i].post_id,comment_status : "visible"});
-    const user = await userModel.findById(post[i].user_id)
+    const user = await userModel.findById(post.user_id)
     const to_res = {
       author : {
         user_id : post.user_id,

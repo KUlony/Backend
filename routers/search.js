@@ -122,7 +122,7 @@ router.get("/post/topic", async (req, res) => {
          const user = await userModel.findById(posts[i].user_id);
          const comment = await commentModel.find({post_id : posts[i]._id})
          to_res = false
-         const user_like_sta = await likepostModel.find({user_id : user._id, post_id : posts[i]._id})
+         const user_like_sta = await likepostModel.find({user_id : req.user.id, post_id : posts[i]._id})
          if (user_like_sta.length !== 0){
             to_res = true
          };
