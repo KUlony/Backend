@@ -126,6 +126,7 @@ router.put("/:comment_id/delete", async (request, response) => {
     }
     else{
       await commentModel.findOneAndUpdate({_id : request.params.comment_id},{comment_status : "deleted"})
+      await replyModel.updateMany({comment_id : request.params.comment_id},{reply_status : "deleted"})
       response.send("deleted");
     }
   } catch (error) {
