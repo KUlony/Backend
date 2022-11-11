@@ -70,6 +70,10 @@ router.get("/:post_id", async (request, response) => {
   // #swagger.description = 'ขอข้อมูลของ Comment ทั้งหมดของ post_id นั้น'
   try {
     const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
+    if (comment.length == 0) {
+      res.send({message: "comment not found"})
+      return
+    }
   const res = [];
   for (i=0;i<comment.length;i++){
     const user = await userModel.findById(comment[i].user_id);
