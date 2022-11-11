@@ -1411,7 +1411,15 @@
           "Admin"
         ],
         "description": "รับข้อมูล report post ทั้งหมด",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "sortby",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1428,7 +1436,15 @@
           "Admin"
         ],
         "description": "รับข้อมูล report comment ทั้งหมด",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "sortby",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1445,7 +1461,15 @@
           "Admin"
         ],
         "description": "รับข้อมูล report reply ทั้งหมด",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "sortby",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

@@ -266,6 +266,11 @@ router.put("/:post_id/delete", async (request, response) => {
     }
     else{
       await postModel.findOneAndUpdate({_id : request.params.post_id},{post_status : "deleted"})
+      const comment = await commentModel.find({post_id : request.params.post_id})
+      await commentModel.updateMany({post_id : request.params},{comment_status : "deleted"})
+      for(i=0;i<comment.length;i++){
+        await replyModel.updateMany({comment_id : comment[i]._id},{reply_status : "deleted"})
+      }
       response.send("deleted");
     };
   } catch (e) {
