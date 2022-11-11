@@ -51,6 +51,18 @@ router.post("/create",async (request, response) => {
 });
 
 
+router.get("/get_post_parent/:comment_id", async (req,res) => {
+  // #swagger.tags = ['Topic/Catagory']
+  // #swagger.description = 'ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น'
+  try {
+    const comment = await commentModel.findById(req.params.comment_id)
+    if (comment) res.send(comment.post_id)
+    else {res.send({message: "comment id not found"})}
+  } catch (e) {
+    res.status(500).send({ message: e.message });
+  }
+})
+
 router.get("/:post_id", async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'ขอข้อมูลของ Comment ทั้งหมดของ post_id นั้น'
