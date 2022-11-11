@@ -76,32 +76,36 @@ router.get("/following_topic", async (request, response) => {
    }
 });
 
-router.post("/follow_topic/:topic_id", async (request, response) => {
+router.post("/follow_topic", async (request, response) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'ส่ง Topic ที่ user ต้องการ Follow'
   try {
-  const followtopic = new followtopicModel({
-    user_id : request.user.id,
-    topic_id : request.params.topic_id,
-    follow_time : Date.now()
-  });
-    await followtopic.save();
-    response.send(followtopic);
+    await followtopicModel.deleteMany({user_id : request.user.id})
+    for(i=0;i<request.body.topic_id.length;i++){
+      const followtopic = new followtopicModel({
+        user_id : request.user.id,
+        topic_id : request.body.topic_id[i],
+        follow_time : Date.now()
+      });
+      //console.log(followtopic)
+      await followtopic.save();
+    }
+    response.send("done");
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
 });
 
-router.delete("/unfollow_topic/:topic_id", async (request, response) => {
-  // #swagger.tags = ['User']
-  // #swagger.description = 'Unfollow topic ที่ user follow ไว้'
-  try {
-    await followtopicModel.findOneAndRemove({user_id : request.user.id, topic_id : request.params.topic_id });
-    response.send("unfollowed");
-  } catch (error) {
-    response.status(500).send(error);
-  }
-});
+// router.delete("/unfollow_topic/:topic_id", async (request, response) => {
+//   // #swagger.tags = ['User']
+//   // #swagger.description = 'Unfollow topic ที่ user follow ไว้'
+//   try {
+//     await followtopicModel.findOneAndRemove({user_id : request.user.id, topic_id : request.params.topic_id });
+//     response.send("unfollowed");
+//   } catch (error) {
+//     response.status(500).send(error);
+//   }
+// });
 
 router.get("/user_like_post", async (request, response) => {
   // #swagger.tags = ['User']
