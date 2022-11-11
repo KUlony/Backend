@@ -71,7 +71,7 @@ router.get("/:post_id", async (request, response) => {
   try {
     const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
     if (comment.length == 0) {
-      responese.send({message: "comment not found"})
+      responese.send([])
       return
     }
   const res = [];
