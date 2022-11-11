@@ -36,7 +36,7 @@ router.get("/post", async (req, res) => {
                               fuzzy: {
                                  maxEdits: 2,
                               },
-                              score: { "boost": { "value": 3} }
+                              score: { "boost": { "value": 6} }
                            }
                         },
                         {
@@ -46,7 +46,7 @@ router.get("/post", async (req, res) => {
                               fuzzy: {
                                  maxEdits: 2,
                               },
-                              score: { "boost": { "value": 2}}
+                              score: { "boost": { "value": 4}}
                            }
                         },
                         {
