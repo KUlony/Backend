@@ -875,6 +875,23 @@
         }
       }
     },
+    "/api/comment/get_post_parent": {
+      "get": {
+        "tags": [
+          "Topic/Catagory"
+        ],
+        "description": "ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/comment/{post_id}": {
       "get": {
         "tags": [
