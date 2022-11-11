@@ -43,8 +43,23 @@ router.get("/get_comment_data/:comment_id", async (req,res) => {
   // #swagger.description = 'ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น'
   try {
     const comment = await commentModel.findById(req.params.comment_id)
-    if (comment) res.send(comment)
-    else {res.send({message: "comment id not found"})}
+    if (!comment) {
+      res.send({message: "comment id not found"})
+      return
+    }
+    const user = await userModel.findById(comment.user_id)
+    const to_send = {
+      author : {
+        user_id : user._id,
+        username : user.user_name,
+        profile_pic_url : user.profile_pic_url,
+      },
+      post_id: comment.post_id,
+      comment_id: comment._id,
+      comment_content :comment.comment_content,
+      comment_time : comment.comment_time,
+    }
+    res.send(to_send)
   } catch (e) {
     res.status(500).send({ message: e.message });
   }
