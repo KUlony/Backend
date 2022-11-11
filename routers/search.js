@@ -34,7 +34,7 @@ router.get("/post", async (req, res) => {
                               query: req.query.text,
                               path: "post_title",
                               fuzzy: {
-                                 maxEdits: 2,
+                                 maxEdits: 1,
                               },
                               score: { "boost": { "value": 6} }
                            }
