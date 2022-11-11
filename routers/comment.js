@@ -12,18 +12,6 @@ const likepostModel = require("../schemas/model_like_post");
 const reportpostModel = require("../schemas/model_report_post");
 const noticeModel = require("../schemas/model_notification")
 
-router.get("/get_post_parent", async (req,res) => {
-  // #swagger.tags = ['Topic/Catagory']
-  // #swagger.description = 'ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น'
-  try {
-    const comment = await commentModel.findById(req.body.comment_id)
-    if (comment) res.send(comment.post_id)
-    else {res.send({message: "comment id not found"})}
-  } catch (e) {
-    res.status(500).send({ message: e.message });
-  }
-})
-
 router.post("/create",async (request, response) => {
   // #swagger.tags = ['Comment']
   // #swagger.description = 'สร้าง Comment โดยส่ง User_id ของคนคอมเม้น Post_id ของโพสที่จะคอมเม้นและ Comment_content'
@@ -50,13 +38,12 @@ router.post("/create",async (request, response) => {
   }
 });
 
-
-router.get("/get_post_parent/:comment_id", async (req,res) => {
+router.get("/get_comment_data/:comment_id", async (req,res) => {
   // #swagger.tags = ['Topic/Catagory']
   // #swagger.description = 'ส่ง Comment ID เพื่อรับ Post id ที่ comment นั้นอยู่ นั้น'
   try {
     const comment = await commentModel.findById(req.params.comment_id)
-    if (comment) res.send(comment.post_id)
+    if (comment) res.send(comment)
     else {res.send({message: "comment id not found"})}
   } catch (e) {
     res.status(500).send({ message: e.message });
