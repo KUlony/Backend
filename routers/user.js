@@ -159,6 +159,10 @@ router.get("/mypost", async (request, response) => {
     },
     post : []
   }
+  if (post.length === 0) {
+    response.send(res)
+    return
+  }
   for(i=0 ;i<post.length;i++){
     const comment = await commentModel.find({post_id : post[i]._id,comment_status : "visible"});
     var to = true;
