@@ -16,9 +16,9 @@ router.put("/edit_profile",async (request, response) => {
     // #swagger.description = 'แก้ไข Profile'
     try {
       const user = await userModel.findOne({_id:request.user.id})
-      
-      await user.updateOne(request.body);
-      response.status(200).send("ok");
+      if (request.body.admin) response.status(500).send("can't change admin") 
+      else{await user.updateOne(request.body);
+      response.status(200).send("ok");}
     } catch (e) {
       response.status(500).send({ message: e.message });
    }

@@ -384,6 +384,20 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "admin": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1511,13 +1525,22 @@
         }
       }
     },
-    "/api/admin/": {
+    "/api/admin/delete_report_entity/{report_id}": {
       "put": {
         "tags": [
           "Admin"
         ],
         "description": "ลบ post comment reply ที่ report นั้นส่งมา",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
