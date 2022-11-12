@@ -142,7 +142,7 @@ router.post("/follow_topic", async (request, response) => {
             response.send(res)
           } else {
             for(i=0 ;i<post.length;i++){
-              if (!post[i]._id) continue
+              if (!post[i]) continue
               const comment = await commentModel.find({post_id : post[i]._id ,comment_status : "visible"});
               var to = true;
               const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : post[i]._id})
@@ -207,6 +207,6 @@ router.post("/follow_topic", async (request, response) => {
             response.status(500).send({ message: e.message });
          }
       });
-      
+
       module.exports = router;
       
