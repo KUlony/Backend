@@ -387,32 +387,6 @@
         }
       }
     },
-    "/api/user/{user_id}/profile": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "ขอข้อมูล User profile",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/api/user/following_topic": {
       "get": {
         "tags": [
@@ -505,6 +479,32 @@
           {
             "name": "id",
             "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/{user_id}/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "ขอข้อมูล User profile",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string"
             }

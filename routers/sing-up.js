@@ -28,8 +28,6 @@ router.post("/register/email", async (req, res) => {
     const schema = new passwordValidator()
     schema
     .is().min(8)
-    
-    
     if(!schema.validate(req.body.password)) {
       return res.status(400).send({
         success: false,
@@ -38,7 +36,6 @@ router.post("/register/email", async (req, res) => {
     }
     const schema2 = new passwordValidator()
     schema2
-    
     .has().not().spaces()
     
     if(!schema2.validate(req.body.password)) {
@@ -284,10 +281,25 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
       success: false,
       message: "No Verify your identity."
   });
-    if(req.body.password === "" || req.confirm_password === "") return res.status(400).send({
-      success: false,
-      message: "Please enter your password."
-  });
+    const schema = new passwordValidator()
+    schema
+    .is().min(8)
+    if(!schema.validate(req.body.password)) {
+      return res.status(400).send({
+        success: false,
+        message: "Password must be at least 8 characters long."
+    });
+    }
+    const schema2 = new passwordValidator()
+    schema2
+    .has().not().spaces()
+  
+    if(!schema2.validate(req.body.password)) {
+      return res.status(400).send({
+        success: false,
+        message: "Password must not contain Whitespaces."
+    });
+    }
     
     if (req.body.password !== req.body.confirm_password) return res.status(400).send({
       success: false,
