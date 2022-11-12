@@ -163,7 +163,8 @@ router.get("/mypost", async (request, response) => {
     response.send(res)
   } else {
     for(i=0 ;i<post.length;i++){
-      const comment = await commentModel.find({post_id : post[i]._id,comment_status : "visible"});
+      if (!post[i]._id) continue
+      const comment = await commentModel.find({post_id : post[i]._id ,comment_status : "visible"});
       var to = true;
       const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : post[i]._id})
       if (user_like_sta.length === 0){
