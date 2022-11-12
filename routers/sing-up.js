@@ -361,6 +361,7 @@ router.post("/newotp/verify/forgotpassword",async(req,res) => {
       message: "Haven't requested OTP yet."
     });
     await otp.updateOne({otp :OTP.toString()})
+    const message = OTP.toString()
     console.log(OTP)
     const text1 = "Verify your identity ✔"
     const text2 = "Please enter the forgotpassword OTP to get started"
