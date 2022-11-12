@@ -103,12 +103,13 @@ router.delete("/unfollow_topic/:topic_id", async (request, response) => {
   }
 });
 
-router.get("/user_like_post", async (request, response) => {
+router.post("/user_like_post", async (request, response) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'ขอ post ที่ user like ไว้'
   try {
+  
   const like_post = await likepostModel.find({user_id : request.user.id});
-  //console.log(like_post);
+  
   
   const res = []
   for(i=0 ;i<like_post.length;i++){
