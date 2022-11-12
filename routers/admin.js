@@ -316,7 +316,7 @@ router.delete("/delete_report/:entity_id",async (req, res) => {
     }
 })
 
-router.put("/", async (request, response) => {
+router.put("/delete_report_entity/:report_id", async (request, response) => {
     // #swagger.tags = ['Admin']
     // #swagger.description = 'ลบ post comment reply ที่ report นั้นส่งมา'
     try {
@@ -353,7 +353,7 @@ router.put("/", async (request, response) => {
             await notice.save();
             await replyModel.findByIdAndUpdate(report.entity_id,{reply_status : "deleted by admin"})
         }
-        await reportpostModel.findByIdAndRemove(request.params.report_id)
+        await reportpostModel.deleteMany({entity_id : report.entity_id})
         response.send("deleted")
     } catch (e) {
         response.status(500).send({ message: e.message });

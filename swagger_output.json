@@ -1511,22 +1511,13 @@
         }
       }
     },
-    "/api/admin/delete_reported_entity/{report_id}": {
+    "/api/admin/": {
       "put": {
         "tags": [
           "Admin"
         ],
         "description": "ลบ post comment reply ที่ report นั้นส่งมา",
-        "parameters": [
-          {
-            "name": "report_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
