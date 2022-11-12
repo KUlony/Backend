@@ -161,31 +161,31 @@ router.get("/mypost", async (request, response) => {
   }
   if (post.length === 0) {
     response.send(res)
-    return
-  }
-  for(i=0 ;i<post.length;i++){
-    const comment = await commentModel.find({post_id : post[i]._id,comment_status : "visible"});
-    var to = true;
-    const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : post[i]._id})
-    if (user_like_sta.length === 0){
-      to = false
-    };
-    const to_res = {
-      post_id : post[i]._id,
-      post_title : post[i].post_title,
-      post_content : post[i].post_content,
-      cover_photo_url : post[i].cover_photo_url,
-      post_photo_url : post[i].post_photo_url,
-      post_catagory : post[i].catagory_id,
-      post_topic : post[i].topic_id,
-      post_like_count : post[i].post_like_count,
-      post_comment_count : comment.length,
-      post_time : post[i].post_time,
-      user_like_status : to
+  } else {
+    for(i=0 ;i<post.length;i++){
+      const comment = await commentModel.find({post_id : post[i]._id,comment_status : "visible"});
+      var to = true;
+      const user_like_sta = await likepostModel.find({user_id : request.user.id, post_id : post[i]._id})
+      if (user_like_sta.length === 0){
+        to = false
+      };
+      const to_res = {
+        post_id : post[i]._id,
+        post_title : post[i].post_title,
+        post_content : post[i].post_content,
+        cover_photo_url : post[i].cover_photo_url,
+        post_photo_url : post[i].post_photo_url,
+        post_catagory : post[i].catagory_id,
+        post_topic : post[i].topic_id,
+        post_like_count : post[i].post_like_count,
+        post_comment_count : comment.length,
+        post_time : post[i].post_time,
+        user_like_status : to
+      }
+      res.post.push(to_res)
     }
-    res.post.push(to_res)
+      response.send(res);
   }
-    response.send(res);
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
