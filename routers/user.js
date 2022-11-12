@@ -87,7 +87,6 @@ router.post("/follow_topic", async (request, response) => {
           //console.log(like_post);
           
           const res = []
-          // console.log(like_post)
           for(i=0 ;i<like_post.length;i++){
             let post = await postModel.find({_id : like_post[i].post_id,status : "visible"});
             console.log(post)

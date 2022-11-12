@@ -9,6 +9,7 @@ const bcrypt  = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const { updateOne } = require("../schemas/modelotp");
+const passwordValidator = require('password-validator')
 
 router.post("/register/email", async (req, res) => {
   // #swagger.tags = ['Auth']
@@ -24,10 +25,26 @@ router.post("/register/email", async (req, res) => {
         message: "An account with this email already exists!"
       })
     }
-    if(req.body.password === "" || req.confirm_password === "") {
+    const schema = new passwordValidator()
+    schema
+    .is().min(8)
+    
+    
+    if(!schema.validate(req.body.password)) {
       return res.status(400).send({
         success: false,
-        message: "Please enter your password."
+        message: "Password must be at least 8 characters long."
+      });
+    }
+    const schema2 = new passwordValidator()
+    schema2
+    
+    .has().not().spaces()
+    
+    if(!schema2.validate(req.body.password)) {
+      return res.status(400).send({
+        success: false,
+        message: "Password must not contain Whitespaces."
       });
     }
     if (req.body.password !== req.body.confirm_password) {

@@ -72,30 +72,31 @@ router.get("/:post_id", async (request, response) => {
     const comment = await commentModel.find({post_id : request.params.post_id,comment_status : "visible"});
     if (comment.length == 0) {
       response.send([])
-      return
     }
-  const res = [];
-  for (i=0;i<comment.length;i++){
-    const user = await userModel.findById(comment[i].user_id);
-    const reply = await replyModel.find({comment_id : comment[i]._id,reply_status : "visible"});
-    if (!user) {
-      continue
+    else{
+      const res = [];
+      for (i=0;i<comment.length;i++){
+        const user = await userModel.findById(comment[i].user_id);
+        const reply = await replyModel.find({comment_id : comment[i]._id,reply_status : "visible"});
+        if (!user) {
+          continue
+        }
+        const to_res = {
+          author : {
+            user_id : user._id,
+            username : user.user_name,
+            profile_pic_url : user.profile_pic_url,
+          },
+          comment_id: comment[i]._id,
+          comment_content :comment[i].comment_content,
+          comment_like_count : comment[i].comment_like_count,
+          comment_reply_count : reply.length,
+          comment_time : comment[i].comment_time,
+        };
+        res.push(to_res);
     }
-    const to_res = {
-      author : {
-        user_id : user._id,
-        username : user.user_name,
-        profile_pic_url : user.profile_pic_url,
-      },
-      comment_id: comment[i]._id,
-      comment_content :comment[i].comment_content,
-      comment_like_count : comment[i].comment_like_count,
-      comment_reply_count : reply.length,
-      comment_time : comment[i].comment_time,
-    };
-    res.push(to_res);
+      response.send(res);
   }
-    response.send(res);
   } catch (e) {
     response.status(500).send({ message: e.message });
  }
