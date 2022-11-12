@@ -1526,7 +1526,7 @@
       }
     },
     "/api/admin/delete_report_entity/{report_id}": {
-      "put": {
+      "post": {
         "tags": [
           "Admin"
         ],

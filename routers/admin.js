@@ -316,7 +316,7 @@ router.delete("/delete_report/:entity_id",async (req, res) => {
     }
 })
 
-router.put("/delete_report_entity/:report_id", async (request, response) => {
+router.post("/delete_report_entity/:report_id", async (request, response) => {
     // #swagger.tags = ['Admin']
     // #swagger.description = 'ลบ post comment reply ที่ report นั้นส่งมา'
     try {
