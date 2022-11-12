@@ -93,6 +93,7 @@ router.get("/get_post_report", async (req, res) => {
                 {
                     $group: {
                         _id: "$entity_id",
+                        report_id: { $addToSet: "$_id"},
                         report_type: { $addToSet: "$report_type"},
                         user: { $addToSet: "$user_id" },
                         last_report: { $max: "$report_time" }
@@ -103,6 +104,7 @@ router.get("/get_post_report", async (req, res) => {
                         _id: 1,
                         report_type: 1,
                         user: 1,
+                        report_id:1,
                         year: { $year: "$last_report"},
                         month: { $month: "$last_report"},
                         day: { $dayOfMonth: "$last_report"},
@@ -121,6 +123,7 @@ router.get("/get_post_report", async (req, res) => {
                 {
                     $group: {
                         _id: "$entity_id",
+                        report_id: { $addToSet: "$_id"},
                         report_type: { $addToSet: "$report_type"},
                         user: { $addToSet: "$user_id" },
                         last_report: { $max: "$report_time" }
@@ -134,12 +137,13 @@ router.get("/get_post_report", async (req, res) => {
                         _id: 1,
                         report_type: 1,
                         user: 1,
+                        report_id:1,
                         year: { $year: "$last_report"},
                         month: { $month: "$last_report"},
                         day: { $dayOfMonth: "$last_report"},
                         count_user: { $size: "$user"}
                     }
-                }
+                },
             ])
         }
         res.send(report)
@@ -164,6 +168,7 @@ router.get("/get_comment_report", async (req, res) => {
                 {
                     $group: {
                         _id: "$entity_id",
+                        report_id: { $addToSet: "$_id"},
                         report_type: { $addToSet: "$report_type"},
                         user: { $addToSet: "$user_id" },
                         last_report: { $max: "$report_time" }
@@ -174,6 +179,7 @@ router.get("/get_comment_report", async (req, res) => {
                         _id: 1,
                         report_type: 1,
                         user: 1,
+                        report_id:1,
                         year: { $year: "$last_report"},
                         month: { $month: "$last_report"},
                         day: { $dayOfMonth: "$last_report"},
@@ -187,11 +193,12 @@ router.get("/get_comment_report", async (req, res) => {
         } else if (req.query.sortby === "lated") {
             report = await reportpostModel.aggregate([
                 {
-                    $match: { entity_type: "post"}
+                    $match: { entity_type: "comment"}
                 },
                 {
                     $group: {
                         _id: "$entity_id",
+                        report_id: { $addToSet: "$_id"},
                         report_type: { $addToSet: "$report_type"},
                         user: { $addToSet: "$user_id" },
                         last_report: { $max: "$report_time" }
@@ -205,12 +212,13 @@ router.get("/get_comment_report", async (req, res) => {
                         _id: 1,
                         report_type: 1,
                         user: 1,
+                        report_id:1,
                         year: { $year: "$last_report"},
                         month: { $month: "$last_report"},
                         day: { $dayOfMonth: "$last_report"},
                         count_user: { $size: "$user"}
                     }
-                }
+                },
             ])
         }
         res.send(report)
@@ -235,6 +243,7 @@ router.get("/get_reply_report", async (req, res) => {
                 {
                     $group: {
                         _id: "$entity_id",
+                        report_id: { $addToSet: "$_id"},
                         report_type: { $addToSet: "$report_type"},
                         user: { $addToSet: "$user_id" },
                         last_report: { $max: "$report_time" }
@@ -245,6 +254,7 @@ router.get("/get_reply_report", async (req, res) => {
                         _id: 1,
                         report_type: 1,
                         user: 1,
+                        report_id:1,
                         year: { $year: "$last_report"},
                         month: { $month: "$last_report"},
                         day: { $dayOfMonth: "$last_report"},
@@ -258,11 +268,12 @@ router.get("/get_reply_report", async (req, res) => {
         } else if (req.query.sortby === "lated") {
             report = await reportpostModel.aggregate([
                 {
-                    $match: { entity_type: "post"}
+                    $match: { entity_type: "reply"}
                 },
                 {
                     $group: {
                         _id: "$entity_id",
+                        report_id: { $addToSet: "$_id"},
                         report_type: { $addToSet: "$report_type"},
                         user: { $addToSet: "$user_id" },
                         last_report: { $max: "$report_time" }
@@ -276,12 +287,13 @@ router.get("/get_reply_report", async (req, res) => {
                         _id: 1,
                         report_type: 1,
                         user: 1,
+                        report_id:1,
                         year: { $year: "$last_report"},
                         month: { $month: "$last_report"},
                         day: { $dayOfMonth: "$last_report"},
                         count_user: { $size: "$user"}
                     }
-                }
+                },
             ])
         }
         res.send(report)
@@ -304,7 +316,7 @@ router.delete("/delete_report/:entity_id",async (req, res) => {
     }
 })
 
-router.put("/delete_reported_entity/:report_id", async (request, response) => {
+router.put("/", async (request, response) => {
     // #swagger.tags = ['Admin']
     // #swagger.description = 'ลบ post comment reply ที่ report นั้นส่งมา'
     try {
