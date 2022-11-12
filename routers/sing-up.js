@@ -27,7 +27,7 @@ router.post("/register/email", async (req, res) => {
     if(req.body.password === "" || req.confirm_password === "") {
       return res.status(400).send({
         success: false,
-        message: "Please enter your password"
+        message: "Please enter your password."
       });
     }
     if (req.body.password !== req.body.confirm_password) {
@@ -57,7 +57,7 @@ router.post("/register/email", async (req, res) => {
     
     return res.status(200).send({
       success: true,
-      message: "An Email sent to your account please verify",
+      message: "An Email sent to your account please verify.",
       
     })
     //new
@@ -102,7 +102,7 @@ router.post("/register/email/checkOTP", async (req, res) => {
       
       return res.status(200).send({
         success: true,
-        message: "Email verified sucessfully",
+        message: "Email verified sucessfully.",
         
       })
     } catch (e) {
@@ -120,13 +120,13 @@ router.post('/login',async (req, res) => {
     if (!user) {
       return res.status(401).send({
           success: false,
-          message: "No account associated with the email address"
+          message: "No account associated with the email address."
       })
     }
     if (!user.verified) {
       return res.status(401).send({
         success: false,
-        message: "Verify email againt"
+        message: "Verify email againt."
     })
     }
     // Incorrect password
@@ -210,7 +210,7 @@ router.post('/forgotpassword',async (req,res) => {
     
     return res.status(200).send({
       success: true,
-      message: "An Email sent to your account please verify your identity",
+      message: "An Email sent to your account please verify your identity.",
       
     })
 
@@ -244,7 +244,7 @@ router.post("/forgotpassword/checkOTP", async (req, res) => {
       
       return res.status(200).send({
         success: true,
-        message: "Verify your identity sucessfully",
+        message: "Verify your identity sucessfully.",
         
       })
     };
@@ -269,7 +269,7 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
   });
     if(req.body.password === "" || req.confirm_password === "") return res.status(400).send({
       success: false,
-      message: "Please enter your password"
+      message: "Please enter your password."
   });
     
     if (req.body.password !== req.body.confirm_password) return res.status(400).send({
@@ -281,7 +281,7 @@ router.post("/forgotpassword/resetpassword",async(req,res) => {
     
     return res.status(200).send({
       success: true,
-      message: "Reset password sucessfully",
+      message: "Reset password sucessfully.",
       
     })
 
@@ -312,7 +312,7 @@ router.post("/changepassword" ,passport.authenticate('jwt', { session: false }),
    
     return res.status(200).send({
       success: true,
-      message: "Change password sucessfully"
+      message: "Change password sucessfully."
       
     });
   } catch (e) {
@@ -341,7 +341,7 @@ router.post("/newotp/verify/email",async(req,res) => {
     
     return res.status(200).send({
       success: true,
-      message: "An Email sent to your account please verify email"
+      message: "An Email sent to your account please verify email."
       
     });
   } catch (e) {
@@ -368,7 +368,7 @@ router.post("/newotp/verify/forgotpassword",async(req,res) => {
    
     return res.status(200).send({
       success: true,
-      message: "An Email sent to your account please verify email"
+      message: "An Email sent to your account please verify email."
       
     });
   } catch (e) {
